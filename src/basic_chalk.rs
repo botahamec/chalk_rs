@@ -66,7 +66,7 @@ macro_rules! enum_impls {
 pub enum BasicStyle {
     Default   = 0,
     Bold      = 1,
-    Dim       = 2,
+	Dim       = 2,
     Underline = 4,
     Blink     = 5,
     Invert    = 7,
@@ -145,6 +145,10 @@ impl Display for BasicChalk {
 
 impl BasicChalk {
 
+	/**
+	 * Returns a new BasicChalk.
+	 * This has all default styling.
+	 */
 	pub fn new() -> Self {Self::default()}
 
 	/**
@@ -157,6 +161,62 @@ impl BasicChalk {
 			style_command = format!("{}{};", style_command, style);
 		}
 		style_command
+	}
+
+	/**
+	 * Resets the styling to the default
+	 */
+	pub fn reset(&mut self) -> &Self {
+		self.styles = vec![BasicStyle::Default];
+		self
+	}
+
+	/**
+	 * Makes the text bold
+	 */
+	pub fn bold(&mut self) -> &Self {
+		self.styles.push(BasicStyle::Bold);
+		self
+	}
+
+	/**
+	 * Makes the text dim
+	 */
+	pub fn dim(&mut self) -> &Self {
+		self.styles.push(BasicStyle::Dim);
+		self
+	}
+
+	/**
+	 * Underlines the text
+	 */
+	pub fn underline(&mut self) -> &Self {
+		self.styles.push(BasicStyle::Underline);
+		self
+	}
+
+	/**
+	 * Invert the foreground and background colors
+	 */
+	pub fn inverse(&mut self) -> &Self {
+		self.styles.push(BasicStyle::Invert);
+		self
+	}
+
+	/**
+	 * Makes the text invisible, but copy-pastable
+	 */
+	pub fn hidden(&mut self) -> &Self {
+		self.styles.push(BasicStyle::Hidden);
+		self
+	}
+
+	/**
+	 * Makes blinking text
+	 */
+	pub fn blink(&mut self) -> &Self {
+		self.styles.push(BasicStyle::Blink);
+		self
 	}
 }
 

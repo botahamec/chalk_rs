@@ -15,6 +15,8 @@ pub enum BasicStyle {
     Hidden    = 8
 }
 
+impl Default for BasicStyle {fn default() -> Self {BasicStyle::Normal}}
+
 /**
  * Foreground color using basic color
  */
@@ -38,6 +40,8 @@ pub enum BasicColor {
     LightCyan    = 96,
     White        = 97
 }
+
+impl Default for BasicColor {fn default() -> Self {BasicColor::Default}}
 
 /**
  * The background of a teerminal using basic color
@@ -63,7 +67,9 @@ pub enum BasicBackground {
     White        = 107
 }
 
-#[derive(Clone, Eq, Ord, PartialEq, PartialOrd)]
+impl Default for BasicBackground {fn default() -> Self {BasicBackground::Default}}
+
+#[derive(Clone, Default, Eq, Ord, PartialEq, PartialOrd)]
 pub struct BasicChalk {
 	pub fgcolor: BasicColor,
 	pub bgcolor: BasicColor,

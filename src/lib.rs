@@ -6,7 +6,7 @@ use std::string::ToString;
 /**
  * For all Chalks with different color types
  */
-pub trait Chalk {
+trait Chalk: Sized {
 
     /**
      * Formats a string using the style of the given chalk.
@@ -26,7 +26,11 @@ pub trait Chalk {
      * chalk.string(&"this is yellow");
      * ```
      */
-    fn print(self, string: &dyn ToString) -> String;
+    fn print(self, string: &dyn ToString) -> String {
+		let output = self.string(string);
+		print!("{}", output);
+		output
+	}
 
     /**
      * Prints a line using the style of the given chalk.
@@ -36,5 +40,9 @@ pub trait Chalk {
      * chalk.string(&"this is yellow");
      * ```
      */
-    fn println(self, string: &dyn ToString) -> String;
+    fn println(self, string: &dyn ToString) -> String {
+		let output = self.string(string);
+		println!("{}", output);
+		output
+	}
 }

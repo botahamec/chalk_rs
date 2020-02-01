@@ -45,7 +45,7 @@ impl Default for BasicColor {fn default() -> Self {BasicColor::Default}}
 
 /**
  * The background of a teerminal using basic color
-*/
+ */
 #[derive(Clone, Eq, Ord, PartialEq, PartialOrd)]
 pub enum BasicBackground {
     Black        = 40,
@@ -69,9 +69,36 @@ pub enum BasicBackground {
 
 impl Default for BasicBackground {fn default() -> Self {BasicBackground::Default}}
 
+/**
+ * A chalk with only 16 colors
+ */
 #[derive(Clone, Default, Eq, Ord, PartialEq, PartialOrd)]
 pub struct BasicChalk {
 	pub fgcolor: BasicColor,
 	pub bgcolor: BasicColor,
 	pub styles: Vec<BasicStyle>
+}
+
+impl BasicChalk {
+	/**
+	 * Creates a string which does all of the style,
+	 * Helper function for the Chalk implementation
+	 */
+	fn style(self) -> String {
+		let mut style_command = String::with_capacity(12);
+		for style in self.styles {
+			style_command = format!("{}{};", style_command, style as u8);
+		}
+		style_command
+	}
+}
+
+impl Chalk for BasicChalk {
+
+	fn string(self, string: &dyn ToString) -> String {
+		format!("\x1b[{};{};{}m{}\x1b[m",
+		self.fgcolor.clone() as u8,
+		self.bgcolor.clone() as u8,
+		self.style(), string.to_string())
+	}
 }

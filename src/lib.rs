@@ -2,13 +2,13 @@
 use std::string::ToString;
 
 pub enum BasicStyle {
-    Normal = 0,
-    Bold = 1,
-    Dim = 2,
+    Normal    = 0,
+    Bold      = 1,
+    Dim       = 2,
     Underline = 4,
-    Blink = 5,
-    Invert = 7,
-    Hidden = 8
+    Blink     = 5,
+    Invert    = 7,
+    Hidden    = 8
 }
 
 pub enum BasicColor {

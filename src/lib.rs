@@ -1,6 +1,9 @@
 
 use std::string::ToString;
 
+/**
+ * A style to be applied to the text
+ */
 pub enum BasicStyle {
     Normal    = 0,
     Bold      = 1,
@@ -11,6 +14,9 @@ pub enum BasicStyle {
     Hidden    = 8
 }
 
+/**
+ * Foreground color using basic color
+ */
 pub enum BasicColor {
     Black        = 30,
     Red          = 31,
@@ -31,6 +37,9 @@ pub enum BasicColor {
     White        = 97
 }
 
+/**
+ * The background of a teerminal using basic color
+*/
 pub enum BasicBackground {
     Black        = 40,
     Red          = 41,
@@ -49,6 +58,39 @@ pub enum BasicBackground {
     LightMagenta = 105,
     LightCyan    = 106,
     White        = 107
+}
+
+pub trait Chalk {
+
+    /**
+     * Formats a string using the style of the given chalk.
+     * When using string literals, please use a reference.
+     * For example:
+     * ```rust
+     * chalk.string(&"this is yellow");
+     * ```
+     */
+    fn string(self, string: &dyn ToString) -> String;
+
+    /**
+     * Prints a string using the style of the given chalk.
+     * When using string literals, please use a reference.
+     * For example:
+     * ```rust
+     * chalk.string(&"this is yellow");
+     * ```
+     */
+    fn print(self, string: &dyn ToString) -> String;
+
+    /**
+     * Prints a line using the style of the given chalk.
+     * When using string literals, please use a reference.
+     * For example:
+     * ```rust
+     * chalk.string(&"this is yellow");
+     * ```
+     */
+    fn println(self, string: &dyn ToString) -> String;
 }
 
 fn basic_color_string(string: &dyn ToString, style: BasicStyle, color: BasicColor) -> String {

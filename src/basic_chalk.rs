@@ -87,9 +87,9 @@ pub enum BasicColor {
     Blue         = 34,
     Magenta      = 35,
     Cyan         = 36,
-    LightGrey    = 37,
+    LightGray    = 37,
     Default      = 39,
-    DarkGrey     = 90,
+    DarkGray     = 90,
     LightRed     = 91,
     LightGreen   = 92,
     LightYellow  = 93,
@@ -166,7 +166,7 @@ impl BasicChalk {
 	/**
 	 * Resets the styling to the default
 	 */
-	pub fn reset(&mut self) -> &Self {
+	pub fn reset_style(&mut self) -> &Self {
 		self.styles = vec![BasicStyle::Default];
 		self
 	}
@@ -207,7 +207,7 @@ impl BasicChalk {
 	 * Makes the text invisible, but copy-pastable
 	 */
 	pub fn hidden(&mut self) -> &Self {
-		self.styles.push(BasicStyle::Hidden);
+		self.styles = vec![BasicStyle::Hidden];
 		self
 	}
 
@@ -216,6 +216,154 @@ impl BasicChalk {
 	 */
 	pub fn blink(&mut self) -> &Self {
 		self.styles.push(BasicStyle::Blink);
+		self
+	}
+
+	/**
+	 * Resets the color to the default
+	 */
+	pub fn reset_color(&mut self) -> &Self {
+		self.fgcolor = BasicColor::Default;
+		self
+	}
+
+	/**
+	 * Changes the color to black
+	 */
+	pub fn black(&mut self) -> &Self {
+		self.fgcolor = BasicColor::Black;
+		self
+	}
+
+	/**
+	 * Changes the color to red
+	 */
+	pub fn red(&mut self) -> &Self {
+		self.fgcolor = BasicColor::Red;
+		self
+	}
+
+	/**
+	 * Changes the color to green
+	 */
+	pub fn green(&mut self) -> &Self {
+		self.fgcolor = BasicColor::Green;
+		self
+	}
+
+	/**
+	 * Changes the color to yellow
+	 */
+	pub fn yellow(&mut self) -> &Self {
+		self.fgcolor = BasicColor::Yellow;
+		self
+	}
+
+	/**
+	 * Changes the color to red
+	 */
+	pub fn blue(&mut self) -> &Self {
+		self.fgcolor = BasicColor::Blue;
+		self
+	}
+
+	/**
+	 * Changes the color to magenta
+	 */
+	pub fn magenta(&mut self) -> &Self {
+		self.fgcolor = BasicColor::Magenta;
+		self
+	}
+
+	/**
+	 * Changes the color to cyan
+	 */
+	pub fn cyan(&mut self) -> &Self {
+		self.fgcolor = BasicColor::Cyan;
+		self
+	}
+
+	/**
+	 * Changes the color to red
+	 */
+	pub fn white(&mut self) -> &Self {
+		self.fgcolor = BasicColor::White;
+		self
+	}
+
+	/**
+	 * Changes the color to dark gray
+	 */
+	pub fn gray(&mut self) -> &Self {
+		self.fgcolor = BasicColor::DarkGray;
+		self
+	}
+
+	/** alias for gray */
+	pub fn grey(&mut self) -> &Self {self.gray()}
+
+	/** alias for gray */
+	pub fn dark_gray(&mut self) -> &Self {self.gray()}
+
+	/** alias for gray */
+	pub fn dark_grey(&mut self) -> &Self {self.gray()}
+
+	/** alias for gray */
+	pub fn light_black(&mut self) -> &Self {self.gray()}
+
+	/**
+	 * Changes the color to bright red
+	 */
+	pub fn light_red(&mut self) -> &Self {
+		self.fgcolor = BasicColor::LightRed;
+		self
+	}
+
+	/**
+	 * Changes the color to bright red
+	 */
+	pub fn light_green(&mut self) -> &Self {
+		self.fgcolor = BasicColor::LightGreen;
+		self
+	}
+
+	/**
+	 * Changes the color to bright yellow
+	 */
+	pub fn light_yellow(&mut self) -> &Self {
+		self.fgcolor = BasicColor::LightYellow;
+		self
+	}
+
+	/**
+	 * Changes the color to bright red
+	 */
+	pub fn light_blue(&mut self) -> &Self {
+		self.fgcolor = BasicColor::LightBlue;
+		self
+	}
+
+	/**
+	 * Changes the color to bright magenta
+	 */
+	pub fn light_magenta(&mut self) -> &Self {
+		self.fgcolor = BasicColor::LightMagenta;
+		self
+	}
+
+	/**
+	 * Changes the color to bright cyan
+	 */
+	pub fn light_cyan(&mut self) -> &Self {
+		self.fgcolor = BasicColor::LightCyan;
+		self
+	}
+
+	/**
+	 * Changes the color to light gray
+	 */
+	pub fn light_gray(&mut self) -> &Self {
+		self.fgcolor = BasicColor::LightGray;
 		self
 	}
 }

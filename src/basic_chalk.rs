@@ -8,11 +8,63 @@ use std::fmt::LowerHex;
 use std::fmt::UpperHex;
 
 /**
+ * Implements Default for an enum.
+ * Requires the enum to have a variant named "Default"
+ */
+macro_rules! enum_default {
+	($name: ident) => {
+		impl Default for $name {fn default() -> Self {$name::Default}}
+	}
+}
+
+/**
+ * Implements a fmt trait for an enum.
+ * The output is the enum as a number
+ */
+macro_rules! enum_fmt_impl {
+	($name: ident, $trait: ident) => {
+		impl $trait for $name {
+			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		        $trait::fmt(&(self.clone() as u8), f)
+		    }
+		}
+	}
+}
+
+/**
+ * Implements the Display trait for an enum.
+ * The output is the enum as a number
+ */
+macro_rules! enum_display {
+	($name: ident) => {
+		impl Display for $name {
+			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		        write!(f, "{}", self.clone() as u8)
+		    }
+		}
+	}
+}
+
+/**
+ * Implements several traits for a macro
+ */
+macro_rules! enum_impls {
+	($name: ident) => {
+		enum_default!($name);
+		enum_display!($name);
+		enum_fmt_impl!($name, Binary);
+		enum_fmt_impl!($name, Octal);
+		enum_fmt_impl!($name, LowerHex);
+		enum_fmt_impl!($name, UpperHex);
+	};
+}
+
+/**
  * A style to be applied to the text
  */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum BasicStyle {
-    Normal    = 0,
+    Default   = 0,
     Bold      = 1,
     Dim       = 2,
     Underline = 4,
@@ -21,37 +73,7 @@ pub enum BasicStyle {
     Hidden    = 8
 }
 
-impl Default for BasicStyle {fn default() -> Self {BasicStyle::Normal}}
-
-impl Binary for BasicStyle {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        Binary::fmt(&(self.clone() as u8), f)
-    }
-}
-
-impl Octal for BasicStyle {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        Octal::fmt(&(self.clone() as u8), f)
-    }
-}
-
-impl Display for BasicStyle {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.clone() as u8)
-    }
-}
-
-impl LowerHex for BasicStyle {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        LowerHex::fmt(&(self.clone() as u8), f)
-    }
-}
-
-impl UpperHex for BasicStyle {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        UpperHex::fmt(&(self.clone() as u8), f)
-    }
-}
+enum_impls!(BasicStyle);
 
 /**
  * Foreground color using basic color
@@ -77,37 +99,7 @@ pub enum BasicColor {
     White        = 97
 }
 
-impl Default for BasicColor {fn default() -> Self {BasicColor::Default}}
-
-impl Binary for BasicColor {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        Binary::fmt(&(self.clone() as u8), f)
-    }
-}
-
-impl Octal for BasicColor {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        Octal::fmt(&(self.clone() as u8), f)
-    }
-}
-
-impl Display for BasicColor {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.clone() as u8)
-    }
-}
-
-impl LowerHex for BasicColor {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        LowerHex::fmt(&(self.clone() as u8), f)
-    }
-}
-
-impl UpperHex for BasicColor {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        UpperHex::fmt(&(self.clone() as u8), f)
-    }
-}
+enum_impls!(BasicColor);
 
 /**
  * The background of a teerminal using basic color
@@ -133,37 +125,7 @@ pub enum BasicBackground {
     White        = 107
 }
 
-impl Default for BasicBackground {fn default() -> Self {BasicBackground::Default}}
-
-impl Binary for BasicBackground {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        Binary::fmt(&(self.clone() as u8), f)
-    }
-}
-
-impl Octal for BasicBackground {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        Octal::fmt(&(self.clone() as u8), f)
-    }
-}
-
-impl Display for BasicBackground {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.clone() as u8)
-    }
-}
-
-impl LowerHex for BasicBackground {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        LowerHex::fmt(&(self.clone() as u8), f)
-    }
-}
-
-impl UpperHex for BasicBackground {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        UpperHex::fmt(&(self.clone() as u8), f)
-    }
-}
+enum_impls!(BasicBackground);
 
 /**
  * A chalk with only 16 colors

@@ -1,10 +1,16 @@
 
 use crate::Chalk;
 
+use std::fmt::Binary;
+use std::fmt::Octal;
+use std::fmt::Display;
+use std::fmt::LowerHex;
+use std::fmt::UpperHex;
+
 /**
  * A style to be applied to the text
  */
-#[derive(Clone, Eq, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum BasicStyle {
     Normal    = 0,
     Bold      = 1,
@@ -17,10 +23,40 @@ pub enum BasicStyle {
 
 impl Default for BasicStyle {fn default() -> Self {BasicStyle::Normal}}
 
+impl Binary for BasicStyle {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Binary::fmt(&(self.clone() as u8), f)
+    }
+}
+
+impl Octal for BasicStyle {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Octal::fmt(&(self.clone() as u8), f)
+    }
+}
+
+impl Display for BasicStyle {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.clone() as u8)
+    }
+}
+
+impl LowerHex for BasicStyle {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        LowerHex::fmt(&(self.clone() as u8), f)
+    }
+}
+
+impl UpperHex for BasicStyle {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        UpperHex::fmt(&(self.clone() as u8), f)
+    }
+}
+
 /**
  * Foreground color using basic color
  */
-#[derive(Clone, Eq, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum BasicColor {
     Black        = 30,
     Red          = 31,
@@ -43,10 +79,40 @@ pub enum BasicColor {
 
 impl Default for BasicColor {fn default() -> Self {BasicColor::Default}}
 
+impl Binary for BasicColor {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Binary::fmt(&(self.clone() as u8), f)
+    }
+}
+
+impl Octal for BasicColor {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Octal::fmt(&(self.clone() as u8), f)
+    }
+}
+
+impl Display for BasicColor {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.clone() as u8)
+    }
+}
+
+impl LowerHex for BasicColor {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        LowerHex::fmt(&(self.clone() as u8), f)
+    }
+}
+
+impl UpperHex for BasicColor {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        UpperHex::fmt(&(self.clone() as u8), f)
+    }
+}
+
 /**
  * The background of a teerminal using basic color
  */
-#[derive(Clone, Eq, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum BasicBackground {
     Black        = 40,
     Red          = 41,
@@ -69,14 +135,50 @@ pub enum BasicBackground {
 
 impl Default for BasicBackground {fn default() -> Self {BasicBackground::Default}}
 
+impl Binary for BasicBackground {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Binary::fmt(&(self.clone() as u8), f)
+    }
+}
+
+impl Octal for BasicBackground {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Octal::fmt(&(self.clone() as u8), f)
+    }
+}
+
+impl Display for BasicBackground {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.clone() as u8)
+    }
+}
+
+impl LowerHex for BasicBackground {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        LowerHex::fmt(&(self.clone() as u8), f)
+    }
+}
+
+impl UpperHex for BasicBackground {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        UpperHex::fmt(&(self.clone() as u8), f)
+    }
+}
+
 /**
  * A chalk with only 16 colors
  */
-#[derive(Clone, Default, Eq, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct BasicChalk {
 	pub fgcolor: BasicColor,
 	pub bgcolor: BasicColor,
 	pub styles: Vec<BasicStyle>
+}
+
+impl Display for BasicChalk {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "\x1b[{};{};{}m", self.fgcolor, self.bgcolor, self.clone().style())
+    }
 }
 
 impl BasicChalk {
@@ -87,7 +189,7 @@ impl BasicChalk {
 	fn style(self) -> String {
 		let mut style_command = String::with_capacity(12);
 		for style in self.styles {
-			style_command = format!("{}{};", style_command, style as u8);
+			style_command = format!("{}{};", style_command, style);
 		}
 		style_command
 	}
@@ -97,8 +199,8 @@ impl Chalk for BasicChalk {
 
 	fn string(self, string: &dyn ToString) -> String {
 		format!("\x1b[{};{};{}m{}\x1b[m",
-		self.fgcolor.clone() as u8,
-		self.bgcolor.clone() as u8,
+		self.fgcolor.clone(),
+		self.bgcolor.clone(),
 		self.style(), string.to_string())
 	}
 }

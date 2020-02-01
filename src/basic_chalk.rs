@@ -182,10 +182,13 @@ impl Display for BasicChalk {
 }
 
 impl BasicChalk {
+
+	pub fn new() -> Self {Self::default()}
+
 	/**
-	 * Creates a string which does all of the style,
-	 * Helper function for the Chalk implementation
-	 */
+     * Creates a string which does all of the style,
+     * Helper function for the Chalk implementation
+     */
 	fn style(self) -> String {
 		let mut style_command = String::with_capacity(12);
 		for style in self.styles {
@@ -195,12 +198,4 @@ impl BasicChalk {
 	}
 }
 
-impl Chalk for BasicChalk {
-
-	fn string(self, string: &dyn ToString) -> String {
-		format!("\x1b[{};{};{}m{}\x1b[m",
-		self.fgcolor.clone(),
-		self.bgcolor.clone(),
-		self.style(), string.to_string())
-	}
-}
+impl Chalk for BasicChalk {}

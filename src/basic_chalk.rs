@@ -113,9 +113,9 @@ pub enum BasicBackground {
     Blue         = 44,
     Magenta      = 45,
     Cyan         = 46,
-    LightGrey    = 47,
+    LightGray    = 47,
     Default      = 49,
-    DarkGrey     = 100,
+    DarkGray     = 100,
     LightRed     = 101,
     LightGreen   = 102,
     LightYellow  = 103,
@@ -133,7 +133,7 @@ enum_impls!(BasicBackground);
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct BasicChalk {
 	pub fgcolor: BasicColor,
-	pub bgcolor: BasicColor,
+	pub bgcolor: BasicBackground,
 	pub styles: Vec<BasicStyle>
 }
 
@@ -364,6 +364,146 @@ impl BasicChalk {
 	 */
 	pub fn light_gray(&mut self) -> &Self {
 		self.fgcolor = BasicColor::LightGray;
+		self
+	}
+
+	/**
+	 * Changes the background color to black
+	 */
+	pub fn bg_black(&mut self) -> &Self {
+		self.bgcolor = BasicBackground::Black;
+		self
+	}
+
+	/**
+	 * Changes the background color to red
+	 */
+	pub fn bg_red(&mut self) -> &Self {
+		self.bgcolor = BasicBackground::Red;
+		self
+	}
+
+	/**
+	 * Changes the background color to green
+	 */
+	pub fn bg_green(&mut self) -> &Self {
+		self.bgcolor = BasicBackground::Green;
+		self
+	}
+
+	/**
+	 * Changes the background color to yellow
+	 */
+	pub fn bg_yellow(&mut self) -> &Self {
+		self.bgcolor = BasicBackground::Yellow;
+		self
+	}
+
+	/**
+	 * Changes the background color to red
+	 */
+	pub fn bg_blue(&mut self) -> &Self {
+		self.bgcolor = BasicBackground::Blue;
+		self
+	}
+
+	/**
+	 * Changes the background color to magenta
+	 */
+	pub fn bg_magenta(&mut self) -> &Self {
+		self.bgcolor = BasicBackground::Magenta;
+		self
+	}
+
+	/**
+	 * Changes the background color to cyan
+	 */
+	pub fn bg_cyan(&mut self) -> &Self {
+		self.bgcolor = BasicBackground::Cyan;
+		self
+	}
+
+	/**
+	 * Changes the background color to red
+	 */
+	pub fn bg_white(&mut self) -> &Self {
+		self.bgcolor = BasicBackground::White;
+		self
+	}
+
+	/**
+	 * Changes the background color to dark gray
+	 */
+	pub fn bg_gray(&mut self) -> &Self {
+		self.bgcolor = BasicBackground::DarkGray;
+		self
+	}
+
+	/** alias for gray */
+	pub fn bg_grey(&mut self) -> &Self {self.bg_gray()}
+
+	/** alias for gray */
+	pub fn bg_dark_gray(&mut self) -> &Self {self.bg_gray()}
+
+	/** alias for gray */
+	pub fn bg_dark_grey(&mut self) -> &Self {self.bg_gray()}
+
+	/** alias for gray */
+	pub fn bg_light_black(&mut self) -> &Self {self.bg_gray()}
+
+	/**
+	 * Changes the background color to bright red
+	 */
+	pub fn bg_light_red(&mut self) -> &Self {
+		self.bgcolor = BasicBackground::LightRed;
+		self
+	}
+
+	/**
+	 * Changes the background color to bright red
+	 */
+	pub fn bg_light_green(&mut self) -> &Self {
+		self.bgcolor = BasicBackground::LightGreen;
+		self
+	}
+
+	/**
+	 * Changes the background color to bright yellow
+	 */
+	pub fn bg_light_yellow(&mut self) -> &Self {
+		self.bgcolor = BasicBackground::LightYellow;
+		self
+	}
+
+	/**
+	 * Changes the background color to bright red
+	 */
+	pub fn bg_light_blue(&mut self) -> &Self {
+		self.bgcolor = BasicBackground::LightBlue;
+		self
+	}
+
+	/**
+	 * Changes the background color to bright magenta
+	 */
+	pub fn bg_light_magenta(&mut self) -> &Self {
+		self.bgcolor = BasicBackground::LightMagenta;
+		self
+	}
+
+	/**
+	 * Changes the background color to bright cyan
+	 */
+	pub fn bg_light_cyan(&mut self) -> &Self {
+		self.bgcolor = BasicBackground::LightCyan;
+		self
+	}
+
+	/**
+	 * Changes the background color to light gray
+	 */
+	pub fn bg_light_gray(&mut self) -> &Self {
+		self.bgcolor = BasicBackground::LightGray;
 		self
 	}
 }

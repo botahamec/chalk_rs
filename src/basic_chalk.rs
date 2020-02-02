@@ -60,21 +60,27 @@ macro_rules! enum_impls {
 	};
 }
 
-/** A style to be applied to the text */
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum BasicStyle {
-    Default         = 0,
-    Bold            = 1,
-	Dim             = 2,
-	Italic          = 3,
-    Underline       = 4,
-    Blink           = 5,
-    Invert          = 7,
-	Hidden          = 8,
-	DoubleUnderline = 21
+	Default,
+	Hidden,
+	Styled(BasicStyleMap)
 }
 
-enum_impls!(BasicStyle);
+pub enum BasicUnderline {
+	None   = 0,
+	Normal = 1,
+	Double = 2,
+	Curly  = 3
+}
+
+pub struct BasicStyleMap {
+	pub bold:      bool,
+	pub dim:       bool,
+	pub italic:    bool,
+	pub blink:     bool,
+	pub invert:    bool,
+	pub underline: BasicUnderline
+}
 
 /** Foreground color using basic color */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]

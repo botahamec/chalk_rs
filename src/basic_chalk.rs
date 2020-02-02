@@ -77,6 +77,7 @@ pub enum BasicStyle {
 enum_impls!(BasicStyle);
 
 /** The styling for the underline */
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Underline {
 	Default    = 0,
 	Underlined = 1,
@@ -84,7 +85,10 @@ pub enum Underline {
 	Curly      = 3
 }
 
+enum_impls!(Underline);
+
 /** The styling for text */
+#[derive(Clone, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct BasicStyleMap {
 	pub bold     : bool,
 	pub dim      : bool,
@@ -95,11 +99,14 @@ pub struct BasicStyleMap {
 }
 
 /** describes how to style text */
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum BasicStyleType {
 	Default,
 	Hidden,
 	Styled(BasicStyleMap)
 }
+
+enum_default!(BasicStyleType); // This is going to need its own display function
 
 /** Foreground color using basic color */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]

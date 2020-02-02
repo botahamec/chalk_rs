@@ -63,13 +63,15 @@ macro_rules! enum_impls {
 /** A style to be applied to the text */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum BasicStyle {
-    Default   = 0,
-    Bold      = 1,
-	Dim       = 2,
-    Underline = 4,
-    Blink     = 5,
-    Invert    = 7,
-    Hidden    = 8
+    Default         = 0,
+    Bold            = 1,
+	Dim             = 2,
+	Italic          = 3,
+    Underline       = 4,
+    Blink           = 5,
+    Invert          = 7,
+	Hidden          = 8,
+	DoubleUnderline = 21
 }
 
 enum_impls!(BasicStyle);
@@ -250,9 +252,11 @@ impl BasicChalk {
 	// styling
 	add_style!(bold, Bold);
 	add_style!(dim, Dim);
+	add_style!(italic, Italic);
 	add_style!(underline, Underline);
 	add_style!(inverse, Invert);
 	add_style!(blink, Blink);
+	add_style!(double_underline, DoubleUnderline);
 
 	// foreground colors
 	color_fn!(reset_color, Default);
@@ -302,5 +306,4 @@ impl BasicChalk {
 	fn_alias!(bg_dark_gray, bg_gray);
 	fn_alias!(bg_dark_grey, bg_gray);
 	fn_alias!(bg_light_black, bg_gray);
-
 }

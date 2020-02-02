@@ -7,6 +7,10 @@ use std::fmt::Display;
 use std::fmt::LowerHex;
 use std::fmt::UpperHex;
 
+use std::ops::Add;
+use std::ops::AddAssign;
+use std::ops::Deref;
+
 /**
  * Implements Default for an enum.
  * Requires the enum to have a variant named "Default"
@@ -141,6 +145,47 @@ impl Display for BasicChalk {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "\x1b[{};{};{}m", self.fgcolor, self.bgcolor, self.clone().style())
     }
+}
+
+impl Deref for BasicChalk {
+	type Target = BasicChalk;
+
+	fn deref(&self) -> &Self::Target {
+		self
+	}
+}
+
+impl DerefMut for BasicChalk {
+	type Target = BasicChalk;
+
+	fn deref_mut(&self) -> &mut Self::Target {
+		self
+	}
+}
+
+impl Add for BasicChalk {
+	type Output = BasicChalk;
+
+	fn add(self, other: Self) -> Self {
+
+		let mut chalk = BasicChalk::new();
+
+		if self.fgcolor == BasicColor::Default {chalk.fgcolor = other.fgcolor;}
+		if self.bgcolor == BasicBackground::Default {chalk.bgcolor = other.bgcolor;}
+		let mut styles = self.styles.clone();
+		styles.append(&mut other.styles);
+		chalk.styles = styles;
+
+		chalk
+	}
+}
+
+impl AddAssign for BasicChalk {
+	fn add_assign(&mut self, other: Self) {
+		if self.fgcolor == BasicColor::Default {self.fgcolor = other.fgcolor;}
+		if self.bgcolor == BasicBackground::Default {self.bgcolor = other.bgcolor;}
+		self.styles.append(&mut other.styles)
+	}
 }
 
 impl Chalk for BasicChalk {}

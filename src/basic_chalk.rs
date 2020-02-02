@@ -143,6 +143,48 @@ impl Display for BasicChalk {
     }
 }
 
+impl Chalk for BasicChalk {}
+
+/**
+ * Automatically generates a method to change the color
+ */
+macro_rules! color_fn {
+	($snake: ident, $pascal: ident) => {
+		/**
+		 * Changes the color
+		 */
+		pub fn $snake(&mut self) -> &Self {
+			self.fgcolor = BasicColor::$pascal;
+			self
+		}
+	};
+}
+
+/**
+ * Automatically generates a method to change the background color
+ */
+macro_rules! bg_color_fn {
+	($snake: ident, $pascal: ident) => {
+		/**
+		 * Changes the background color
+		 */
+		pub fn $snake(&mut self) -> &Self {
+			self.bgcolor = BasicBackground::$pascal;
+			self
+		}
+	};
+}
+
+/**
+ * Sets up an alias for a function
+ */
+macro_rules! fn_alias {
+	($alias: ident, $fn: ident) => {
+		/** an alias for gray */
+		pub fn $alias(&mut self) -> &Self {self.$fn()}
+	};
+}
+
 impl BasicChalk {
 
 	/**
@@ -219,293 +261,53 @@ impl BasicChalk {
 		self
 	}
 
-	/**
-	 * Resets the color to the default
-	 */
-	pub fn reset_color(&mut self) -> &Self {
-		self.fgcolor = BasicColor::Default;
-		self
-	}
+	// foreground colors
+	color_fn!(reset_color, Default);
+	color_fn!(black, Black);
+	color_fn!(red, Red);
+	color_fn!(green, Green);
+	color_fn!(yellow, Yellow);
+	color_fn!(blue, Blue);
+	color_fn!(magenta, Magenta);
+	color_fn!(cyan, Cyan);
+	color_fn!(white, White);
+	color_fn!(gray, DarkGray);
+	color_fn!(light_red, Red);
+	color_fn!(light_green, Green);
+	color_fn!(light_yellow, LightYellow);
+	color_fn!(light_blue, LightBlue);
+	color_fn!(light_magenta, LightMagenta);
+	color_fn!(light_cyan, LightCyan);
+	color_fn!(light_gray, LightGray);
 
-	/**
-	 * Changes the color to black
-	 */
-	pub fn black(&mut self) -> &Self {
-		self.fgcolor = BasicColor::Black;
-		self
-	}
+	// aliases for gray()
+	fn_alias!(grey, gray);
+	fn_alias!(dark_gray, gray);
+	fn_alias!(dark_grey, grey);
+	fn_alias!(light_black, gray);
 
-	/**
-	 * Changes the color to red
-	 */
-	pub fn red(&mut self) -> &Self {
-		self.fgcolor = BasicColor::Red;
-		self
-	}
+	// background colors
+	bg_color_fn!(reset_bg, Default);
+	bg_color_fn!(bg_black, Black);
+	bg_color_fn!(bg_red, Red);
+	bg_color_fn!(bg_green, Green);
+	bg_color_fn!(bg_yellow, Yellow);
+	bg_color_fn!(bg_blue, Blue);
+	bg_color_fn!(bg_magenta, Magenta);
+	bg_color_fn!(bg_cyan, Cyan);
+	bg_color_fn!(bg_white, White);
+	bg_color_fn!(bg_gray, DarkGray);
+	bg_color_fn!(bg_light_red, LightRed);
+	bg_color_fn!(bg_light_green, LightGreen);
+	bg_color_fn!(bg_light_yellow, LightYellow);
+	bg_color_fn!(bg_light_blue, LightBlue);
+	bg_color_fn!(bg_light_magenta, LightMagenta);
+	bg_color_fn!(bg_light_cyan, LightCyan);
+	bg_color_fn!(bg_light_gray, LightGray);
 
-	/**
-	 * Changes the color to green
-	 */
-	pub fn green(&mut self) -> &Self {
-		self.fgcolor = BasicColor::Green;
-		self
-	}
+	fn_alias!(bg_grey, bg_gray);
+	fn_alias!(bg_dark_gray, bg_gray);
+	fn_alias!(bg_dark_grey, bg_gray);
+	fn_alias!(bg_light_black, bg_gray);
 
-	/**
-	 * Changes the color to yellow
-	 */
-	pub fn yellow(&mut self) -> &Self {
-		self.fgcolor = BasicColor::Yellow;
-		self
-	}
-
-	/**
-	 * Changes the color to red
-	 */
-	pub fn blue(&mut self) -> &Self {
-		self.fgcolor = BasicColor::Blue;
-		self
-	}
-
-	/**
-	 * Changes the color to magenta
-	 */
-	pub fn magenta(&mut self) -> &Self {
-		self.fgcolor = BasicColor::Magenta;
-		self
-	}
-
-	/**
-	 * Changes the color to cyan
-	 */
-	pub fn cyan(&mut self) -> &Self {
-		self.fgcolor = BasicColor::Cyan;
-		self
-	}
-
-	/**
-	 * Changes the color to red
-	 */
-	pub fn white(&mut self) -> &Self {
-		self.fgcolor = BasicColor::White;
-		self
-	}
-
-	/**
-	 * Changes the color to dark gray
-	 */
-	pub fn gray(&mut self) -> &Self {
-		self.fgcolor = BasicColor::DarkGray;
-		self
-	}
-
-	/** alias for gray */
-	pub fn grey(&mut self) -> &Self {self.gray()}
-
-	/** alias for gray */
-	pub fn dark_gray(&mut self) -> &Self {self.gray()}
-
-	/** alias for gray */
-	pub fn dark_grey(&mut self) -> &Self {self.gray()}
-
-	/** alias for gray */
-	pub fn light_black(&mut self) -> &Self {self.gray()}
-
-	/**
-	 * Changes the color to bright red
-	 */
-	pub fn light_red(&mut self) -> &Self {
-		self.fgcolor = BasicColor::LightRed;
-		self
-	}
-
-	/**
-	 * Changes the color to bright red
-	 */
-	pub fn light_green(&mut self) -> &Self {
-		self.fgcolor = BasicColor::LightGreen;
-		self
-	}
-
-	/**
-	 * Changes the color to bright yellow
-	 */
-	pub fn light_yellow(&mut self) -> &Self {
-		self.fgcolor = BasicColor::LightYellow;
-		self
-	}
-
-	/**
-	 * Changes the color to bright red
-	 */
-	pub fn light_blue(&mut self) -> &Self {
-		self.fgcolor = BasicColor::LightBlue;
-		self
-	}
-
-	/**
-	 * Changes the color to bright magenta
-	 */
-	pub fn light_magenta(&mut self) -> &Self {
-		self.fgcolor = BasicColor::LightMagenta;
-		self
-	}
-
-	/**
-	 * Changes the color to bright cyan
-	 */
-	pub fn light_cyan(&mut self) -> &Self {
-		self.fgcolor = BasicColor::LightCyan;
-		self
-	}
-
-	/**
-	 * Changes the color to light gray
-	 */
-	pub fn light_gray(&mut self) -> &Self {
-		self.fgcolor = BasicColor::LightGray;
-		self
-	}
-
-	/**
-	 * Changes the background color to black
-	 */
-	pub fn bg_black(&mut self) -> &Self {
-		self.bgcolor = BasicBackground::Black;
-		self
-	}
-
-	/**
-	 * Changes the background color to red
-	 */
-	pub fn bg_red(&mut self) -> &Self {
-		self.bgcolor = BasicBackground::Red;
-		self
-	}
-
-	/**
-	 * Changes the background color to green
-	 */
-	pub fn bg_green(&mut self) -> &Self {
-		self.bgcolor = BasicBackground::Green;
-		self
-	}
-
-	/**
-	 * Changes the background color to yellow
-	 */
-	pub fn bg_yellow(&mut self) -> &Self {
-		self.bgcolor = BasicBackground::Yellow;
-		self
-	}
-
-	/**
-	 * Changes the background color to red
-	 */
-	pub fn bg_blue(&mut self) -> &Self {
-		self.bgcolor = BasicBackground::Blue;
-		self
-	}
-
-	/**
-	 * Changes the background color to magenta
-	 */
-	pub fn bg_magenta(&mut self) -> &Self {
-		self.bgcolor = BasicBackground::Magenta;
-		self
-	}
-
-	/**
-	 * Changes the background color to cyan
-	 */
-	pub fn bg_cyan(&mut self) -> &Self {
-		self.bgcolor = BasicBackground::Cyan;
-		self
-	}
-
-	/**
-	 * Changes the background color to red
-	 */
-	pub fn bg_white(&mut self) -> &Self {
-		self.bgcolor = BasicBackground::White;
-		self
-	}
-
-	/**
-	 * Changes the background color to dark gray
-	 */
-	pub fn bg_gray(&mut self) -> &Self {
-		self.bgcolor = BasicBackground::DarkGray;
-		self
-	}
-
-	/** alias for gray */
-	pub fn bg_grey(&mut self) -> &Self {self.bg_gray()}
-
-	/** alias for gray */
-	pub fn bg_dark_gray(&mut self) -> &Self {self.bg_gray()}
-
-	/** alias for gray */
-	pub fn bg_dark_grey(&mut self) -> &Self {self.bg_gray()}
-
-	/** alias for gray */
-	pub fn bg_light_black(&mut self) -> &Self {self.bg_gray()}
-
-	/**
-	 * Changes the background color to bright red
-	 */
-	pub fn bg_light_red(&mut self) -> &Self {
-		self.bgcolor = BasicBackground::LightRed;
-		self
-	}
-
-	/**
-	 * Changes the background color to bright red
-	 */
-	pub fn bg_light_green(&mut self) -> &Self {
-		self.bgcolor = BasicBackground::LightGreen;
-		self
-	}
-
-	/**
-	 * Changes the background color to bright yellow
-	 */
-	pub fn bg_light_yellow(&mut self) -> &Self {
-		self.bgcolor = BasicBackground::LightYellow;
-		self
-	}
-
-	/**
-	 * Changes the background color to bright red
-	 */
-	pub fn bg_light_blue(&mut self) -> &Self {
-		self.bgcolor = BasicBackground::LightBlue;
-		self
-	}
-
-	/**
-	 * Changes the background color to bright magenta
-	 */
-	pub fn bg_light_magenta(&mut self) -> &Self {
-		self.bgcolor = BasicBackground::LightMagenta;
-		self
-	}
-
-	/**
-	 * Changes the background color to bright cyan
-	 */
-	pub fn bg_light_cyan(&mut self) -> &Self {
-		self.bgcolor = BasicBackground::LightCyan;
-		self
-	}
-
-	/**
-	 * Changes the background color to light gray
-	 */
-	pub fn bg_light_gray(&mut self) -> &Self {
-		self.bgcolor = BasicBackground::LightGray;
-		self
-	}
 }
-
-impl Chalk for BasicChalk {}

@@ -9,7 +9,6 @@ use std::fmt::UpperHex;
 
 use std::ops::Add;
 use std::ops::AddAssign;
-use std::ops::Deref;
 
 /**
  * Implements Default for an enum.
@@ -146,7 +145,7 @@ impl Display for BasicChalk {
         write!(f, "\x1b[{};{};{}m", self.fgcolor, self.bgcolor, self.clone().style())
     }
 }
-
+/*
 impl Deref for BasicChalk {
 	type Target = BasicChalk;
 
@@ -156,12 +155,10 @@ impl Deref for BasicChalk {
 }
 
 impl DerefMut for BasicChalk {
-	type Target = BasicChalk;
-
-	fn deref_mut(&self) -> &mut Self::Target {
-		self
+	fn deref_mut(&mut self) -> &mut Self::Target {
+		&mut self
 	}
-}
+}*/
 
 impl Add for BasicChalk {
 	type Output = BasicChalk;
@@ -173,7 +170,9 @@ impl Add for BasicChalk {
 		if self.fgcolor == BasicColor::Default {chalk.fgcolor = other.fgcolor;}
 		if self.bgcolor == BasicBackground::Default {chalk.bgcolor = other.bgcolor;}
 		let mut styles = self.styles.clone();
-		styles.append(&mut other.styles);
+		for style in other.styles {
+			styles.push(style);
+		}
 		chalk.styles = styles;
 
 		chalk
@@ -184,11 +183,28 @@ impl AddAssign for BasicChalk {
 	fn add_assign(&mut self, other: Self) {
 		if self.fgcolor == BasicColor::Default {self.fgcolor = other.fgcolor;}
 		if self.bgcolor == BasicBackground::Default {self.bgcolor = other.bgcolor;}
-		self.styles.append(&mut other.styles)
+		for style in other.styles {
+			self.styles.push(style);
+		}
 	}
 }
 
 impl Chalk for BasicChalk {}
+
+/**
+ * Adds a style to the Chalk
+ */
+macro_rules! add_style {
+	($fn_name: ident, $attribute: ident) => {
+		/**
+		 * Changes the style
+		 */
+		pub fn $fn_name(&mut self) -> &Self {
+			self.styles.push(BasicStyle::$attribute);
+			self
+		}
+	};
+}
 
 /**
  * Automatically generates a method to change the color
@@ -258,13 +274,7 @@ impl BasicChalk {
 		self
 	}
 
-	/**
-	 * Makes the text bold
-	 */
-	pub fn bold(&mut self) -> &Self {
-		self.styles.push(BasicStyle::Bold);
-		self
-	}
+	add_style!(bold, Bold);
 
 	/**
 	 * Makes the text dim

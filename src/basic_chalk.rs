@@ -48,9 +48,7 @@ macro_rules! enum_display {
 	}
 }
 
-/**
- * Implements several traits for a macro
- */
+/** Implements several traits for a macro */
 macro_rules! enum_impls {
 	($name: ident) => {
 		enum_default!($name);
@@ -62,9 +60,7 @@ macro_rules! enum_impls {
 	};
 }
 
-/**
- * A style to be applied to the text
- */
+/** A style to be applied to the text */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum BasicStyle {
     Default   = 0,
@@ -78,9 +74,7 @@ pub enum BasicStyle {
 
 enum_impls!(BasicStyle);
 
-/**
- * Foreground color using basic color
- */
+/** Foreground color using basic color */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum BasicColor {
     Black        = 30,
@@ -104,9 +98,7 @@ pub enum BasicColor {
 
 enum_impls!(BasicColor);
 
-/**
- * The background of a teerminal using basic color
- */
+/** The background of a teerminal using basic color */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum BasicBackground {
     Black        = 40,
@@ -130,9 +122,7 @@ pub enum BasicBackground {
 
 enum_impls!(BasicBackground);
 
-/**
- * A chalk with only 16 colors
- */
+/** A chalk with only 16 colors */
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct BasicChalk {
 	pub fgcolor: BasicColor,
@@ -145,20 +135,6 @@ impl Display for BasicChalk {
         write!(f, "\x1b[{};{};{}m", self.fgcolor, self.bgcolor, self.clone().style())
     }
 }
-/*
-impl Deref for BasicChalk {
-	type Target = BasicChalk;
-
-	fn deref(&self) -> &Self::Target {
-		self
-	}
-}
-
-impl DerefMut for BasicChalk {
-	fn deref_mut(&mut self) -> &mut Self::Target {
-		&mut self
-	}
-}*/
 
 impl Add for BasicChalk {
 	type Output = BasicChalk;
@@ -191,9 +167,18 @@ impl AddAssign for BasicChalk {
 
 impl Chalk for BasicChalk {}
 
-/**
- * Adds a style to the Chalk
- */
+/** Sets the style to a specific vector */
+macro_rules! set_style {
+	($fn_name: ident, $vec: expr) => {
+		/** sets the style */
+		pub fn $fn_name(&mut self) -> &Self {
+			self.styles = $vec;
+			self
+		}
+	};
+}
+
+/** Adds a style to the Chalk */
 macro_rules! add_style {
 	($fn_name: ident, $attribute: ident) => {
 		/**
@@ -206,9 +191,7 @@ macro_rules! add_style {
 	};
 }
 
-/**
- * Automatically generates a method to change the color
- */
+/** Automatically generates a method to change the color */
 macro_rules! color_fn {
 	($snake: ident, $pascal: ident) => {
 		/**
@@ -221,14 +204,10 @@ macro_rules! color_fn {
 	};
 }
 
-/**
- * Automatically generates a method to change the background color
- */
+/** Automatically generates a method to change the background color */
 macro_rules! bg_color_fn {
 	($snake: ident, $pascal: ident) => {
-		/**
-		 * Changes the background color
-		 */
+		/** Changes the background color */
 		pub fn $snake(&mut self) -> &Self {
 			self.bgcolor = BasicBackground::$pascal;
 			self
@@ -236,9 +215,7 @@ macro_rules! bg_color_fn {
 	};
 }
 
-/**
- * Sets up an alias for a function
- */
+/** Sets up an alias for a function */
 macro_rules! fn_alias {
 	($alias: ident, $fn: ident) => {
 		/** an alias for gray */
@@ -266,55 +243,16 @@ impl BasicChalk {
 		style_command
 	}
 
-	/**
-	 * Resets the styling to the default
-	 */
-	pub fn reset_style(&mut self) -> &Self {
-		self.styles = vec![BasicStyle::Default];
-		self
-	}
+	// default and hidden styles
+	set_style!(reset_style, vec![BasicStyle::Default]);
+	set_style!(hidden, vec![BasicStyle::Hidden]);
 
+	// styling
 	add_style!(bold, Bold);
-
-	/**
-	 * Makes the text dim
-	 */
-	pub fn dim(&mut self) -> &Self {
-		self.styles.push(BasicStyle::Dim);
-		self
-	}
-
-	/**
-	 * Underlines the text
-	 */
-	pub fn underline(&mut self) -> &Self {
-		self.styles.push(BasicStyle::Underline);
-		self
-	}
-
-	/**
-	 * Invert the foreground and background colors
-	 */
-	pub fn inverse(&mut self) -> &Self {
-		self.styles.push(BasicStyle::Invert);
-		self
-	}
-
-	/**
-	 * Makes the text invisible, but copy-pastable
-	 */
-	pub fn hidden(&mut self) -> &Self {
-		self.styles = vec![BasicStyle::Hidden];
-		self
-	}
-
-	/**
-	 * Makes blinking text
-	 */
-	pub fn blink(&mut self) -> &Self {
-		self.styles.push(BasicStyle::Blink);
-		self
-	}
+	add_style!(dim, Dim);
+	add_style!(underline, Underline);
+	add_style!(inverse, Invert);
+	add_style!(blink, Blink);
 
 	// foreground colors
 	color_fn!(reset_color, Default);

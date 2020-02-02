@@ -108,6 +108,27 @@ pub enum BasicStyleType {
 
 enum_default!(BasicStyleType); // This is going to need its own display function
 
+impl Display for BasicStyleType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			BasicStyleType::Default => write!(f, ""),
+			BasicStyleType::Hidden  => write!(f, "8;"),
+			BasicStyleType::Styled(s) => {
+				let mut style_string = String::new();
+				if s.bold      {style_string.push_str("1;");}
+				if s.dim       {style_string.push_str("2;");}
+				if s.italic    {style_string.push_str("3;");}
+				if s.blink     {style_string.push_str("5;");}
+				if s.invert    {style_string.push_str("7;");}
+				if s.underline != Underline::Default {
+					style_string.push_str(format!("4:{};", s.underline.clone() as u8).as_str());
+				}
+				write!(f, "{}", style_string)
+			}
+		}
+	}
+}
+
 /** Foreground color using basic color */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum BasicColor {

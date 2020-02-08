@@ -60,3 +60,12 @@ macro_rules! chalk_trait_fns {
 		$(fn $name(&mut self) -> &Self;)*
 	};
 }
+
+/** Sets up an alias for a function */
+#[macro_export]
+macro_rules! fn_alias {
+	($alias: ident, $fn: ident) => {
+		/** an alias for gray */
+		fn $alias(&mut self) -> &Self {self.$fn()}
+	};
+}

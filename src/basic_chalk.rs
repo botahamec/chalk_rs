@@ -8,6 +8,7 @@ use crate::{
 	chalk_trait_fns,
 	set_style,
 	add_style,
+	fn_alias,
 	style::{
 		Style,
 		ChalkStyle
@@ -174,14 +175,6 @@ macro_rules! bg_color_fn {
 	};
 }
 
-/** Sets up an alias for a function */
-macro_rules! fn_alias {
-	($alias: ident, $fn: ident) => {
-		/** an alias for gray */
-		fn $alias(&mut self) -> &Self {self.$fn()}
-	};
-}
-
 macro_rules! gray_aliases {
 	($($alias: ident),*) => {
 		$(fn_alias!($alias, gray);)*
@@ -195,14 +188,16 @@ macro_rules! bg_gray_aliases {
 }
 
 pub trait ChalkBasicColor {
+
 	chalk_trait_fns!(reset_color, black, red, green, yellow, blue, magenta,
 					cyan, white, gray, light_red, light_green, light_yellow,
-					light_blue, light_magenta, light_cyan, light_gray);
-	gray_aliases!(grey, dark_gray, dark_grey, light_black);
-	chalk_trait_fns!(reset_bg, bg_black, bg_red, bg_green, bg_yellow, bg_blue,
+					light_blue, light_magenta, light_cyan, light_gray,
+					reset_bg, bg_black, bg_red, bg_green, bg_yellow, bg_blue,
 					bg_magenta, bg_cyan, bg_white, bg_gray, bg_light_red,
 					bg_light_green, bg_light_yellow, bg_light_blue,
 					bg_light_magenta, bg_light_cyan, bg_light_gray);
+
+	gray_aliases!(grey, dark_gray, dark_grey, light_black);
 	bg_gray_aliases!(bg_grey, bg_dark_gray, bg_dark_grey, bg_light_black);
 }
 

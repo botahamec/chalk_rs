@@ -177,13 +177,19 @@ macro_rules! bg_color_fn {
 
 macro_rules! gray_aliases {
 	($($alias: ident),*) => {
-		$(fn_alias!($alias, gray);)*
+		$(
+			/** an alias for the color gray */
+			fn_alias!($alias, gray);
+		)*
 	};
 }
 
 macro_rules! bg_gray_aliases {
 	($($alias: ident),*) => {
-		$(fn_alias!($alias, bg_gray);)*
+		$(
+			/** an alias for the color gray */
+			fn_alias!($alias, bg_gray);
+		)*
 	};
 }
 

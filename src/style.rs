@@ -2,8 +2,10 @@ use crate::{
 	enum_default,
 	enum_display,
 	enum_fmt_impl,
-	enum_impls
+	enum_impls,
+	chalk_trait_fns
 };
+
 use std::fmt::Binary;
 use std::fmt::Octal;
 use std::fmt::Display;
@@ -26,3 +28,34 @@ pub enum Style {
 }
 
 enum_impls!(Style);
+
+/** Sets the style to a specific vector */
+#[macro_export]
+macro_rules! set_style {
+	($fn_name: ident, $vec: expr) => {
+		/** sets the style */
+		fn $fn_name(&mut self) -> &Self {
+			self.styles = $vec;
+			self
+		}
+	};
+}
+
+/** Adds a style to the Chalk */
+#[macro_export]
+macro_rules! add_style {
+	($fn_name: ident, $attribute: ident) => {
+		/**
+		 * Changes the style
+		 */
+		fn $fn_name(&mut self) -> &Self {
+			self.styles.push(Style::$attribute);
+			self
+		}
+	};
+}
+
+pub trait ChalkStyle {
+	chalk_trait_fns!(reset_style, hidden, bold, dim, italic, underline,
+					inverse, blink, double_underline);
+}

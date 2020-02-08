@@ -52,3 +52,11 @@ macro_rules! enum_impls {
 		enum_fmt_impl!($name, UpperHex);
 	};
 }
+
+/** adds a set of functions to the trait */
+#[macro_export]
+macro_rules! chalk_trait_fns {
+	($($name: ident),*) => {
+		$(fn $name(&mut self) -> &Self;)*
+	};
+}

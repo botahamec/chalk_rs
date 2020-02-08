@@ -4,7 +4,8 @@ use crate::{
 	enum_default,
 	enum_display,
 	enum_fmt_impl,
-	enum_impls
+	enum_impls,
+	style::Style
 };
 
 use std::fmt::Binary;
@@ -15,22 +16,6 @@ use std::fmt::UpperHex;
 
 use std::ops::Add;
 use std::ops::AddAssign;
-
-/** A style to be applied to the text */
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub enum BasicStyle {
-    Default         = 0,
-    Bold            = 1,
-	Dim             = 2,
-	Italic          = 3,
-    Underline       = 4,
-    Blink           = 5,
-    Invert          = 7,
-	Hidden          = 8,
-	DoubleUnderline = 21
-}
-
-enum_impls!(BasicStyle);
 
 /** Foreground color using basic color */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -85,7 +70,7 @@ enum_impls!(BasicBackground);
 pub struct BasicChalk {
 	pub fgcolor: BasicColor,
 	pub bgcolor: BasicBackground,
-	pub styles: Vec<BasicStyle>
+	pub styles: Vec<Style>
 }
 
 impl Display for BasicChalk {
@@ -143,7 +128,7 @@ macro_rules! add_style {
 		 * Changes the style
 		 */
 		pub fn $fn_name(&mut self) -> &Self {
-			self.styles.push(BasicStyle::$attribute);
+			self.styles.push(Style::$attribute);
 			self
 		}
 	};
@@ -200,8 +185,8 @@ impl BasicChalk {
 	}
 
 	// default and hidden styles
-	set_style!(reset_style, vec![BasicStyle::Default]);
-	set_style!(hidden, vec![BasicStyle::Hidden]);
+	set_style!(reset_style, vec![Style::Default]);
+	set_style!(hidden, vec![Style::Hidden]);
 
 	// styling
 	add_style!(bold, Bold);

@@ -1,5 +1,6 @@
 
 pub mod basic_chalk;
+pub mod ansi_chalk;
 pub mod style;
 
 mod utils;

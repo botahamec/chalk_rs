@@ -1,6 +1,8 @@
 
 pub mod basic_chalk;
 
+mod utils;
+
 use std::string::ToString;
 
 /**

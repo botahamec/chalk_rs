@@ -1,5 +1,11 @@
 
-use crate::Chalk;
+use crate::{
+	Chalk,
+	enum_default,
+	enum_display,
+	enum_fmt_impl,
+	enum_impls
+};
 
 use std::fmt::Binary;
 use std::fmt::Octal;
@@ -9,56 +15,6 @@ use std::fmt::UpperHex;
 
 use std::ops::Add;
 use std::ops::AddAssign;
-
-/**
- * Implements Default for an enum.
- * Requires the enum to have a variant named "Default"
- */
-macro_rules! enum_default {
-	($name: ident) => {
-		impl Default for $name {fn default() -> Self {$name::Default}}
-	}
-}
-
-/**
- * Implements a fmt trait for an enum.
- * The output is the enum as a number
- */
-macro_rules! enum_fmt_impl {
-	($name: ident, $trait: ident) => {
-		impl $trait for $name {
-			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		        $trait::fmt(&(self.clone() as u8), f)
-		    }
-		}
-	}
-}
-
-/**
- * Implements the Display trait for an enum.
- * The output is the enum as a number
- */
-macro_rules! enum_display {
-	($name: ident) => {
-		impl Display for $name {
-			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		        write!(f, "{}", self.clone() as u8)
-		    }
-		}
-	}
-}
-
-/** Implements several traits for a macro */
-macro_rules! enum_impls {
-	($name: ident) => {
-		enum_default!($name);
-		enum_display!($name);
-		enum_fmt_impl!($name, Binary);
-		enum_fmt_impl!($name, Octal);
-		enum_fmt_impl!($name, LowerHex);
-		enum_fmt_impl!($name, UpperHex);
-	};
-}
 
 /** A style to be applied to the text */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -196,9 +152,7 @@ macro_rules! add_style {
 /** Automatically generates a method to change the color */
 macro_rules! color_fn {
 	($snake: ident, $pascal: ident) => {
-		/**
-		 * Changes the color
-		 */
+		/** Changes the color */
 		pub fn $snake(&mut self) -> &Self {
 			self.fgcolor = BasicColor::$pascal;
 			self

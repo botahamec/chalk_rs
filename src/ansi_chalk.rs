@@ -1,14 +1,12 @@
 use crate::{
-	add_style, chalk_trait_fns, enum_default, enum_display, enum_fmt_impl,
-	enum_impls, fn_alias, set_style,
+	add_style,
+	basic_chalk::ChalkBasicColor,
+	bg_gray_aliases, fn_alias, gray_aliases, set_style,
 	style::{ChalkStyle, Style},
 	Chalk,
 };
 
 use std::fmt::Display;
-
-use std::ops::Add;
-use std::ops::AddAssign;
 
 /** A chalk with 255 colors */
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -69,8 +67,68 @@ impl ChalkStyle for AnsiChalk {
 
 impl Chalk for AnsiChalk {}
 
-trait ChalkAnsiColor {
+macro_rules! basic_fg {
+	($name: ident, $num: expr) => {
+		fn $name(&mut self) -> &Self {
+			self.color = $num;
+			self
+		}
+	};
+}
 
+macro_rules! basic_bg {
+	($name: ident, $num: expr) => {
+		fn $name(&mut self) -> &Self {
+			self.color = $num;
+			self
+		}
+	};
+}
+
+impl ChalkBasicColor for AnsiChalk {
+	// foreground colors
+	basic_fg!(reset_color, 15);
+	basic_fg!(black, 0);
+	basic_fg!(red, 1);
+	basic_fg!(green, 3);
+	basic_fg!(yellow, 3);
+	basic_fg!(blue, 4);
+	basic_fg!(magenta, 5);
+	basic_fg!(cyan, 6);
+	basic_fg!(light_gray, 7);
+	basic_fg!(gray, 8);
+	basic_fg!(light_red, 9);
+	basic_fg!(light_green, 10);
+	basic_fg!(light_yellow, 11);
+	basic_fg!(light_blue, 12);
+	basic_fg!(light_magenta, 13);
+	basic_fg!(light_cyan, 14);
+	basic_fg!(white, 15);
+
+	// background colors
+	basic_bg!(reset_bg, 0);
+	basic_bg!(bg_black, 0);
+	basic_bg!(bg_red, 1);
+	basic_bg!(bg_green, 3);
+	basic_bg!(bg_yellow, 3);
+	basic_bg!(bg_blue, 4);
+	basic_bg!(bg_magenta, 5);
+	basic_bg!(bg_cyan, 6);
+	basic_bg!(bg_light_gray, 7);
+	basic_bg!(bg_gray, 8);
+	basic_bg!(bg_light_red, 9);
+	basic_bg!(bg_light_green, 10);
+	basic_bg!(bg_light_yellow, 11);
+	basic_bg!(bg_light_blue, 12);
+	basic_bg!(bg_light_magenta, 13);
+	basic_bg!(bg_light_cyan, 14);
+	basic_bg!(bg_white, 15);
+
+	gray_aliases!(grey, dark_gray, dark_grey, light_black);
+	bg_gray_aliases!(bg_grey, bg_dark_gray, bg_dark_grey, bg_light_black);
+}
+
+trait ChalkAnsiColor {
 	fn ansi(&mut self, color: u8) -> &Self;
 	fn bg_ansi(&mut self, color: u8) -> &Self;
 }

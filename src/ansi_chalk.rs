@@ -67,6 +67,8 @@ impl ChalkStyle for AnsiChalk {
 	add_style!(double_underline, DoubleUnderline);
 }
 
+impl Chalk for AnsiChalk {}
+
 trait ChalkAnsiColor {
 
 	fn ansi(&mut self, color: u8) -> Self;

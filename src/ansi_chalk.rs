@@ -132,3 +132,22 @@ trait ChalkAnsiColor {
 	fn ansi(&mut self, color: u8) -> &Self;
 	fn bg_ansi(&mut self, color: u8) -> &Self;
 }
+
+impl ChalkAnsiColor for AnsiChalk {
+
+	/**
+	 * Sets the foreground color to the specified value
+	 */
+	fn ansi(&mut self, color: u8) -> &Self {
+		self.color = color;
+		self
+	}
+
+	/**
+	 * Sets the background color to the specified value
+	 */
+	fn bg_ansi(&mut self, color: u8) -> &Self {
+		self.background = color;
+		self
+	}
+}

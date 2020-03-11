@@ -15,3 +15,9 @@ struct AnsiChalk {
 	pub background: u8,
 	pub styles: Vec<Style>,
 }
+
+trait ChalkAnsiColor {
+
+	fn ansi(&mut self, color: u8) -> Self;
+	fn bg_ansi(&mut self, color: u8) -> Self;
+}

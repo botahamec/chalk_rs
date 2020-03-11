@@ -1,10 +1,9 @@
-
 use crate::Chalk;
 
 use std::fmt::Binary;
-use std::fmt::Octal;
 use std::fmt::Display;
 use std::fmt::LowerHex;
+use std::fmt::Octal;
 use std::fmt::UpperHex;
 
 use std::ops::Add;
@@ -16,8 +15,12 @@ use std::ops::AddAssign;
  */
 macro_rules! enum_default {
 	($name: ident) => {
-		impl Default for $name {fn default() -> Self {$name::Default}}
-	}
+		impl Default for $name {
+			fn default() -> Self {
+				$name::Default
+			}
+		}
+	};
 }
 
 /**
@@ -28,10 +31,10 @@ macro_rules! enum_fmt_impl {
 	($name: ident, $trait: ident) => {
 		impl $trait for $name {
 			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		        $trait::fmt(&(self.clone() as u8), f)
-		    }
+				$trait::fmt(&(self.clone() as u8), f)
+			}
 		}
-	}
+	};
 }
 
 /**
@@ -42,10 +45,10 @@ macro_rules! enum_display {
 	($name: ident) => {
 		impl Display for $name {
 			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		        write!(f, "{}", self.clone() as u8)
-		    }
+				write!(f, "{}", self.clone() as u8)
+			}
 		}
-	}
+	};
 }
 
 /** Implements several traits for a macro */
@@ -63,15 +66,15 @@ macro_rules! enum_impls {
 /** A style to be applied to the text */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum BasicStyle {
-    Default         = 0,
-    Bold            = 1,
-	Dim             = 2,
-	Italic          = 3,
-    Underline       = 4,
-    Blink           = 5,
-    Invert          = 7,
-	Hidden          = 8,
-	DoubleUnderline = 21
+	Default = 0,
+	Bold = 1,
+	Dim = 2,
+	Italic = 3,
+	Underline = 4,
+	Blink = 5,
+	Invert = 7,
+	Hidden = 8,
+	DoubleUnderline = 21,
 }
 
 enum_impls!(BasicStyle);
@@ -79,23 +82,23 @@ enum_impls!(BasicStyle);
 /** Foreground color using basic color */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum BasicColor {
-    Black        = 30,
-    Red          = 31,
-    Green        = 32,
-    Yellow       = 33,
-    Blue         = 34,
-    Magenta      = 35,
-    Cyan         = 36,
-    LightGray    = 37,
-    Default      = 39,
-    DarkGray     = 90,
-    LightRed     = 91,
-    LightGreen   = 92,
-    LightYellow  = 93,
-    LightBlue    = 94,
-    LightMagenta = 95,
-    LightCyan    = 96,
-    White        = 97
+	Black = 30,
+	Red = 31,
+	Green = 32,
+	Yellow = 33,
+	Blue = 34,
+	Magenta = 35,
+	Cyan = 36,
+	LightGray = 37,
+	Default = 39,
+	DarkGray = 90,
+	LightRed = 91,
+	LightGreen = 92,
+	LightYellow = 93,
+	LightBlue = 94,
+	LightMagenta = 95,
+	LightCyan = 96,
+	White = 97,
 }
 
 enum_impls!(BasicColor);
@@ -103,23 +106,23 @@ enum_impls!(BasicColor);
 /** The background of a teerminal using basic color */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum BasicBackground {
-    Black        = 40,
-    Red          = 41,
-    Green        = 42,
-    Yellow       = 43,
-    Blue         = 44,
-    Magenta      = 45,
-    Cyan         = 46,
-    LightGray    = 47,
-    Default      = 49,
-    DarkGray     = 100,
-    LightRed     = 101,
-    LightGreen   = 102,
-    LightYellow  = 103,
-    LightBlue    = 104,
-    LightMagenta = 105,
-    LightCyan    = 106,
-    White        = 107
+	Black = 40,
+	Red = 41,
+	Green = 42,
+	Yellow = 43,
+	Blue = 44,
+	Magenta = 45,
+	Cyan = 46,
+	LightGray = 47,
+	Default = 49,
+	DarkGray = 100,
+	LightRed = 101,
+	LightGreen = 102,
+	LightYellow = 103,
+	LightBlue = 104,
+	LightMagenta = 105,
+	LightCyan = 106,
+	White = 107,
 }
 
 enum_impls!(BasicBackground);
@@ -129,24 +132,33 @@ enum_impls!(BasicBackground);
 pub struct BasicChalk {
 	pub fgcolor: BasicColor,
 	pub bgcolor: BasicBackground,
-	pub styles: Vec<BasicStyle>
+	pub styles: Vec<BasicStyle>,
 }
 
 impl Display for BasicChalk {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "\x1b[{};{};{}m", self.fgcolor, self.bgcolor, self.clone().style())
-    }
+		write!(
+			f,
+			"\x1b[{};{};{}m",
+			self.fgcolor,
+			self.bgcolor,
+			self.clone().style()
+		)
+	}
 }
 
 impl Add for BasicChalk {
 	type Output = BasicChalk;
 
 	fn add(self, other: Self) -> Self {
-
 		let mut chalk = BasicChalk::new();
 
-		if self.fgcolor == BasicColor::Default {chalk.fgcolor = other.fgcolor;}
-		if self.bgcolor == BasicBackground::Default {chalk.bgcolor = other.bgcolor;}
+		if self.fgcolor == BasicColor::Default {
+			chalk.fgcolor = other.fgcolor;
+		}
+		if self.bgcolor == BasicBackground::Default {
+			chalk.bgcolor = other.bgcolor;
+		}
 		let mut styles = self.styles.clone();
 		for style in other.styles {
 			styles.push(style);
@@ -159,8 +171,12 @@ impl Add for BasicChalk {
 
 impl AddAssign for BasicChalk {
 	fn add_assign(&mut self, other: Self) {
-		if self.fgcolor == BasicColor::Default {self.fgcolor = other.fgcolor;}
-		if self.bgcolor == BasicBackground::Default {self.bgcolor = other.bgcolor;}
+		if self.fgcolor == BasicColor::Default {
+			self.fgcolor = other.fgcolor;
+		}
+		if self.bgcolor == BasicBackground::Default {
+			self.bgcolor = other.bgcolor;
+		}
 		for style in other.styles {
 			self.styles.push(style);
 		}
@@ -226,17 +242,18 @@ macro_rules! fn_alias {
 }
 
 impl BasicChalk {
-
 	/**
 	 * Returns a new BasicChalk.
 	 * This has all default styling.
 	 */
-	pub fn new() -> Self {Self::default()}
+	pub fn new() -> Self {
+		Self::default()
+	}
 
 	/**
-     * Creates a string which does all of the style,
-     * Helper function for the Chalk implementation
-     */
+	 * Creates a string which does all of the style,
+	 * Helper function for the Chalk implementation
+	 */
 	fn style(self) -> String {
 		let mut style_command = String::with_capacity(12);
 		for style in self.styles {

@@ -5,12 +5,14 @@ use crate::{
 	Chalk,
 };
 
+use std::fmt::Display;
+
 use std::ops::Add;
 use std::ops::AddAssign;
 
 /** A chalk with 255 colors */
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
-struct AnsiChalk {
+pub struct AnsiChalk {
 	pub color: u8,
 	pub background: u8,
 	pub styles: Vec<Style>,
@@ -35,6 +37,18 @@ impl AnsiChalk {
 			style_command = format!("{}{};", style_command, style);
 		}
 		style_command
+	}
+}
+
+impl Display for AnsiChalk {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(
+			f,
+			"\x1b[38;{};{};{}m",
+			self.color,
+			self.background,
+			self.clone().style()
+		)
 	}
 }
 

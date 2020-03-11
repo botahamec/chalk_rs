@@ -1,7 +1,7 @@
 use crate::{
 	add_style,
 	basic_chalk::ChalkBasicColor,
-	bg_gray_aliases, fn_alias, gray_aliases, set_style,
+	set_style,
 	style::{ChalkStyle, Style},
 	Chalk,
 };
@@ -17,13 +17,6 @@ pub struct AnsiChalk {
 }
 
 impl AnsiChalk {
-	/**
-	 * Returns a new AnsiChalk.
-	 * This has all default styling.
-	 */
-	pub fn new() -> Self {
-		Self::default()
-	}
 
 	/**
 	 * Creates a string which does all of the style,
@@ -46,7 +39,7 @@ impl Default for AnsiChalk {
 		AnsiChalk {
 			color: 0,
 			background: 0,
-			styles: Vec::new()
+			styles: Vec::new(),
 		}
 	}
 }
@@ -144,7 +137,6 @@ trait ChalkAnsiColor {
 }
 
 impl ChalkAnsiColor for AnsiChalk {
-
 	/**
 	 * Sets the foreground color to the specified value
 	 */

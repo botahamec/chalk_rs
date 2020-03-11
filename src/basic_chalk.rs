@@ -134,13 +134,6 @@ impl ChalkStyle for BasicChalk {
 }
 
 impl BasicChalk {
-	/**
-	 * Returns a new BasicChalk.
-	 * This has all default styling.
-	 */
-	pub fn new() -> Self {
-		Self::default()
-	}
 
 	/**
 	 * Creates a string which does all of the style,

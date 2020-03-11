@@ -71,6 +71,6 @@ impl Chalk for AnsiChalk {}
 
 trait ChalkAnsiColor {
 
-	fn ansi(&mut self, color: u8) -> Self;
-	fn bg_ansi(&mut self, color: u8) -> Self;
+	fn ansi(&mut self, color: u8) -> &Self;
+	fn bg_ansi(&mut self, color: u8) -> &Self;
 }

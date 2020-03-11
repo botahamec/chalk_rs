@@ -136,9 +136,6 @@ impl ChalkBasicColor for AnsiChalk {
 	basic_bg!(bg_light_magenta, 13);
 	basic_bg!(bg_light_cyan, 14);
 	basic_bg!(bg_white, 15);
-
-	gray_aliases!(grey, dark_gray, dark_grey, light_black);
-	bg_gray_aliases!(bg_grey, bg_dark_gray, bg_dark_grey, bg_light_black);
 }
 
 trait ChalkAnsiColor {

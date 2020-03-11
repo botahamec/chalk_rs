@@ -217,6 +217,8 @@ pub trait ChalkBasicColor {
 		bg_light_gray
 	);
 
+	fn_alias!(light_grey, light_gray);
+	fn_alias!(bg_light_grey, bg_light_gray);
 	gray_aliases!(grey, dark_gray, dark_grey, light_black);
 	bg_gray_aliases!(bg_grey, bg_dark_gray, bg_dark_grey, bg_light_black);
 }

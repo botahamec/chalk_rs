@@ -8,12 +8,34 @@ use crate::{
 use std::ops::Add;
 use std::ops::AddAssign;
 
-/** A chalk with 256 colors */
+/** A chalk with 255 colors */
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 struct AnsiChalk {
 	pub color: u8,
 	pub background: u8,
 	pub styles: Vec<Style>,
+}
+
+impl AnsiChalk {
+	/**
+	 * Returns a new AnsiChalk.
+	 * This has all default styling.
+	 */
+	pub fn new() -> Self {
+		Self::default()
+	}
+
+	/**
+	 * Creates a string which does all of the style,
+	 * Helper function for the Chalk implementation
+	 */
+	fn style(self) -> String {
+		let mut style_command = String::with_capacity(12);
+		for style in self.styles {
+			style_command = format!("{}{};", style_command, style);
+		}
+		style_command
+	}
 }
 
 impl ChalkStyle for AnsiChalk {

@@ -1,18 +1,8 @@
-
 use crate::{
+	add_style, chalk_trait_fns, enum_default, enum_display, enum_fmt_impl,
+	enum_impls, fn_alias, set_style,
+	style::{ChalkStyle, Style},
 	Chalk,
-	enum_default,
-	enum_display,
-	enum_fmt_impl,
-	enum_impls,
-	chalk_trait_fns,
-	set_style,
-	add_style,
-	fn_alias,
-	style::{
-		Style,
-		ChalkStyle
-	}
 };
 
 use std::ops::Add;
@@ -23,5 +13,5 @@ use std::ops::AddAssign;
 struct AnsiChalk {
 	pub color: u8,
 	pub background: u8,
-	pub styles: Vec<Style>
+	pub styles: Vec<Style>,
 }

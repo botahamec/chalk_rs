@@ -1,4 +1,3 @@
-
 /**
  * Implements Default for an enum.
  * Requires the enum to have a variant named "Default"
@@ -6,8 +5,12 @@
 #[macro_export]
 macro_rules! enum_default {
 	($name: ident) => {
-		impl Default for $name {fn default() -> Self {$name::Default}}
-	}
+		impl Default for $name {
+			fn default() -> Self {
+				$name::Default
+			}
+		}
+	};
 }
 
 /**
@@ -19,10 +22,10 @@ macro_rules! enum_fmt_impl {
 	($name: ident, $trait: ident) => {
 		impl $trait for $name {
 			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		        $trait::fmt(&(self.clone() as u8), f)
-		    }
+				$trait::fmt(&(self.clone() as u8), f)
+			}
 		}
-	}
+	};
 }
 
 /**
@@ -34,10 +37,10 @@ macro_rules! enum_display {
 	($name: ident) => {
 		impl Display for $name {
 			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		        write!(f, "{}", self.clone() as u8)
-		    }
+				write!(f, "{}", self.clone() as u8)
+			}
 		}
-	}
+	};
 }
 
 /** Implements several traits for a macro */

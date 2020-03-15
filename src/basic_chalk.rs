@@ -254,4 +254,9 @@ impl ChalkBasicColor for BasicChalk {
 	bg_color_fn!(bg_light_magenta, LightMagenta);
 	bg_color_fn!(bg_light_cyan, LightCyan);
 	bg_color_fn!(bg_light_gray, LightGray);
+
+	fn_alias!(bg_grey, bg_gray);
+	fn_alias!(bg_dark_gray, bg_gray);
+	fn_alias!(bg_dark_grey, bg_gray);
+	fn_alias!(bg_light_black, bg_gray);
 }

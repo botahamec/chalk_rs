@@ -9,6 +9,7 @@ use std::string::ToString;
 /**
  * For all Chalks with different color types
  */
+
 trait Chalk: Sized + ToString + Default {
 
 	fn new() -> Self {

@@ -1,4 +1,9 @@
-use crate::Chalk;
+use crate::{
+	add_style, bg_gray_aliases, chalk_trait_fns, enum_default, enum_display,
+	enum_fmt_impl, enum_impls, fn_alias, gray_aliases, set_style,
+	style::{ChalkStyle, Style},
+	Chalk,
+};
 
 use std::fmt::Binary;
 use std::fmt::Display;
@@ -8,76 +13,6 @@ use std::fmt::UpperHex;
 
 use std::ops::Add;
 use std::ops::AddAssign;
-
-/**
- * Implements Default for an enum.
- * Requires the enum to have a variant named "Default"
- */
-macro_rules! enum_default {
-	($name: ident) => {
-		impl Default for $name {
-			fn default() -> Self {
-				$name::Default
-			}
-		}
-	};
-}
-
-/**
- * Implements a fmt trait for an enum.
- * The output is the enum as a number
- */
-macro_rules! enum_fmt_impl {
-	($name: ident, $trait: ident) => {
-		impl $trait for $name {
-			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-				$trait::fmt(&(self.clone() as u8), f)
-			}
-		}
-	};
-}
-
-/**
- * Implements the Display trait for an enum.
- * The output is the enum as a number
- */
-macro_rules! enum_display {
-	($name: ident) => {
-		impl Display for $name {
-			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-				write!(f, "{}", self.clone() as u8)
-			}
-		}
-	};
-}
-
-/** Implements several traits for a macro */
-macro_rules! enum_impls {
-	($name: ident) => {
-		enum_default!($name);
-		enum_display!($name);
-		enum_fmt_impl!($name, Binary);
-		enum_fmt_impl!($name, Octal);
-		enum_fmt_impl!($name, LowerHex);
-		enum_fmt_impl!($name, UpperHex);
-	};
-}
-
-/** A style to be applied to the text */
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub enum BasicStyle {
-	Default = 0,
-	Bold = 1,
-	Dim = 2,
-	Italic = 3,
-	Underline = 4,
-	Blink = 5,
-	Invert = 7,
-	Hidden = 8,
-	DoubleUnderline = 21,
-}
-
-enum_impls!(BasicStyle);
 
 /** Foreground color using basic color */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -132,7 +67,7 @@ enum_impls!(BasicBackground);
 pub struct BasicChalk {
 	pub fgcolor: BasicColor,
 	pub bgcolor: BasicBackground,
-	pub styles: Vec<BasicStyle>,
+	pub styles: Vec<Style>,
 }
 
 impl Display for BasicChalk {
@@ -183,72 +118,22 @@ impl AddAssign for BasicChalk {
 	}
 }
 
-impl Chalk for BasicChalk {}
+impl ChalkStyle for BasicChalk {
+	// default and hidden styles
+	set_style!(reset_style, vec![Style::Default]);
+	set_style!(hidden, vec![Style::Hidden]);
 
-/** Sets the style to a specific vector */
-macro_rules! set_style {
-	($fn_name: ident, $vec: expr) => {
-		/** sets the style */
-		pub fn $fn_name(&mut self) -> &Self {
-			self.styles = $vec;
-			self
-		}
-	};
-}
-
-/** Adds a style to the Chalk */
-macro_rules! add_style {
-	($fn_name: ident, $attribute: ident) => {
-		/**
-		 * Changes the style
-		 */
-		pub fn $fn_name(&mut self) -> &Self {
-			self.styles.push(BasicStyle::$attribute);
-			self
-		}
-	};
-}
-
-/** Automatically generates a method to change the color */
-macro_rules! color_fn {
-	($snake: ident, $pascal: ident) => {
-		/**
-		 * Changes the color
-		 */
-		pub fn $snake(&mut self) -> &Self {
-			self.fgcolor = BasicColor::$pascal;
-			self
-		}
-	};
-}
-
-/** Automatically generates a method to change the background color */
-macro_rules! bg_color_fn {
-	($snake: ident, $pascal: ident) => {
-		/** Changes the background color */
-		pub fn $snake(&mut self) -> &Self {
-			self.bgcolor = BasicBackground::$pascal;
-			self
-		}
-	};
-}
-
-/** Sets up an alias for a function */
-macro_rules! fn_alias {
-	($alias: ident, $fn: ident) => {
-		/** an alias for gray */
-		pub fn $alias(&mut self) -> &Self {self.$fn()}
-	};
+	// styling
+	add_style!(bold, Bold);
+	add_style!(dim, Dim);
+	add_style!(italic, Italic);
+	add_style!(underline, Underline);
+	add_style!(inverse, Invert);
+	add_style!(blink, Blink);
+	add_style!(double_underline, DoubleUnderline);
 }
 
 impl BasicChalk {
-	/**
-	 * Returns a new BasicChalk.
-	 * This has all default styling.
-	 */
-	pub fn new() -> Self {
-		Self::default()
-	}
 
 	/**
 	 * Creates a string which does all of the style,
@@ -261,20 +146,77 @@ impl BasicChalk {
 		}
 		style_command
 	}
+}
 
-	// default and hidden styles
-	set_style!(reset_style, vec![BasicStyle::Default]);
-	set_style!(hidden, vec![BasicStyle::Hidden]);
+impl Chalk for BasicChalk {}
 
-	// styling
-	add_style!(bold, Bold);
-	add_style!(dim, Dim);
-	add_style!(italic, Italic);
-	add_style!(underline, Underline);
-	add_style!(inverse, Invert);
-	add_style!(blink, Blink);
-	add_style!(double_underline, DoubleUnderline);
+/** Automatically generates a method to change the color */
+macro_rules! color_fn {
+	($snake: ident, $pascal: ident) => {
+		/** Changes the color */
+		fn $snake(&mut self) -> &Self {
+			self.fgcolor = BasicColor::$pascal;
+			self
+		}
+	};
+}
 
+/** Automatically generates a method to change the background color */
+macro_rules! bg_color_fn {
+	($snake: ident, $pascal: ident) => {
+		/** Changes the background color */
+		fn $snake(&mut self) -> &Self {
+			self.bgcolor = BasicBackground::$pascal;
+			self
+		}
+	};
+}
+
+pub trait ChalkBasicColor {
+	chalk_trait_fns!(
+		reset_color,
+		black,
+		red,
+		green,
+		yellow,
+		blue,
+		magenta,
+		cyan,
+		white,
+		gray,
+		light_red,
+		light_green,
+		light_yellow,
+		light_blue,
+		light_magenta,
+		light_cyan,
+		light_gray,
+		reset_bg,
+		bg_black,
+		bg_red,
+		bg_green,
+		bg_yellow,
+		bg_blue,
+		bg_magenta,
+		bg_cyan,
+		bg_white,
+		bg_gray,
+		bg_light_red,
+		bg_light_green,
+		bg_light_yellow,
+		bg_light_blue,
+		bg_light_magenta,
+		bg_light_cyan,
+		bg_light_gray
+	);
+
+	fn_alias!(light_grey, light_gray);
+	fn_alias!(bg_light_grey, bg_light_gray);
+	gray_aliases!(grey, dark_gray, dark_grey, light_black);
+	bg_gray_aliases!(bg_grey, bg_dark_gray, bg_dark_grey, bg_light_black);
+}
+
+impl ChalkBasicColor for BasicChalk {
 	// foreground colors
 	color_fn!(reset_color, Default);
 	color_fn!(black, Black);
@@ -293,12 +235,6 @@ impl BasicChalk {
 	color_fn!(light_magenta, LightMagenta);
 	color_fn!(light_cyan, LightCyan);
 	color_fn!(light_gray, LightGray);
-
-	// aliases for gray()
-	fn_alias!(grey, gray);
-	fn_alias!(dark_gray, gray);
-	fn_alias!(dark_grey, grey);
-	fn_alias!(light_black, gray);
 
 	// background colors
 	bg_color_fn!(reset_bg, Default);

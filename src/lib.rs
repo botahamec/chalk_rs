@@ -1,11 +1,21 @@
+pub mod ansi_chalk;
 pub mod basic_chalk;
+pub mod style;
+
+mod utils;
 
 use std::string::ToString;
 
 /**
  * For all Chalks with different color types
  */
-trait Chalk: Sized + ToString {
+
+trait Chalk: Sized + ToString + Default {
+
+	fn new() -> Self {
+		Self::default()
+	}
+
 	/**
 	 * Formats a string using the style of the given chalk.
 	 * When using string literals, please use a reference.

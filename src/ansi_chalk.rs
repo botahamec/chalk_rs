@@ -131,7 +131,7 @@ impl ChalkBasicColor for AnsiChalk {
 	basic_bg!(bg_white, 15);
 }
 
-trait ChalkAnsiColor {
+pub trait ChalkAnsiColor {
 	fn ansi(&mut self, color: u8) -> &Self;
 	fn bg_ansi(&mut self, color: u8) -> &Self;
 }

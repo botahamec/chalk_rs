@@ -9,29 +9,93 @@ use crate::{
 use std::fmt::Display;
 
 const BASIC_COLORS: [RgbColor; 16] = [
-	RgbColor{red: 0,   green: 0,    blue: 0  },
-	RgbColor{red: 128, green: 0,    blue: 0  },
-	RgbColor{red: 0,   green: 128,  blue: 0  },
-	RgbColor{red: 128, green: 128,  blue: 0  },
-	RgbColor{red: 0,   green: 0,    blue: 128},
-	RgbColor{red: 128, green: 0,    blue: 128},
-	RgbColor{red: 0,   green: 128,  blue: 128},
-	RgbColor{red: 192, green: 192,  blue: 192},
-	RgbColor{red: 128, green:  128, blue: 128},
-	RgbColor{red: 255, green:  0,   blue: 0  },
-	RgbColor{red: 0,   green: 255,  blue: 0  },
-	RgbColor{red: 255, green: 255,  blue: 0  },
-	RgbColor{red: 0,   green: 0,    blue: 255},
-	RgbColor{red: 255, green: 0,    blue: 255},
-	RgbColor{red: 0,   green: 255,  blue: 255},
-	RgbColor{red: 255, green: 255,  blue: 255}
+	RgbColor {
+		red: 0,
+		green: 0,
+		blue: 0,
+	},
+	RgbColor {
+		red: 128,
+		green: 0,
+		blue: 0,
+	},
+	RgbColor {
+		red: 0,
+		green: 128,
+		blue: 0,
+	},
+	RgbColor {
+		red: 128,
+		green: 128,
+		blue: 0,
+	},
+	RgbColor {
+		red: 0,
+		green: 0,
+		blue: 128,
+	},
+	RgbColor {
+		red: 128,
+		green: 0,
+		blue: 128,
+	},
+	RgbColor {
+		red: 0,
+		green: 128,
+		blue: 128,
+	},
+	RgbColor {
+		red: 192,
+		green: 192,
+		blue: 192,
+	},
+	RgbColor {
+		red: 128,
+		green: 128,
+		blue: 128,
+	},
+	RgbColor {
+		red: 255,
+		green: 0,
+		blue: 0,
+	},
+	RgbColor {
+		red: 0,
+		green: 255,
+		blue: 0,
+	},
+	RgbColor {
+		red: 255,
+		green: 255,
+		blue: 0,
+	},
+	RgbColor {
+		red: 0,
+		green: 0,
+		blue: 255,
+	},
+	RgbColor {
+		red: 255,
+		green: 0,
+		blue: 255,
+	},
+	RgbColor {
+		red: 0,
+		green: 255,
+		blue: 255,
+	},
+	RgbColor {
+		red: 255,
+		green: 255,
+		blue: 255,
+	},
 ];
 
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct RgbColor {
 	pub red: u8,
 	pub green: u8,
-	pub blue: u8
+	pub blue: u8,
 }
 
 /** A chalk with RGB colors */
@@ -47,13 +111,12 @@ impl Default for RgbChalk {
 		RgbChalk {
 			color: RgbColor::new(255, 255, 255),
 			background: RgbColor::default(),
-			styles: Vec::new()
+			styles: Vec::new(),
 		}
 	}
 }
 
 impl RgbChalk {
-
 	/**
 	 * Creates a string which does all of the style,
 	 * Helper function for the Chalk implementation
@@ -107,7 +170,7 @@ trait ChalkRgbColor {
 
 impl RgbColor {
 	fn new(red: u8, green: u8, blue: u8) -> Self {
-		RgbColor {red, green, blue}
+		RgbColor { red, green, blue }
 	}
 }
 
@@ -130,9 +193,7 @@ impl ChalkRgbColor for RgbChalk {
 }
 
 impl ChalkAnsiColor for RgbChalk {
-
 	fn ansi(&mut self, color: u8) -> &Self {
-
 		if color > 231 {
 			let s = (color - 232) * 10 + 8;
 			self.rgb(s, s, s)
@@ -157,7 +218,6 @@ impl ChalkAnsiColor for RgbChalk {
 	}
 
 	fn bg_ansi(&mut self, color: u8) -> &Self {
-
 		if color > 231 {
 			let s = (color - 232) * 10 + 8;
 			self.bg_rgb(s, s, s)

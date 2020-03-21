@@ -14,7 +14,6 @@ use std::string::ToString;
  */
 
 trait Chalk: Sized + ToString + Default {
-
 	fn new() -> Self {
 		Self::default()
 	}

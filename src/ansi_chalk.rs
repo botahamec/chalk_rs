@@ -17,7 +17,6 @@ pub struct AnsiChalk {
 }
 
 impl AnsiChalk {
-
 	/**
 	 * Creates a string which does all of the style,
 	 * Helper function for the Chalk implementation
@@ -91,7 +90,10 @@ macro_rules! basic_bg {
 	};
 }
 
-impl<T> ChalkBasicColor for T where T : ChalkAnsiColor {
+impl<T> ChalkBasicColor for T
+where
+	T: ChalkAnsiColor,
+{
 	// foreground colors
 	basic_fg!(reset_color, 15);
 	basic_fg!(black, 0);

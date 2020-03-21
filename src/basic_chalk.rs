@@ -134,7 +134,6 @@ impl ChalkStyle for BasicChalk {
 }
 
 impl BasicChalk {
-
 	/**
 	 * Creates a string which does all of the style,
 	 * Helper function for the Chalk implementation

@@ -1,3 +1,5 @@
+#![allow(clippy::tabs_in_doc_comments)]
+
 pub mod ansi_chalk;
 pub mod basic_chalk;
 pub mod rgb_chalk;

@@ -110,3 +110,58 @@ impl ChalkRgbColor for RgbChalk {
 		self
 	}
 }
+
+impl ChalkAnsiColor for RgbChalk {
+
+	// TODO: modify this so values under 16 are basic colors
+	fn ansi(&mut self, color: u8) -> &Self {
+
+		if color > 231 {
+			let s = (color - 232) * 10 + 8;
+			self.rgb(s, s, s)
+		} else {
+			let n = color - 16;
+			let mut blue = color % 6;
+			let mut green = (n - blue) / 6 % 6;
+			let mut red = (n - blue - green * 6) / 36 % 6;
+
+			if blue != 0 {
+				blue = blue * 40 + 55;
+			}
+			if green != 0 {
+				green = green * 40 + 55;
+			}
+			if red != 0 {
+				red = red * 40 + 55;
+			}
+
+			self.rgb(red, green, blue)
+		}
+	}
+
+	// TODO: modify this so values under 16 are basic colors
+	fn bg_ansi(&mut self, color: u8) -> &Self {
+
+		if color > 231 {
+			let s = (color - 232) * 10 + 8;
+			self.bg_rgb(s, s, s)
+		} else {
+			let n = color - 16;
+			let mut blue = color % 6;
+			let mut green = (n - blue) / 6 % 6;
+			let mut red = (n - blue - green * 6) / 36 % 6;
+
+			if blue != 0 {
+				blue = blue * 40 + 55;
+			}
+			if green != 0 {
+				green = green * 40 + 55;
+			}
+			if red != 0 {
+				red = red * 40 + 55;
+			}
+
+			self.bg_rgb(red, green, blue)
+		}
+	}
+}

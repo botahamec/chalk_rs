@@ -76,7 +76,7 @@ impl Chalk for AnsiChalk {}
 macro_rules! basic_fg {
 	($name: ident, $num: expr) => {
 		fn $name(&mut self) -> &Self {
-			self.ansi($num);
+			self.color = $num;
 			self
 		}
 	};
@@ -85,13 +85,13 @@ macro_rules! basic_fg {
 macro_rules! basic_bg {
 	($name: ident, $num: expr) => {
 		fn $name(&mut self) -> &Self {
-			self.bg_ansi($num);
+			self.color = $num;
 			self
 		}
 	};
 }
 
-impl<T> ChalkBasicColor for T where T : ChalkAnsiColor {
+impl ChalkBasicColor for AnsiChalk {
 	// foreground colors
 	basic_fg!(reset_color, 15);
 	basic_fg!(black, 0);
@@ -131,7 +131,7 @@ impl<T> ChalkBasicColor for T where T : ChalkAnsiColor {
 	basic_bg!(bg_white, 15);
 }
 
-pub trait ChalkAnsiColor {
+trait ChalkAnsiColor {
 	fn ansi(&mut self, color: u8) -> &Self;
 	fn bg_ansi(&mut self, color: u8) -> &Self;
 }

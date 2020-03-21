@@ -3,7 +3,7 @@ use crate::{
 	basic_chalk::ChalkBasicColor,
 	impl_style_string, set_style,
 	style::{ChalkStyle, Style},
-	Chalk,
+	Chalk, impl_chalk_style
 };
 
 use std::fmt::Display;
@@ -43,20 +43,7 @@ impl Display for AnsiChalk {
 	}
 }
 
-impl ChalkStyle for AnsiChalk {
-	// default and hidden styles
-	set_style!(reset_style, vec![Style::Default]);
-	set_style!(hidden, vec![Style::Hidden]);
-
-	// styling
-	add_style!(bold, Bold);
-	add_style!(dim, Dim);
-	add_style!(italic, Italic);
-	add_style!(underline, Underline);
-	add_style!(inverse, Invert);
-	add_style!(blink, Blink);
-	add_style!(double_underline, DoubleUnderline);
-}
+impl_chalk_style!(AnsiChalk);
 
 impl Chalk for AnsiChalk {}
 

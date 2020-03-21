@@ -83,3 +83,23 @@ pub trait ChalkStyle {
 		double_underline
 	);
 }
+
+#[macro_export]
+macro_rules! impl_chalk_style {
+	($struct : ident) => {
+		impl ChalkStyle for $struct {
+			// default and hidden styles
+			set_style!(reset_style, vec![Style::Default]);
+			set_style!(hidden, vec![Style::Hidden]);
+
+			// styling
+			add_style!(bold, Bold);
+			add_style!(dim, Dim);
+			add_style!(italic, Italic);
+			add_style!(underline, Underline);
+			add_style!(inverse, Invert);
+			add_style!(blink, Blink);
+			add_style!(double_underline, DoubleUnderline);
+		}
+	}
+}

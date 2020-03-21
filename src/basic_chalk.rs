@@ -3,7 +3,7 @@ use crate::{
 	enum_fmt_impl, enum_impls, fn_alias, gray_aliases, impl_style_string,
 	set_style,
 	style::{ChalkStyle, Style},
-	Chalk,
+	Chalk, impl_chalk_style
 };
 
 use std::fmt::Binary;
@@ -119,20 +119,7 @@ impl AddAssign for BasicChalk {
 	}
 }
 
-impl ChalkStyle for BasicChalk {
-	// default and hidden styles
-	set_style!(reset_style, vec![Style::Default]);
-	set_style!(hidden, vec![Style::Hidden]);
-
-	// styling
-	add_style!(bold, Bold);
-	add_style!(dim, Dim);
-	add_style!(italic, Italic);
-	add_style!(underline, Underline);
-	add_style!(inverse, Invert);
-	add_style!(blink, Blink);
-	add_style!(double_underline, DoubleUnderline);
-}
+impl_chalk_style!(BasicChalk);
 
 impl_style_string!(BasicChalk);
 

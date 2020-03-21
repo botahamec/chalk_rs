@@ -4,6 +4,7 @@ use crate::{
 	impl_style_string, set_style,
 	style::{ChalkStyle, Style},
 	Chalk,
+	impl_chalk_style
 };
 
 use std::fmt::Display;
@@ -134,20 +135,7 @@ impl Display for RgbChalk {
 	}
 }
 
-impl ChalkStyle for RgbChalk {
-	// default and hidden styles
-	set_style!(reset_style, vec![Style::Default]);
-	set_style!(hidden, vec![Style::Hidden]);
-
-	// styling
-	add_style!(bold, Bold);
-	add_style!(dim, Dim);
-	add_style!(italic, Italic);
-	add_style!(underline, Underline);
-	add_style!(inverse, Invert);
-	add_style!(blink, Blink);
-	add_style!(double_underline, DoubleUnderline);
-}
+impl_chalk_style!(RgbChalk);
 
 impl Chalk for RgbChalk {}
 

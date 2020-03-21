@@ -1,7 +1,7 @@
 use crate::{
 	add_style,
 	ansi_chalk::ChalkAnsiColor,
-	impl_chalk_style, impl_style_string, set_style,
+	impl_chalk_style, impl_chalk_traits, impl_style_string, set_style,
 	style::{ChalkStyle, Style},
 	Chalk,
 };
@@ -116,8 +116,6 @@ impl Default for RgbChalk {
 	}
 }
 
-impl_style_string!(RgbChalk);
-
 impl Display for RgbChalk {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(
@@ -134,9 +132,7 @@ impl Display for RgbChalk {
 	}
 }
 
-impl_chalk_style!(RgbChalk);
-
-impl Chalk for RgbChalk {}
+impl_chalk_traits!(RgbChalk);
 
 trait ChalkRgbColor {
 	fn rgb(&mut self, red: u8, green: u8, blue: u8) -> &Self;

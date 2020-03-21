@@ -1,7 +1,7 @@
 use crate::{
 	add_style, bg_gray_aliases, chalk_trait_fns, enum_default, enum_display,
 	enum_fmt_impl, enum_impls, fn_alias, gray_aliases, impl_chalk_style,
-	impl_style_string, set_style,
+	impl_chalk_traits, impl_style_string, set_style,
 	style::{ChalkStyle, Style},
 	Chalk,
 };
@@ -80,11 +80,7 @@ impl Display for BasicChalk {
 	}
 }
 
-impl_chalk_style!(BasicChalk);
-
-impl_style_string!(BasicChalk);
-
-impl Chalk for BasicChalk {}
+impl_chalk_traits!(BasicChalk);
 
 /** Automatically generates a method to change the color */
 macro_rules! color_fn {
@@ -190,9 +186,4 @@ impl ChalkBasicColor for BasicChalk {
 	bg_color_fn!(bg_light_magenta, LightMagenta);
 	bg_color_fn!(bg_light_cyan, LightCyan);
 	bg_color_fn!(bg_light_gray, LightGray);
-
-	fn_alias!(bg_grey, bg_gray);
-	fn_alias!(bg_dark_gray, bg_gray);
-	fn_alias!(bg_dark_grey, bg_gray);
-	fn_alias!(bg_light_black, bg_gray);
 }

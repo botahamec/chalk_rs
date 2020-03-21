@@ -91,3 +91,12 @@ macro_rules! bg_gray_aliases {
 		)*
 	};
 }
+
+#[macro_export]
+macro_rules! impl_chalk_traits {
+	($chalk: ident) => {
+		impl_chalk_style!($chalk);
+		impl_style_string!($chalk);
+		impl Chalk for $chalk {}
+	};
+}

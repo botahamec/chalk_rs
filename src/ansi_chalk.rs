@@ -1,7 +1,7 @@
 use crate::{
 	add_style,
 	basic_chalk::ChalkBasicColor,
-	impl_chalk_style, impl_style_string, set_style,
+	impl_chalk_style, impl_chalk_traits, impl_style_string, set_style,
 	style::{ChalkStyle, Style},
 	Chalk,
 };
@@ -15,8 +15,6 @@ pub struct AnsiChalk {
 	pub background: u8,
 	pub styles: Vec<Style>,
 }
-
-impl_style_string!(AnsiChalk);
 
 impl Default for AnsiChalk {
 	/**
@@ -43,9 +41,7 @@ impl Display for AnsiChalk {
 	}
 }
 
-impl_chalk_style!(AnsiChalk);
-
-impl Chalk for AnsiChalk {}
+impl_chalk_traits!(AnsiChalk);
 
 macro_rules! basic_fg {
 	($name: ident, $num: expr) => {

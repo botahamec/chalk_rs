@@ -1,6 +1,6 @@
 use crate::{
-	add_style, bg_gray_aliases, chalk_trait_fns, enum_default, enum_display,
-	enum_fmt_impl, enum_impls, fn_alias, gray_aliases, impl_chalk_style,
+	add_style, chalk_trait_fns, enum_default, enum_display,
+	enum_fmt_impl, enum_impls, fn_alias, impl_chalk_style,
 	impl_chalk_traits, impl_style_string, set_style,
 	style::{ChalkStyle, Style},
 	Chalk,
@@ -101,6 +101,24 @@ macro_rules! bg_color_fn {
 			self.bgcolor = BasicBackground::$pascal;
 			self
 		}
+	};
+}
+
+macro_rules! gray_aliases {
+	($($alias: ident),*) => {
+		$(
+			/** an alias for the color gray */
+			fn_alias!($alias, gray);
+		)*
+	};
+}
+
+macro_rules! bg_gray_aliases {
+	($($alias: ident),*) => {
+		$(
+			/** an alias for the color gray */
+			fn_alias!($alias, bg_gray);
+		)*
 	};
 }
 

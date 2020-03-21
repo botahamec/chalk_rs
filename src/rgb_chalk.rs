@@ -1,6 +1,5 @@
 use crate::{
 	add_style,
-	basic_chalk::ChalkBasicColor,
 	ansi_chalk::ChalkAnsiColor,
 	set_style,
 	style::{ChalkStyle, Style},
@@ -132,7 +131,6 @@ impl ChalkRgbColor for RgbChalk {
 
 impl ChalkAnsiColor for RgbChalk {
 
-	// TODO: modify this so values under 16 are basic colors
 	fn ansi(&mut self, color: u8) -> &Self {
 
 		if color > 231 {
@@ -158,7 +156,6 @@ impl ChalkAnsiColor for RgbChalk {
 		}
 	}
 
-	// TODO: modify this so values under 16 are basic colors
 	fn bg_ansi(&mut self, color: u8) -> &Self {
 
 		if color > 231 {

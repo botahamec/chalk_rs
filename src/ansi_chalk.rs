@@ -38,7 +38,7 @@ impl Default for AnsiChalk {
 	fn default() -> Self {
 		AnsiChalk {
 			color: 0,
-			background: 0,
+			background: 15,
 			styles: Vec::new(),
 		}
 	}

@@ -1,9 +1,9 @@
 use crate::{
 	add_style, bg_gray_aliases, chalk_trait_fns, enum_default, enum_display,
-	enum_fmt_impl, enum_impls, fn_alias, gray_aliases, impl_style_string,
-	set_style,
+	enum_fmt_impl, enum_impls, fn_alias, gray_aliases, impl_chalk_style,
+	impl_style_string, set_style,
 	style::{ChalkStyle, Style},
-	Chalk, impl_chalk_style
+	Chalk,
 };
 
 use std::fmt::Binary;
@@ -11,9 +11,6 @@ use std::fmt::Display;
 use std::fmt::LowerHex;
 use std::fmt::Octal;
 use std::fmt::UpperHex;
-
-use std::ops::Add;
-use std::ops::AddAssign;
 
 /** Foreground color using basic color */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -80,42 +77,6 @@ impl Display for BasicChalk {
 			self.bgcolor,
 			self.clone().style()
 		)
-	}
-}
-
-impl Add for BasicChalk {
-	type Output = BasicChalk;
-
-	fn add(self, other: Self) -> Self {
-		let mut chalk = BasicChalk::new();
-
-		if self.fgcolor == BasicColor::Default {
-			chalk.fgcolor = other.fgcolor;
-		}
-		if self.bgcolor == BasicBackground::Default {
-			chalk.bgcolor = other.bgcolor;
-		}
-		let mut styles = self.styles.clone();
-		for style in other.styles {
-			styles.push(style);
-		}
-		chalk.styles = styles;
-
-		chalk
-	}
-}
-
-impl AddAssign for BasicChalk {
-	fn add_assign(&mut self, other: Self) {
-		if self.fgcolor == BasicColor::Default {
-			self.fgcolor = other.fgcolor;
-		}
-		if self.bgcolor == BasicBackground::Default {
-			self.bgcolor = other.bgcolor;
-		}
-		for style in other.styles {
-			self.styles.push(style);
-		}
 	}
 }
 

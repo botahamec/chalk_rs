@@ -1,10 +1,9 @@
 use crate::{
 	add_style,
 	ansi_chalk::ChalkAnsiColor,
-	impl_style_string, set_style,
+	impl_chalk_style, impl_style_string, set_style,
 	style::{ChalkStyle, Style},
 	Chalk,
-	impl_chalk_style
 };
 
 use std::fmt::Display;

@@ -101,5 +101,5 @@ macro_rules! impl_chalk_style {
 			add_style!(blink, Blink);
 			add_style!(double_underline, DoubleUnderline);
 		}
-	}
+	};
 }

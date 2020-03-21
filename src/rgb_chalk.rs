@@ -71,3 +71,7 @@ impl ChalkStyle for RgbChalk {
 }
 
 impl Chalk for RgbChalk {}
+
+trait ChalkRgbColor {
+	fn rgb(&mut self, red: u8, green: u8, blue: u8) -> &Self;
+}

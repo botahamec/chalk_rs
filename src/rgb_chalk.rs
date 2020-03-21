@@ -17,11 +17,21 @@ pub struct RgbColor {
 }
 
 /** A chalk with RGB colors */
-#[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct RgbChalk {
 	pub color: RgbColor,
 	pub background: RgbColor,
 	pub styles: Vec<Style>,
+}
+
+impl Default for RgbChalk {
+	fn default() -> Self {
+		RgbChalk {
+			color: RgbColor::new(255, 255, 255),
+			background: RgbColor::default(),
+			styles: Vec::new()
+		}
+	}
 }
 
 impl RgbChalk {

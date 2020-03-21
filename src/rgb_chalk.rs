@@ -92,3 +92,21 @@ impl RgbColor {
 		RgbColor {red, green, blue}
 	}
 }
+
+impl ChalkRgbColor for RgbChalk {
+	fn rgb(&mut self, red: u8, green: u8, blue: u8) -> &Self {
+		self.color.red = red;
+		self.color.green = green;
+		self.color.blue = blue;
+
+		self
+	}
+
+	fn bg_rgb(&mut self, red: u8, green: u8, blue: u8) -> &Self {
+		self.background.red = red;
+		self.background.green = green;
+		self.background.blue = blue;
+
+		self
+	}
+}

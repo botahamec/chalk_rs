@@ -1,7 +1,7 @@
 use crate::{
 	add_style,
 	basic_chalk::ChalkBasicColor,
-	set_style,
+	impl_style_string, set_style,
 	style::{ChalkStyle, Style},
 	Chalk,
 };
@@ -16,19 +16,7 @@ pub struct AnsiChalk {
 	pub styles: Vec<Style>,
 }
 
-impl AnsiChalk {
-	/**
-	 * Creates a string which does all of the style,
-	 * Helper function for the Chalk implementation
-	 */
-	fn style(self) -> String {
-		let mut style_command = String::with_capacity(12);
-		for style in self.styles {
-			style_command = format!("{}{};", style_command, style);
-		}
-		style_command
-	}
-}
+impl_style_string!(AnsiChalk);
 
 impl Default for AnsiChalk {
 	/**

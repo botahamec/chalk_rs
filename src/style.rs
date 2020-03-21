@@ -51,6 +51,25 @@ macro_rules! add_style {
 	};
 }
 
+#[macro_export]
+macro_rules! impl_style_string {
+	($struct: ident) => {
+		impl $struct {
+			/**
+			 * Creates a string which does all of the style,
+			 * Helper function for the Chalk implementation
+			 */
+			fn style(self) -> String {
+				let mut style_command = String::with_capacity(12);
+				for style in self.styles {
+					style_command = format!("{}{};", style_command, style);
+				}
+				style_command
+			}
+		}
+	};
+}
+
 pub trait ChalkStyle {
 	chalk_trait_fns!(
 		reset_style,

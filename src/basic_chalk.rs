@@ -1,6 +1,7 @@
 use crate::{
 	add_style, bg_gray_aliases, chalk_trait_fns, enum_default, enum_display,
-	enum_fmt_impl, enum_impls, fn_alias, gray_aliases, set_style,
+	enum_fmt_impl, enum_impls, fn_alias, gray_aliases, impl_style_string,
+	set_style,
 	style::{ChalkStyle, Style},
 	Chalk,
 };
@@ -133,19 +134,7 @@ impl ChalkStyle for BasicChalk {
 	add_style!(double_underline, DoubleUnderline);
 }
 
-impl BasicChalk {
-	/**
-	 * Creates a string which does all of the style,
-	 * Helper function for the Chalk implementation
-	 */
-	fn style(self) -> String {
-		let mut style_command = String::with_capacity(12);
-		for style in self.styles {
-			style_command = format!("{}{};", style_command, style);
-		}
-		style_command
-	}
-}
+impl_style_string!(BasicChalk);
 
 impl Chalk for BasicChalk {}
 

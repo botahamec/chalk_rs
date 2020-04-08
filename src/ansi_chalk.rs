@@ -46,7 +46,7 @@ impl Default for AnsiChalk {
 		AnsiChalk {
 			color: 0,
 			background: 0,
-			styles: Vec::new()
+			styles: Vec::new(),
 		}
 	}
 }
@@ -147,7 +147,6 @@ trait ChalkAnsiColor {
 }
 
 impl ChalkAnsiColor for AnsiChalk {
-
 	/**
 	 * Sets the foreground color to the specified value
 	 */

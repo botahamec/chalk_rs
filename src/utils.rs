@@ -60,7 +60,7 @@ macro_rules! enum_impls {
 #[macro_export]
 macro_rules! chalk_trait_fns {
 	($($name: ident),*) => {
-		$(fn $name(&mut self) -> &Self;)*
+		$(fn $name(&mut self) -> &mut Self;)*
 	};
 }
 
@@ -68,7 +68,7 @@ macro_rules! chalk_trait_fns {
 #[macro_export]
 macro_rules! fn_alias {
 	($alias: ident, $fn: ident) => {
-		fn $alias(&mut self) -> &Self {self.$fn()}
+		fn $alias(&mut self) -> &mut Self {self.$fn()}
 	};
 }
 

@@ -45,7 +45,7 @@ impl_chalk_traits!(AnsiChalk);
 
 macro_rules! basic_fg {
 	($name: ident, $num: expr) => {
-		fn $name(&mut self) -> &Self {
+		fn $name(&mut self) -> &mut Self {
 			self.ansi($num);
 			self
 		}
@@ -54,7 +54,7 @@ macro_rules! basic_fg {
 
 macro_rules! basic_bg {
 	($name: ident, $num: expr) => {
-		fn $name(&mut self) -> &Self {
+		fn $name(&mut self) -> &mut Self {
 			self.bg_ansi($num);
 			self
 		}

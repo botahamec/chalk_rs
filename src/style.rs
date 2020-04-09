@@ -30,7 +30,7 @@ enum_impls!(Style);
 macro_rules! set_style {
 	($fn_name: ident, $vec: expr) => {
 		/** sets the style */
-		fn $fn_name(&mut self) -> &Self {
+		fn $fn_name(&mut self) -> &mut Self {
 			self.styles = $vec;
 			self
 		}
@@ -44,7 +44,7 @@ macro_rules! add_style {
 		/**
 		 * Changes the style
 		 */
-		fn $fn_name(&mut self) -> &Self {
+		fn $fn_name(&mut self) -> &mut Self {
 			self.styles.push(Style::$attribute);
 			self
 		}

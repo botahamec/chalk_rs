@@ -135,8 +135,8 @@ impl Display for RgbChalk {
 impl_chalk_traits!(RgbChalk);
 
 trait ChalkRgbColor {
-	fn rgb(&mut self, red: u8, green: u8, blue: u8) -> &Self;
-	fn bg_rgb(&mut self, red: u8, green: u8, blue: u8) -> &Self;
+	fn rgb(&mut self, red: u8, green: u8, blue: u8) -> &mut Self;
+	fn bg_rgb(&mut self, red: u8, green: u8, blue: u8) -> &mut Self;
 }
 
 impl RgbColor {
@@ -146,7 +146,7 @@ impl RgbColor {
 }
 
 impl ChalkRgbColor for RgbChalk {
-	fn rgb(&mut self, red: u8, green: u8, blue: u8) -> &Self {
+	fn rgb(&mut self, red: u8, green: u8, blue: u8) -> &mut Self {
 		self.color.red = red;
 		self.color.green = green;
 		self.color.blue = blue;
@@ -154,7 +154,7 @@ impl ChalkRgbColor for RgbChalk {
 		self
 	}
 
-	fn bg_rgb(&mut self, red: u8, green: u8, blue: u8) -> &Self {
+	fn bg_rgb(&mut self, red: u8, green: u8, blue: u8) -> &mut Self {
 		self.background.red = red;
 		self.background.green = green;
 		self.background.blue = blue;

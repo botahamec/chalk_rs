@@ -1,7 +1,7 @@
 use crate::{
-	add_style, chalk_trait_fns, enum_default, enum_display,
-	enum_fmt_impl, enum_impls, fn_alias, impl_chalk_style,
-	impl_chalk_traits, impl_style_string, set_style,
+	add_style, chalk_trait_fns, enum_default, enum_display, enum_fmt_impl,
+	enum_impls, fn_alias, impl_chalk_style, impl_chalk_traits,
+	impl_style_string, set_style,
 	style::{ChalkStyle, Style},
 	Chalk,
 };
@@ -86,7 +86,7 @@ impl_chalk_traits!(BasicChalk);
 macro_rules! color_fn {
 	($snake: ident, $pascal: ident) => {
 		/** Changes the color */
-		fn $snake(&mut self) -> &Self {
+		fn $snake(&mut self) -> &mut Self {
 			self.fgcolor = BasicColor::$pascal;
 			self
 		}
@@ -97,7 +97,7 @@ macro_rules! color_fn {
 macro_rules! bg_color_fn {
 	($snake: ident, $pascal: ident) => {
 		/** Changes the background color */
-		fn $snake(&mut self) -> &Self {
+		fn $snake(&mut self) -> &mut Self {
 			self.bgcolor = BasicBackground::$pascal;
 			self
 		}

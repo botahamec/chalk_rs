@@ -7,9 +7,6 @@ pub mod style;
 
 mod utils;
 
-//#[cfg(test)]
-mod tests;
-
 use std::string::ToString;
 
 /**

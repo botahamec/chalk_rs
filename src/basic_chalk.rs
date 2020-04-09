@@ -178,8 +178,8 @@ impl ChalkBasicColor for BasicChalk {
 	color_fn!(cyan, Cyan);
 	color_fn!(white, White);
 	color_fn!(gray, DarkGray);
-	color_fn!(light_red, Red);
-	color_fn!(light_green, Green);
+	color_fn!(light_red, LightRed);
+	color_fn!(light_green, LightGreen);
 	color_fn!(light_yellow, LightYellow);
 	color_fn!(light_blue, LightBlue);
 	color_fn!(light_magenta, LightMagenta);

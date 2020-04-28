@@ -1,5 +1,7 @@
 #![allow(clippy::tabs_in_doc_comments)]
 
+// TODO: make a prelude module
+
 pub mod ansi_chalk;
 pub mod basic_chalk;
 pub mod rgb_chalk;

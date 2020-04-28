@@ -11,6 +11,9 @@ categories = ["command-line-interface"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[[example]]
+name = "basic_color"
+
 [dependencies]
 
 [profile.release]

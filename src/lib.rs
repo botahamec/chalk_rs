@@ -18,9 +18,9 @@ use chalk_rs::prelude::*;
 
 fn main() {
     let mut ansi = AnsiChalk::new();
-    ansi.ansi(56).println("Purple-ish");
+    ansi.ansi(56).println(&"Purple-ish");
     let mut rgb = RgbChalk::new();
-    rgb.rgb(25, 125, 63).println("This color is ugly");
+    rgb.rgb(25, 125, 63).println(&"This color is ugly");
 }
 ```
 
@@ -33,17 +33,27 @@ use chalk_rs::prelude::*;
 
 fn main() {
     let mut rgb = RgbChalk::new();
-    rgb.ansi(56).println("Purple-ish");
-    rgb.red().println("red");
+    rgb.ansi(56).println(&"Purple-ish");
+    rgb.red().println(&"red");
 }
 ```
- */
+*/
+
 #![allow(clippy::tabs_in_doc_comments)]
 
+/** Chalk with 256 color support */
 pub mod ansi_chalk;
+
+/** Basic 16 colors */
 pub mod basic_chalk;
+
+/** True-color 16 million colors */
 pub mod rgb_chalk;
+
+/** Styling for the text */
 pub mod style;
+
+/** Some basic imports */
 pub mod prelude;
 
 mod utils;
@@ -60,10 +70,12 @@ use winapi::{
 	um::wincon::ENABLE_VIRTUAL_TERMINAL_PROCESSING,
 };
 
-/**
- * For all Chalks with different color types
- */
+/** For all Chalks with different color types */
 pub trait Chalk: Sized + ToString + Default {
+
+	/**
+	 * Creates a Chalk with a black background and a white foreground
+	 */
 	fn new() -> Self {
 
 		// makes it work on windows
@@ -83,6 +95,7 @@ pub trait Chalk: Sized + ToString + Default {
 				IS_SETUP = true;
 			}
 		}
+
 		Self::default()
 	}
 
@@ -90,8 +103,12 @@ pub trait Chalk: Sized + ToString + Default {
 	 * Formats a string using the style of the given chalk.
 	 * When using string literals, please use a reference.
 	 * For example:
-	 * ```ignore
-	 * chalk.string(&"this is yellow");
+	 * ```rust
+	 * # use chalk_rs::prelude::*;
+	 * # fn main() {
+	 * # let mut chalk = BasicChalk::new();
+	 * chalk.yellow().string(&"this is yellow");
+	 * # }
 	 * ```
 	 */
 	fn string(&self, string: &dyn ToString) -> String {
@@ -102,8 +119,12 @@ pub trait Chalk: Sized + ToString + Default {
 	 * Prints a string using the style of the given chalk.
 	 * When using string literals, please use a reference.
 	 * For example:
-	 * ```ignore
-	 * chalk.string(&"this is yellow");
+	 * ```rust
+	 * # use chalk_rs::prelude::*;
+	 * # fn main() {
+	 * # let mut chalk = BasicChalk::new();
+	 * chalk.yellow().string(&"this is yellow");
+	 * # }
 	 * ```
 	 */
 	fn print(&self, string: &dyn ToString) -> String {
@@ -116,8 +137,12 @@ pub trait Chalk: Sized + ToString + Default {
 	 * Prints a line using the style of the given chalk.
 	 * When using string literals, please use a reference.
 	 * For example:
-	 * ```ignore
+	 * ```rust
+	 * # use chalk_rs::prelude::*;
+	 * # fn main() {
+	 * # let mut chalk = BasicChalk::new();
 	 * chalk.string(&"this is yellow");
+	 * # }
 	 * ```
 	 */
 	fn println(&self, string: &dyn ToString) -> String {

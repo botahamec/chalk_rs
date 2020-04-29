@@ -17,9 +17,9 @@ use chalk_rs::prelude::*;
 
 fn main() {
     let mut ansi = AnsiChalk::new();
-    ansi.ansi(56).println("Purple-ish");
+    ansi.ansi(56).println(&"Purple-ish");
     let mut rgb = RgbChalk::new();
-    rgb.rgb(25, 125, 63).println("This color is ugly");
+    rgb.rgb(25, 125, 63).println(&"This color is ugly");
 }
 ```
 
@@ -32,7 +32,7 @@ use chalk_rs::prelude::*;
 
 fn main() {
     let mut rgb = RgbChalk::new();
-    rgb.ansi(56).println("Purple-ish");
-    rgb.red().println("red");
+    rgb.ansi(56).println(&"Purple-ish");
+    rgb.red().println(&"red");
 }
 ```

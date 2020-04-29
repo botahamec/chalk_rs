@@ -80,6 +80,7 @@ pub trait ChalkStyle {
 		underline,
 		inverse,
 		blink,
+		fast_blink,
 		double_underline
 	);
 }
@@ -99,6 +100,7 @@ macro_rules! impl_chalk_style {
 			add_style!(underline, Underline);
 			add_style!(inverse, Invert);
 			add_style!(blink, Blink);
+			add_style!(fast_blink, FastBlink);
 			add_style!(double_underline, DoubleUnderline);
 		}
 	};

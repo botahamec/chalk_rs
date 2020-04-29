@@ -6,6 +6,7 @@ pub mod ansi_chalk;
 pub mod basic_chalk;
 pub mod rgb_chalk;
 pub mod style;
+pub mod prelude;
 
 mod utils;
 

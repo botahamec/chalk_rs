@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Style","A style to be applied to the text "]],"trait":[["ChalkStyle",""]]});

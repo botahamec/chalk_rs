@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BasicChalk","A chalk with only 16 colors "]],"trait":[["ChalkBasicColor",""]]});

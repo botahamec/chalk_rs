@@ -1,7 +1,5 @@
 extern crate chalk_rs;
-use chalk_rs::basic_chalk::BasicChalk;
-use chalk_rs::basic_chalk::ChalkBasicColor;
-use chalk_rs::Chalk;
+use chalk_rs::prelude::*;
 
 fn main() {
 	// basic colors

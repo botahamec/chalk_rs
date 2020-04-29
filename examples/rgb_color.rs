@@ -1,9 +1,6 @@
 
 extern crate chalk_rs;
-use chalk_rs::rgb_chalk::RgbChalk;
-use chalk_rs::Chalk;
-use chalk_rs::basic_chalk::ChalkBasicColor;
-use chalk_rs::rgb_chalk::ChalkRgbColor;
+use chalk_rs::prelude::*;
 
 use std::convert::TryInto;
 

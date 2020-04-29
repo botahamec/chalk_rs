@@ -1,9 +1,6 @@
 
 extern crate chalk_rs;
-use chalk_rs::ansi_chalk::AnsiChalk;
-use chalk_rs::Chalk;
-use chalk_rs::basic_chalk::ChalkBasicColor;
-use chalk_rs::ansi_chalk::ChalkAnsiColor;
+use chalk_rs::prelude::*;
 
 fn main() {
 	let mut chalk = AnsiChalk::new();

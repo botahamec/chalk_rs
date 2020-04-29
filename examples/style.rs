@@ -1,8 +1,6 @@
 
 extern crate chalk_rs;
-use chalk_rs::basic_chalk::BasicChalk;
-use chalk_rs::Chalk;
-use chalk_rs::style::ChalkStyle;
+use chalk_rs::prelude::*;
 
 fn main() {
 	let mut chalk = BasicChalk::new();

@@ -26,13 +26,22 @@ use winapi::{
  */
 pub trait Chalk: Sized + ToString + Default {
 	fn new() -> Self {
-		if cfg!(windows) {
-			unsafe {
+
+		// makes it work on windows
+		#[cfg(windows)] unsafe {
+
+			static mut IS_SETUP : bool = false;
+
+			if !IS_SETUP {
 				let handle = GetStdHandle(STD_OUTPUT_HANDLE);
 				let mut dw_mode : DWORD = 0;
 				dw_mode |= GetConsoleMode(handle, &mut dw_mode) as u32;
 				dw_mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
 				SetConsoleMode(handle, dw_mode);
+
+				println!("Hi");
+
+				IS_SETUP = true;
 			}
 		}
 		Self::default()
@@ -76,5 +85,21 @@ pub trait Chalk: Sized + ToString + Default {
 		let output = self.string(string);
 		println!("{}", output);
 		output
+	}
+}
+
+#[cfg(test)]
+mod test {
+
+	use crate::*;
+	use basic_chalk::*;
+	use ansi_chalk::*;
+
+	#[test]
+	fn is_setup() {
+		let mut basic = basic_chalk::BasicChalk::new();
+		let mut ansi = ansi_chalk::AnsiChalk::new();
+		basic.red().println(&"This is red");
+		ansi.ansi(56).println(&"56");
 	}
 }

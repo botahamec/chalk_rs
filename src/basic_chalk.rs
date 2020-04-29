@@ -72,7 +72,7 @@ impl Display for BasicChalk {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(
 			f,
-			"\x1b[{};{};{}m",
+			"\x1b[{}m\x1b[{}m{}",
 			self.fgcolor,
 			self.bgcolor,
 			self.clone().style()

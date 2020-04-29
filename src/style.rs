@@ -62,7 +62,7 @@ macro_rules! impl_style_string {
 			fn style(self) -> String {
 				let mut style_command = String::with_capacity(12);
 				for style in self.styles {
-					style_command = format!("{}{};", style_command, style);
+					style_command = format!("{}\x1b[{}m", style_command, style);
 				}
 				style_command
 			}

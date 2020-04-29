@@ -11,7 +11,7 @@ fn main() {
 ```
 
 That's an example of basic color. There are three types of color in chalk:
-Basic, Ansi, and RGB.
+BasicChalk, AnsiChalk, and RgbChalk.
 
 ```rust
 use chalk_rs::prelude::*;
@@ -24,8 +24,8 @@ fn main() {
 }
 ```
 
-RGB chalk is able to use ANSI and Basic color. ANSI chalk is able to use basic
-colors. However, ANSI chalk cannot use RGB and Basic chalk can't use RGB
+RgbChalk is able to use ANSI and Basic color. AnsiChalk is able to use basic
+colors. However, AnsiChal cannot use RGB and BasicChalk can't use RGB
 or ANSI.
 
 ```rust
@@ -41,19 +41,19 @@ fn main() {
 
 #![allow(clippy::tabs_in_doc_comments)]
 
-/** Chalk with 256 color support */
+/// Chalk with 256 color support
 pub mod ansi_chalk;
 
-/** Basic 16 colors */
+/// Basic 16 colors
 pub mod basic_chalk;
 
-/** True-color 16 million colors */
+/// True-color 16 million colors
 pub mod rgb_chalk;
 
-/** Styling for the text */
+/// Styling for the text
 pub mod style;
 
-/** Some basic imports */
+/// Some basic imports
 pub mod prelude;
 
 mod utils;
@@ -73,9 +73,18 @@ use winapi::{
 /** For all Chalks with different color types */
 pub trait Chalk: Sized + ToString + Default {
 
-	/**
-	 * Creates a Chalk with a black background and a white foreground
-	 */
+	/// Creates a [`Chalk`] with a black background and a white foreground
+	///
+	/// # Example
+	///
+	/// ```rust
+	/// use chalk_rs::prelude::*;
+	///
+	/// fn main() {
+	///     let mut chalk = BasicChalk::new();
+	///     // the chalk can be used here
+	/// }
+	/// ```
 	fn new() -> Self {
 
 		// makes it work on windows
@@ -99,52 +108,104 @@ pub trait Chalk: Sized + ToString + Default {
 		Self::default()
 	}
 
-	/**
-	 * Formats a string using the style of the given chalk.
-	 * When using string literals, please use a reference.
-	 * For example:
-	 * ```rust
-	 * # use chalk_rs::prelude::*;
-	 * # fn main() {
-	 * # let mut chalk = BasicChalk::new();
-	 * chalk.yellow().string(&"this is yellow");
-	 * # }
-	 * ```
-	 */
+	/// Formats a string using the style of the given [`Chalk`].
+	///
+	/// This will return the string after being formatted to the console. When
+	/// using string literals, please use a reference.
+	///
+	/// For example:
+	///
+	/// ```rust
+	/// # use chalk_rs::prelude::*;
+	/// #
+	/// # fn main() {
+	/// #   let mut chalk = BasicChalk::new();
+	/// chalk.yellow().string(&"this is yellow");
+	/// # }
+	/// ```
+	/// # Arguments
+	///
+	/// * `string` - The item to print out. It must implement [`ToString`]
+	/// and should be a reference
+	///
+	/// # Example
+	///
+	/// ```rust
+	/// use chalk_rs::prelude::*;
+	///
+	/// fn main() {
+	///     let mut chalk = BasicChalk::new();
+	///     chalk.yellow().string(&"this is yellow");
+	/// }
+	/// ```
 	fn string(&self, string: &dyn ToString) -> String {
 		format!("{}{}\x1b[m", self.to_string(), string.to_string())
 	}
 
-	/**
-	 * Prints a string using the style of the given chalk.
-	 * When using string literals, please use a reference.
-	 * For example:
-	 * ```rust
-	 * # use chalk_rs::prelude::*;
-	 * # fn main() {
-	 * # let mut chalk = BasicChalk::new();
-	 * chalk.yellow().string(&"this is yellow");
-	 * # }
-	 * ```
-	 */
+	/// Prints a string using the style of the given chalk.
+	///
+	/// This will return the text that was outputted to the console. When using
+	/// string literals, please use a reference.
+	///
+	/// For example:
+	///
+	/// ```rust
+	/// # use chalk_rs::prelude::*;
+	/// # fn main() {
+	/// # let mut chalk = BasicChalk::new();
+	/// chalk.yellow().print(&"this is yellow");
+	/// # }
+	/// ```
+	///
+	/// # Arguments
+	///
+	/// * `string` - The item to format and output. It must implement [`ToString`]
+	/// and should be a reference.
+	///
+	/// # Example
+	///
+	/// ```rust
+	/// use chalk_rs::prelude::*;
+	/// fn main() {
+	///     let mut chalk = BasicChalk::new();
+	///    chalk.yellow().print(&"this is yellow");
+	/// }
+	/// ```
 	fn print(&self, string: &dyn ToString) -> String {
 		let output = self.string(string);
 		print!("{}", output);
 		output
 	}
 
-	/**
-	 * Prints a line using the style of the given chalk.
-	 * When using string literals, please use a reference.
-	 * For example:
-	 * ```rust
-	 * # use chalk_rs::prelude::*;
-	 * # fn main() {
-	 * # let mut chalk = BasicChalk::new();
-	 * chalk.string(&"this is yellow");
-	 * # }
-	 * ```
-	 */
+	/// Prints a string using the style of the given chalk on a new line.
+	///
+	/// This will return the text that was outputted to the console. When using
+	/// string literals, please use a reference.
+	///
+	/// For example:
+	///
+	/// ```rust
+	/// # use chalk_rs::prelude::*;
+	/// # fn main() {
+	/// # let mut chalk = BasicChalk::new();
+	/// chalk.yellow().println(&"this is yellow");
+	/// # }
+	/// ```
+	///
+	/// # Arguments
+	///
+	/// * `string` - The item to format and output. It must implement [`ToString`]
+	/// and should be a reference.
+	///
+	/// # Example
+	///
+	/// ```rust
+	/// use chalk_rs::prelude::*;
+	/// fn main() {
+	///     let mut chalk = BasicChalk::new();
+	///    chalk.yellow().println(&"this is yellow");
+	/// }
+	/// ```
 	fn println(&self, string: &dyn ToString) -> String {
 		let output = self.string(string);
 		println!("{}", output);

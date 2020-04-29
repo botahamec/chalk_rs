@@ -92,15 +92,15 @@ where
 }
 
 pub trait ChalkAnsiColor {
-	fn ansi(&mut self, color: u8) -> &Self;
-	fn bg_ansi(&mut self, color: u8) -> &Self;
+	fn ansi(&mut self, color: u8) -> &mut Self;
+	fn bg_ansi(&mut self, color: u8) -> &mut Self;
 }
 
 impl ChalkAnsiColor for AnsiChalk {
 	/**
 	 * Sets the foreground color to the specified value
 	 */
-	fn ansi(&mut self, color: u8) -> &Self {
+	fn ansi(&mut self, color: u8) -> &mut Self {
 		self.color = color;
 		self
 	}
@@ -108,7 +108,7 @@ impl ChalkAnsiColor for AnsiChalk {
 	/**
 	 * Sets the background color to the specified value
 	 */
-	fn bg_ansi(&mut self, color: u8) -> &Self {
+	fn bg_ansi(&mut self, color: u8) -> &mut Self {
 		self.background = color;
 		self
 	}

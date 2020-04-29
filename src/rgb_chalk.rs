@@ -120,7 +120,7 @@ impl Display for RgbChalk {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(
 			f,
-			"\x1b[38;2;{};{};{};\x1b[48;2;{};{};{};\x1b[{}m",
+			"\x1b[38;2;{};{};{}m\x1b[48;2;{};{};{}m{}",
 			self.color.red,
 			self.color.green,
 			self.color.blue,
@@ -134,7 +134,7 @@ impl Display for RgbChalk {
 
 impl_chalk_traits!(RgbChalk);
 
-trait ChalkRgbColor {
+pub trait ChalkRgbColor {
 	fn rgb(&mut self, red: u8, green: u8, blue: u8) -> &mut Self;
 	fn bg_rgb(&mut self, red: u8, green: u8, blue: u8) -> &mut Self;
 }
@@ -164,10 +164,13 @@ impl ChalkRgbColor for RgbChalk {
 }
 
 impl ChalkAnsiColor for RgbChalk {
-	fn ansi(&mut self, color: u8) -> &Self {
+	fn ansi(&mut self, color: u8) -> &mut Self {
 		if color > 231 {
 			let s = (color - 232) * 10 + 8;
 			self.rgb(s, s, s)
+		} else if color < 16 {
+			self.color = BASIC_COLORS[color as usize].clone();
+			self
 		} else {
 			let n = color - 16;
 			let mut blue = color % 6;
@@ -188,7 +191,7 @@ impl ChalkAnsiColor for RgbChalk {
 		}
 	}
 
-	fn bg_ansi(&mut self, color: u8) -> &Self {
+	fn bg_ansi(&mut self, color: u8) -> &mut Self {
 		if color > 231 {
 			let s = (color - 232) * 10 + 8;
 			self.bg_rgb(s, s, s)

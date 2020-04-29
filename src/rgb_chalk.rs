@@ -101,9 +101,9 @@ pub struct RgbColor {
 /** A chalk with RGB colors */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct RgbChalk {
-	pub color: RgbColor,
-	pub background: RgbColor,
-	pub styles: Vec<Style>,
+	color: RgbColor,
+	background: RgbColor,
+	styles: Vec<Style>,
 }
 
 impl Default for RgbChalk {

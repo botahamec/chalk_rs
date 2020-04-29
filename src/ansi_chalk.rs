@@ -11,9 +11,9 @@ use std::fmt::Display;
 /** A chalk with 255 colors */
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct AnsiChalk {
-	pub color: u8,
-	pub background: u8,
-	pub styles: Vec<Style>,
+	color: u8,
+	background: u8,
+	styles: Vec<Style>,
 }
 
 impl Display for AnsiChalk {

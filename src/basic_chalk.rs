@@ -14,7 +14,7 @@ use std::fmt::UpperHex;
 
 /** Foreground color using basic color */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub enum BasicColor {
+enum BasicColor {
 	Black = 30,
 	Red = 31,
 	Green = 32,
@@ -38,7 +38,7 @@ enum_impls!(BasicColor);
 
 /** The background of a teerminal using basic color */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub enum BasicBackground {
+enum BasicBackground {
 	Black = 40,
 	Red = 41,
 	Green = 42,
@@ -63,9 +63,9 @@ enum_impls!(BasicBackground);
 /** A chalk with only 16 colors */
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct BasicChalk {
-	pub fgcolor: BasicColor,
-	pub bgcolor: BasicBackground,
-	pub styles: Vec<Style>,
+	fgcolor: BasicColor,
+	bgcolor: BasicBackground,
+	styles: Vec<Style>,
 }
 
 impl Display for BasicChalk {

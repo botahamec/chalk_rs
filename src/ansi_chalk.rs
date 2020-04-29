@@ -9,31 +9,18 @@ use crate::{
 use std::fmt::Display;
 
 /** A chalk with 255 colors */
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct AnsiChalk {
 	pub color: u8,
 	pub background: u8,
 	pub styles: Vec<Style>,
 }
 
-impl Default for AnsiChalk {
-	/**
-	 * A default chalk with white foreground and black background
-	 */
-	fn default() -> Self {
-		AnsiChalk {
-			color: 0,
-			background: 15,
-			styles: Vec::new(),
-		}
-	}
-}
-
 impl Display for AnsiChalk {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(
 			f,
-			"\x1b[38;{};{};{}m",
+			"\x1b[38;5;{}m\x1b[48;5;{}m{}",
 			self.color,
 			self.background,
 			self.clone().style()

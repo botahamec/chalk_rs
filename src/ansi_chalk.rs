@@ -1,7 +1,7 @@
 use crate::{
 	add_style,
 	basic_chalk::ChalkBasicColor,
-	set_style,
+	impl_chalk_style, impl_chalk_traits, impl_style_string, set_style,
 	style::{ChalkStyle, Style},
 	Chalk,
 };
@@ -9,46 +9,18 @@ use crate::{
 use std::fmt::Display;
 
 /** A chalk with 255 colors */
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct AnsiChalk {
-	pub color: u8,
-	pub background: u8,
-	pub styles: Vec<Style>,
-}
-
-impl AnsiChalk {
-
-	/**
-	 * Creates a string which does all of the style,
-	 * Helper function for the Chalk implementation
-	 */
-	fn style(self) -> String {
-		let mut style_command = String::with_capacity(12);
-		for style in self.styles {
-			style_command = format!("{}{};", style_command, style);
-		}
-		style_command
-	}
-}
-
-impl Default for AnsiChalk {
-	/**
-	 * A default chalk with white foreground and black background
-	 */
-	fn default() -> Self {
-		AnsiChalk {
-			color: 0,
-			background: 0,
-			styles: Vec::new(),
-		}
-	}
+	color: u8,
+	background: u8,
+	styles: Vec<Style>,
 }
 
 impl Display for AnsiChalk {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(
 			f,
-			"\x1b[38;{};{};{}m",
+			"\x1b[38;5;{}m\x1b[48;5;{}m{}",
 			self.color,
 			self.background,
 			self.clone().style()
@@ -56,27 +28,12 @@ impl Display for AnsiChalk {
 	}
 }
 
-impl ChalkStyle for AnsiChalk {
-	// default and hidden styles
-	set_style!(reset_style, vec![Style::Default]);
-	set_style!(hidden, vec![Style::Hidden]);
-
-	// styling
-	add_style!(bold, Bold);
-	add_style!(dim, Dim);
-	add_style!(italic, Italic);
-	add_style!(underline, Underline);
-	add_style!(inverse, Invert);
-	add_style!(blink, Blink);
-	add_style!(double_underline, DoubleUnderline);
-}
-
-impl Chalk for AnsiChalk {}
+impl_chalk_traits!(AnsiChalk);
 
 macro_rules! basic_fg {
 	($name: ident, $num: expr) => {
-		fn $name(&mut self) -> &Self {
-			self.color = $num;
+		fn $name(&mut self) -> &mut Self {
+			self.ansi($num);
 			self
 		}
 	};
@@ -84,14 +41,17 @@ macro_rules! basic_fg {
 
 macro_rules! basic_bg {
 	($name: ident, $num: expr) => {
-		fn $name(&mut self) -> &Self {
-			self.color = $num;
+		fn $name(&mut self) -> &mut Self {
+			self.bg_ansi($num);
 			self
 		}
 	};
 }
 
-impl ChalkBasicColor for AnsiChalk {
+impl<T> ChalkBasicColor for T
+where
+	T: ChalkAnsiColor,
+{
 	// foreground colors
 	basic_fg!(reset_color, 15);
 	basic_fg!(black, 0);
@@ -131,16 +91,16 @@ impl ChalkBasicColor for AnsiChalk {
 	basic_bg!(bg_white, 15);
 }
 
-trait ChalkAnsiColor {
-	fn ansi(&mut self, color: u8) -> &Self;
-	fn bg_ansi(&mut self, color: u8) -> &Self;
+pub trait ChalkAnsiColor {
+	fn ansi(&mut self, color: u8) -> &mut Self;
+	fn bg_ansi(&mut self, color: u8) -> &mut Self;
 }
 
 impl ChalkAnsiColor for AnsiChalk {
 	/**
 	 * Sets the foreground color to the specified value
 	 */
-	fn ansi(&mut self, color: u8) -> &Self {
+	fn ansi(&mut self, color: u8) -> &mut Self {
 		self.color = color;
 		self
 	}
@@ -148,7 +108,7 @@ impl ChalkAnsiColor for AnsiChalk {
 	/**
 	 * Sets the background color to the specified value
 	 */
-	fn bg_ansi(&mut self, color: u8) -> &Self {
+	fn bg_ansi(&mut self, color: u8) -> &mut Self {
 		self.background = color;
 		self
 	}

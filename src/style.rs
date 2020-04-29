@@ -30,7 +30,7 @@ enum_impls!(Style);
 macro_rules! set_style {
 	($fn_name: ident, $vec: expr) => {
 		/** sets the style */
-		fn $fn_name(&mut self) -> &Self {
+		fn $fn_name(&mut self) -> &mut Self {
 			self.styles = $vec;
 			self
 		}
@@ -44,9 +44,28 @@ macro_rules! add_style {
 		/**
 		 * Changes the style
 		 */
-		fn $fn_name(&mut self) -> &Self {
+		fn $fn_name(&mut self) -> &mut Self {
 			self.styles.push(Style::$attribute);
 			self
+		}
+	};
+}
+
+#[macro_export]
+macro_rules! impl_style_string {
+	($struct: ident) => {
+		impl $struct {
+			/**
+			 * Creates a string which does all of the style,
+			 * Helper function for the Chalk implementation
+			 */
+			fn style(self) -> String {
+				let mut style_command = String::with_capacity(12);
+				for style in self.styles {
+					style_command = format!("{}\x1b[{}m", style_command, style);
+				}
+				style_command
+			}
 		}
 	};
 }
@@ -61,6 +80,28 @@ pub trait ChalkStyle {
 		underline,
 		inverse,
 		blink,
+		fast_blink,
 		double_underline
 	);
+}
+
+#[macro_export]
+macro_rules! impl_chalk_style {
+	($struct : ident) => {
+		impl ChalkStyle for $struct {
+			// default and hidden styles
+			set_style!(reset_style, vec![Style::Default]);
+			set_style!(hidden, vec![Style::Hidden]);
+
+			// styling
+			add_style!(bold, Bold);
+			add_style!(dim, Dim);
+			add_style!(italic, Italic);
+			add_style!(underline, Underline);
+			add_style!(inverse, Invert);
+			add_style!(blink, Blink);
+			add_style!(fast_blink, FastBlink);
+			add_style!(double_underline, DoubleUnderline);
+		}
+	};
 }

@@ -60,7 +60,7 @@ macro_rules! enum_impls {
 #[macro_export]
 macro_rules! chalk_trait_fns {
 	($($name: ident),*) => {
-		$(fn $name(&mut self) -> &Self;)*
+		$(fn $name(&mut self) -> &mut Self;)*
 	};
 }
 
@@ -68,26 +68,15 @@ macro_rules! chalk_trait_fns {
 #[macro_export]
 macro_rules! fn_alias {
 	($alias: ident, $fn: ident) => {
-		fn $alias(&mut self) -> &Self {self.$fn()}
+		fn $alias(&mut self) -> &mut Self {self.$fn()}
 	};
 }
 
 #[macro_export]
-macro_rules! gray_aliases {
-	($($alias: ident),*) => {
-		$(
-			/** an alias for the color gray */
-			fn_alias!($alias, gray);
-		)*
-	};
-}
-
-#[macro_export]
-macro_rules! bg_gray_aliases {
-	($($alias: ident),*) => {
-		$(
-			/** an alias for the color gray */
-			fn_alias!($alias, bg_gray);
-		)*
+macro_rules! impl_chalk_traits {
+	($chalk: ident) => {
+		impl_chalk_style!($chalk);
+		impl_style_string!($chalk);
+		impl Chalk for $chalk {}
 	};
 }

@@ -48,22 +48,25 @@ impl Display for StyleMap {
 
 		// initially set it to the weight if there is one
 		if self.weight != Weight::Default {
-			ansi_str += format!("\x1b[{}", self.weight).as_str();
+			ansi_str += format!("\x1b[{}m", self.weight).as_str();
 		}
 
 		if self.blink != Blink::Default {
-			ansi_str += format!("\x1b[{}", self.blink).as_str();
+			ansi_str += format!("\x1b[{}m", self.blink).as_str();
 		}
 
 		if self.underline != Underline::Default {
-			ansi_str += format!("\x1b[{}", self.underline).as_str();
+			ansi_str += format!("\x1b[{}m", self.underline).as_str();
 		}
 
 		if self.italic {
-			ansi_str += "\x1b[3";
+			ansi_str += "\x1b[3m";
+		}
+		if self.invert {
+			ansi_str += "\x1b[7m";
 		}
 		if self.hidden {
-			ansi_str += "\x1b[8";
+			ansi_str += "\x1b[8m";
 		}
 
 		write!(f, "{}", ansi_str)

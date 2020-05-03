@@ -10,8 +10,8 @@ fn main() {
 	chalk.reset_style().underline().println(&"Underline");
 	chalk.reset_style().blink().println(&"Blink");
 	chalk.reset_style().fast_blink().println(&"Fast Blink");
-	chalk.reset_style().inverse().println(&"Inverted");
-	chalk.reset_style().hidden().println(&"Hidden");
+	chalk.reset_style().invert().println(&"Inverted");
+	chalk.reset_style().hide().println(&"Hidden");
 	chalk
 		.reset_style()
 		.double_underline()

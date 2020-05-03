@@ -1,8 +1,7 @@
 use crate::{
-	add_style,
 	ansi_chalk::ChalkAnsiColor,
-	impl_chalk_style, impl_chalk_traits, impl_style_string, set_style,
-	style::{ChalkStyle, Style},
+	impl_chalk_style, impl_chalk_traits, set_style, set_styles,
+	style::{ChalkStyle, StyleMap},
 	Chalk,
 };
 
@@ -103,7 +102,7 @@ pub struct RgbColor {
 pub struct RgbChalk {
 	color: RgbColor,
 	background: RgbColor,
-	styles: Vec<Style>,
+	style: StyleMap,
 }
 
 impl Default for RgbChalk {
@@ -111,7 +110,7 @@ impl Default for RgbChalk {
 		RgbChalk {
 			color: RgbColor::new(255, 255, 255),
 			background: RgbColor::default(),
-			styles: Vec::new(),
+			style: StyleMap::new(),
 		}
 	}
 }
@@ -127,7 +126,7 @@ impl Display for RgbChalk {
 			self.background.red,
 			self.background.green,
 			self.background.blue,
-			self.clone().style()
+			self.style
 		)
 	}
 }

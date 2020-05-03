@@ -1,8 +1,8 @@
 use crate::{
-	add_style, chalk_trait_fns, enum_default, enum_display, enum_fmt_impl,
+	chalk_trait_fns, enum_default, enum_display, enum_fmt_impl,
 	enum_impls, fn_alias, impl_chalk_style, impl_chalk_traits,
-	impl_style_string, set_style,
-	style::{ChalkStyle, Style},
+	set_style, set_styles,
+	style::{StyleMap, ChalkStyle},
 	Chalk,
 };
 
@@ -12,131 +12,6 @@ use std::fmt::LowerHex;
 use std::fmt::Octal;
 use std::fmt::UpperHex;
 
-<<<<<<< HEAD
-=======
-use std::ops::Add;
-use std::ops::AddAssign;
-
-/**
- * Implements Default for an enum.
- * Requires the enum to have a variant named "Default"
- */
-macro_rules! enum_default {
-	($name: ident) => {
-		impl Default for $name {fn default() -> Self {$name::Default}}
-	}
-}
-
-/**
- * Implements a fmt trait for an enum.
- * The output is the enum as a number
- */
-macro_rules! enum_fmt_impl {
-	($name: ident, $trait: ident) => {
-		impl $trait for $name {
-			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		        $trait::fmt(&(self.clone() as u8), f)
-		    }
-		}
-	}
-}
-
-/**
- * Implements the Display trait for an enum.
- * The output is the enum as a number
- */
-macro_rules! enum_display {
-	($name: ident) => {
-		impl Display for $name {
-			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		        write!(f, "{}", self.clone() as u8)
-		    }
-		}
-	}
-}
-
-/** Implements several traits for a macro */
-macro_rules! enum_impls {
-	($name: ident) => {
-		enum_default!($name);
-		enum_display!($name);
-		enum_fmt_impl!($name, Binary);
-		enum_fmt_impl!($name, Octal);
-		enum_fmt_impl!($name, LowerHex);
-		enum_fmt_impl!($name, UpperHex);
-	};
-}
-
-/** A style to be applied to the text */
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub enum BasicStyle {
-    Default         = 0,
-    Bold            = 1,
-	Dim             = 2,
-	Italic          = 3,
-    Underline       = 4,
-    Blink           = 5,
-    Invert          = 7,
-	Hidden          = 8,
-	DoubleUnderline = 21
-}
-
-enum_impls!(BasicStyle);
-
-/** The styling for the underline */
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub enum Underline {
-	Default    = 0,
-	Underlined = 1,
-	Double     = 2,
-	Curly      = 3
-}
-
-enum_impls!(Underline);
-
-/** The styling for text */
-#[derive(Clone, Default, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub struct BasicStyleMap {
-	pub bold     : bool,
-	pub dim      : bool,
-	pub italic   : bool,
-	pub blink    : bool,
-	pub invert   : bool,
-	pub underline: Underline
-}
-
-/** describes how to style text */
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub enum BasicStyleType {
-	Default,
-	Hidden,
-	Styled(BasicStyleMap)
-}
-
-enum_default!(BasicStyleType); // This is going to need its own display function
-
-impl Display for BasicStyleType {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		match self {
-			BasicStyleType::Default => write!(f, ""),
-			BasicStyleType::Hidden  => write!(f, "8;"),
-			BasicStyleType::Styled(s) => {
-				let mut style_string = String::new();
-				if s.bold      {style_string.push_str("1;");}
-				if s.dim       {style_string.push_str("2;");}
-				if s.italic    {style_string.push_str("3;");}
-				if s.blink     {style_string.push_str("5;");}
-				if s.invert    {style_string.push_str("7;");}
-				if s.underline != Underline::Default {
-					style_string.push_str(format!("4:{};", s.underline.clone() as u8).as_str());
-				}
-				write!(f, "{}", style_string)
-			}
-		}
-	}
-}
-
->>>>>>> 1c3fdca70bb859218e7b6400fa4fc82b78cb42c3
 /** Foreground color using basic color */
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 enum BasicColor {
@@ -190,7 +65,7 @@ enum_impls!(BasicBackground);
 pub struct BasicChalk {
 	fgcolor: BasicColor,
 	bgcolor: BasicBackground,
-	styles: Vec<Style>,
+	style: StyleMap,
 }
 
 impl Display for BasicChalk {
@@ -200,7 +75,7 @@ impl Display for BasicChalk {
 			"\x1b[{}m\x1b[{}m{}",
 			self.fgcolor,
 			self.bgcolor,
-			self.clone().style()
+			self.style
 		)
 	}
 }

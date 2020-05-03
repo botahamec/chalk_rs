@@ -75,6 +75,16 @@ impl StyleMap {
 		Self::default()
 	}
 
+	pub fn reset_style(&mut self) -> &mut Self {
+		self.reset_weight();
+		self.stop_blink();
+		self.no_underline();
+		self.unitalicize();
+		self.uninvert();
+		self.unhide();
+		self
+	}
+
 	pub fn reset_weight(&mut self) -> &mut Self {
 		self.weight = Weight::Default;
 		self
@@ -114,6 +124,11 @@ impl StyleMap {
 
 	pub fn is_italicized(&self) -> bool {
 		self.italic
+	}
+
+	pub fn no_underline(&mut self) -> &mut Self {
+		self.underline = Underline::Default;
+		self
 	}
 
 	pub fn underline(&mut self) -> &mut Self {
@@ -222,57 +237,31 @@ enum_impls!(Style);
 /** Sets the style to a specific vector */
 #[macro_export]
 macro_rules! set_style {
-	($fn_name: ident, $vec: expr) => {
+	($fn_name: ident) => {
 		/** sets the style */
 		fn $fn_name(&mut self) -> &mut Self {
-			self.styles = $vec;
-			self
-		}
-	};
-}
-
-/** Adds a style to the Chalk */
-#[macro_export]
-macro_rules! add_style {
-	($fn_name: ident, $attribute: ident) => {
-		/**
-		 * Changes the style
-		 */
-		fn $fn_name(&mut self) -> &mut Self {
-			self.styles.push(Style::$attribute);
+			self.style.$fn_name();
 			self
 		}
 	};
 }
 
 #[macro_export]
-macro_rules! impl_style_string {
-	($struct: ident) => {
-		impl $struct {
-			/**
-			 * Creates a string which does all of the style,
-			 * Helper function for the Chalk implementation
-			 */
-			fn style(self) -> String {
-				let mut style_command = String::with_capacity(12);
-				for style in self.styles {
-					style_command = format!("{}\x1b[{}m", style_command, style);
-				}
-				style_command
-			}
-		}
+macro_rules! set_styles {
+	($($fn_name: ident),*) => {
+		$(set_style!($fn_name);)*
 	};
 }
 
 pub trait ChalkStyle {
 	chalk_trait_fns!(
 		reset_style,
-		hidden,
+		hide,
 		bold,
 		dim,
 		italic,
 		underline,
-		inverse,
+		invert,
 		blink,
 		fast_blink,
 		double_underline
@@ -283,19 +272,18 @@ pub trait ChalkStyle {
 macro_rules! impl_chalk_style {
 	($struct : ident) => {
 		impl ChalkStyle for $struct {
-			// default and hidden styles
-			set_style!(reset_style, vec![Style::Default]);
-			set_style!(hidden, vec![Style::Hidden]);
-
-			// styling
-			add_style!(bold, Bold);
-			add_style!(dim, Dim);
-			add_style!(italic, Italic);
-			add_style!(underline, Underline);
-			add_style!(inverse, Invert);
-			add_style!(blink, Blink);
-			add_style!(fast_blink, FastBlink);
-			add_style!(double_underline, DoubleUnderline);
+			set_styles!(
+				reset_style,
+				hide,
+				bold,
+				dim,
+				italic,
+				underline,
+				invert,
+				blink,
+				fast_blink,
+				double_underline
+			);
 		}
 	};
 }

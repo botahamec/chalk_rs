@@ -56,6 +56,14 @@ macro_rules! enum_impls {
 	};
 }
 
+/** Implements several enums */
+#[macro_export]
+macro_rules! impl_enums {
+	($($enum: ident),*) => {
+		$(enum_impls!($enum);)*
+	};
+}
+
 /** adds a set of functions to the trait */
 #[macro_export]
 macro_rules! chalk_trait_fns {

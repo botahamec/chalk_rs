@@ -4,9 +4,9 @@ A crate for terminal colors and styles
 ```rust
 use chalk_rs::prelude::*;
 fn main() {
-    let mut chalk = BasicChalk::new();
-    chalk.red().println(&"This text is red");
-    chalk.bold().println(&"Now it's red AND bold");
+	let mut chalk = BasicChalk::new();
+	chalk.red().println(&"This text is red");
+	chalk.bold().println(&"Now it's red AND bold");
 }
 ```
 
@@ -17,10 +17,10 @@ BasicChalk, AnsiChalk, and RgbChalk.
 use chalk_rs::prelude::*;
 
 fn main() {
-    let mut ansi = AnsiChalk::new();
-    ansi.ansi(56).println(&"Purple-ish");
-    let mut rgb = RgbChalk::new();
-    rgb.rgb(25, 125, 63).println(&"This color is ugly");
+	let mut ansi = AnsiChalk::new();
+	ansi.ansi(56).println(&"Purple-ish");
+	let mut rgb = RgbChalk::new();
+	rgb.rgb(25, 125, 63).println(&"This color is ugly");
 }
 ```
 
@@ -32,9 +32,9 @@ or ANSI.
 use chalk_rs::prelude::*;
 
 fn main() {
-    let mut rgb = RgbChalk::new();
-    rgb.ansi(56).println(&"Purple-ish");
-    rgb.red().println(&"red");
+	let mut rgb = RgbChalk::new();
+	rgb.ansi(56).println(&"Purple-ish");
+	rgb.red().println(&"red");
 }
 ```
 */
@@ -62,17 +62,14 @@ use std::string::ToString;
 
 #[cfg(windows)]
 use winapi::{
-	um::consoleapi::SetConsoleMode,
-	um::consoleapi::GetConsoleMode,
-	um::processenv::GetStdHandle,
+	shared::minwindef::DWORD, um::consoleapi::GetConsoleMode,
+	um::consoleapi::SetConsoleMode, um::processenv::GetStdHandle,
 	um::winbase::STD_OUTPUT_HANDLE,
-	shared::minwindef::DWORD,
 	um::wincon::ENABLE_VIRTUAL_TERMINAL_PROCESSING,
 };
 
 /** For all Chalks with different color types */
 pub trait Chalk: Sized + ToString + Default {
-
 	/// Creates a [`Chalk`] with a black background and a white foreground
 	///
 	/// # Example
@@ -86,15 +83,14 @@ pub trait Chalk: Sized + ToString + Default {
 	/// }
 	/// ```
 	fn new() -> Self {
-
 		// makes it work on windows
-		#[cfg(windows)] unsafe {
-
-			static mut IS_SETUP : bool = false;
+		#[cfg(windows)]
+		unsafe {
+			static mut IS_SETUP: bool = false;
 
 			if !IS_SETUP {
 				let handle = GetStdHandle(STD_OUTPUT_HANDLE);
-				let mut dw_mode : DWORD = 0;
+				let mut dw_mode: DWORD = 0;
 				dw_mode |= GetConsoleMode(handle, &mut dw_mode) as u32;
 				dw_mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
 				SetConsoleMode(handle, dw_mode);
@@ -217,8 +213,8 @@ pub trait Chalk: Sized + ToString + Default {
 mod test {
 
 	use crate::*;
-	use basic_chalk::*;
 	use ansi_chalk::*;
+	use basic_chalk::*;
 
 	#[test]
 	fn is_setup() {

@@ -1,8 +1,8 @@
 use crate::{
-	add_style, chalk_trait_fns, enum_default, enum_display, enum_fmt_impl,
+	chalk_trait_fns, enum_default, enum_display, enum_fmt_impl,
 	enum_impls, fn_alias, impl_chalk_style, impl_chalk_traits,
-	impl_style_string, set_style,
-	style::{ChalkStyle, Style},
+	set_style, set_styles,
+	style::{StyleMap, ChalkStyle},
 	Chalk,
 };
 
@@ -65,7 +65,7 @@ enum_impls!(BasicBackground);
 pub struct BasicChalk {
 	fgcolor: BasicColor,
 	bgcolor: BasicBackground,
-	styles: Vec<Style>,
+	style: StyleMap,
 }
 
 impl Display for BasicChalk {
@@ -75,7 +75,7 @@ impl Display for BasicChalk {
 			"\x1b[{}m\x1b[{}m{}",
 			self.fgcolor,
 			self.bgcolor,
-			self.clone().style()
+			self.style
 		)
 	}
 }

@@ -1,8 +1,7 @@
 use crate::{
-	add_style,
 	basic_chalk::ChalkBasicColor,
-	impl_chalk_style, impl_chalk_traits, impl_style_string, set_style,
-	style::{ChalkStyle, Style},
+	impl_chalk_style, impl_chalk_traits, set_style, set_styles,
+	style::{ChalkStyle, StyleMap},
 	Chalk,
 };
 
@@ -13,7 +12,7 @@ use std::fmt::Display;
 pub struct AnsiChalk {
 	color: u8,
 	background: u8,
-	styles: Vec<Style>,
+	style: StyleMap,
 }
 
 impl Display for AnsiChalk {
@@ -23,7 +22,7 @@ impl Display for AnsiChalk {
 			"\x1b[38;5;{}m\x1b[48;5;{}m{}",
 			self.color,
 			self.background,
-			self.clone().style()
+			self.style
 		)
 	}
 }

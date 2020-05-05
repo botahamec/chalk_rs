@@ -1,8 +1,7 @@
 use crate::{
-	chalk_trait_fns, enum_default, enum_display, enum_fmt_impl,
-	enum_impls, fn_alias, impl_chalk_style, impl_chalk_traits,
-	set_style, set_styles,
-	style::{StyleMap, ChalkStyle},
+	chalk_trait_fns, enum_default, enum_display, enum_fmt_impl, enum_impls,
+	fn_alias, impl_chalk_style, impl_chalk_traits, set_style, set_styles,
+	style::{ChalkStyle, StyleMap},
 	Chalk,
 };
 
@@ -73,9 +72,7 @@ impl Display for BasicChalk {
 		write!(
 			f,
 			"\x1b[{}m\x1b[{}m{}",
-			self.fgcolor,
-			self.bgcolor,
-			self.style
+			self.fgcolor, self.bgcolor, self.style
 		)
 	}
 }

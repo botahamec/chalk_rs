@@ -20,9 +20,7 @@ impl Display for AnsiChalk {
 		write!(
 			f,
 			"\x1b[38;5;{}m\x1b[48;5;{}m{}",
-			self.color,
-			self.background,
-			self.style
+			self.color, self.background, self.style
 		)
 	}
 }

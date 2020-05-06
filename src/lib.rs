@@ -239,8 +239,7 @@ impl Chalk {
 	///     // the chalk can be used here
 	/// }
 	/// ```
-	#[inline(always)]
-	pub fn new() -> Self {
+	pub fn new<'a>() -> Self {
 		// makes it work on windows
 		#[cfg(windows)]
 		unsafe {
@@ -260,8 +259,8 @@ impl Chalk {
 		}
 
 		Self {
-			foreground: ChalkType::DefaultColor,
-			background: ChalkType::DefaultColor,
+			foreground: ChalkType::default(),
+			background: ChalkType::default(),
 			style: StyleMap::new()
 		}
 	}
@@ -641,6 +640,145 @@ impl Chalk {
 	}
 }
 
+impl Chalk {
+	pub fn reset_style(&mut self) -> &mut Self {
+		self.reset_weight();
+		self.stop_blink();
+		self.no_underline();
+		self.unitalicize();
+		self.uninvert();
+		self.unhide();
+		self
+	}
+
+	pub fn reset_weight(&mut self) -> &mut Self {
+		self.style.reset_weight();
+		self
+	}
+
+	pub fn bold(&mut self) -> &mut Self {
+		self.style.bold();
+		self
+	}
+
+	pub fn dim(&mut self) -> &mut Self {
+		self.style.dim();
+		self
+	}
+
+	pub fn is_normal_weight(&self) -> bool {
+		self.style.is_normal_weight()
+	}
+
+	pub fn is_bold(&self) -> bool {
+		self.style.is_bold()
+	}
+
+	pub fn is_dim(&self) -> bool {
+		self.style.is_dim()
+	}
+
+	pub fn italic(&mut self) -> &mut Self {
+		self.style.italic();
+		self
+	}
+
+	pub fn unitalicize(&mut self) -> &mut Self {
+		self.style.unitalicize();
+		self
+	}
+
+	pub const fn is_italicized(&self) -> bool {
+		self.style.is_italicized()
+	}
+
+	pub fn no_underline(&mut self) -> &mut Self {
+		self.style.no_underline();
+		self
+	}
+
+	pub fn underline(&mut self) -> &mut Self {
+		self.style.underline();
+		self
+	}
+
+	pub fn double_underline(&mut self) -> &mut Self {
+		self.style.double_underline();
+		self
+	}
+
+	pub fn num_underlines(&self) -> u8 {
+		self.style.num_underlines()
+	}
+
+	pub fn has_underlines(&self) -> bool {
+		self.style.has_underlines()
+	}
+
+	pub fn is_single_underlined(&self) -> bool {
+		self.style.is_single_underlined()
+	}
+
+	pub fn is_double_underlined(&self) -> bool {
+		self.style.is_double_underlined()
+	}
+
+	pub fn stop_blink(&mut self) -> &mut Self {
+		self.style.stop_blink();
+		self
+	}
+
+	pub fn blink(&mut self) -> &mut Self {
+		self.style.blink();
+		self
+	}
+
+	pub fn fast_blink(&mut self) -> &mut Self {
+		self.style.fast_blink();
+		self
+	}
+
+	pub fn is_blinking(&self) -> bool {
+		self.style.is_blinking()
+	}
+
+	pub fn is_slowly_blinking(&self) -> bool {
+		self.style.is_slowly_blinking()
+	}
+
+	pub fn is_quickly_blinking(&self) -> bool {
+		self.style.is_quickly_blinking()
+	}
+
+	pub fn invert(&mut self) -> &mut Self {
+		self.style.invert();
+		self
+	}
+
+	pub fn uninvert(&mut self) -> &mut Self {
+		self.style.uninvert();
+		self
+	}
+
+	pub const fn is_inverted(&self) -> bool {
+		self.style.is_inverted()
+	}
+
+	pub fn hide(&mut self) -> &mut Self {
+		self.style.hide();
+		self
+	}
+
+	pub fn unhide(&mut self) -> &mut Self {
+		self.style.unhide();
+		self
+	}
+
+	pub const fn is_hidden(&self) -> bool {
+		self.style.is_hidden()
+	}
+}
+
 #[cfg(test)]
 mod test {
 
@@ -648,9 +786,7 @@ mod test {
 
 	#[test]
 	fn is_setup() {
-		let mut chalk1 = Chalk::new();
-		chalk1.red().println(&"This is red");
-		let mut chalk2 = Chalk::new();
-		chalk2.blue().println(&"This is blue");
+		Chalk::new().red().println(&"This is red");
+		Chalk::new().blue().println(&"This is blue");
 	}
 }

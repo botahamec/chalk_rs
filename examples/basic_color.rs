@@ -1,11 +1,11 @@
 extern crate chalk_rs;
-use chalk_rs::prelude::*;
+use chalk_rs::Chalk;
 
 fn main() {
 	// basic colors
-	let mut chalk = BasicChalk::new();
+	let mut chalk = Chalk::new();
 	chalk.bg_white().black().println(&"This is black");
-	chalk.reset_bg().red().println(&"This is red");
+	chalk.default_background().red().println(&"This is red");
 	chalk.green().println(&"This is green");
 	chalk.yellow().println(&"This is yellow");
 	chalk.blue().println(&"This is blue");
@@ -27,13 +27,13 @@ fn main() {
 	println!();
 
 	// basic backgrounds
-	chalk.reset_color().bg_red().println(&"This is red");
+	chalk.default_color().bg_red().println(&"This is red");
 	chalk.bg_green().println(&"This is green");
 	chalk.bg_yellow().println(&"This is yellow");
 	chalk.bg_blue().println(&"This is blue");
 	chalk.bg_magenta().println(&"This is magenta");
 	chalk.black().bg_white().println(&"This is white");
-	chalk.reset_color().bg_black().println(&"This is black");
+	chalk.default_color().bg_black().println(&"This is black");
 	chalk.bg_grey().println(&"This is grey");
 
 	println!();

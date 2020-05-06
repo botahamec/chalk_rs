@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `chalk_rs` crate."><meta name="keywords" content="rust, rustlang, rust-lang, chalk_rs"><title>chalk_rs - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../dark.css"><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="shortcut icon" href="../favicon.ico"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../chalk_rs/index.html'><div class='logo-container'><img src='../rust-logo.png' alt='logo'></div></a><p class='location'>Crate chalk_rs</p><div class="sidebar-elems"><a id='all-types' href='all.html'><p>See all chalk_rs's items</p></a><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#traits">Traits</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'chalk_rs', ty: 'mod', relpath: '../'};</script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../src/chalk_rs/lib.rs.html#1-226' title='goto source code'>[src]</a></span><span class='in-band'>Crate <a class="mod" href=''>chalk_rs</a></span></h1><div class='docblock'><p>A crate for terminal colors and styles</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">chalk_rs</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">fn</span> <span class="ident">main</span>() {
+	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">chalk</span> <span class="op">=</span> <span class="ident">BasicChalk</span>::<span class="ident">new</span>();
+	<span class="ident">chalk</span>.<span class="ident">red</span>().<span class="ident">println</span>(<span class="kw-2">&amp;</span><span class="string">&quot;This text is red&quot;</span>);
+	<span class="ident">chalk</span>.<span class="ident">bold</span>().<span class="ident">println</span>(<span class="kw-2">&amp;</span><span class="string">&quot;Now it&#39;s red AND bold&quot;</span>);
+}</pre></div>
+<p>That's an example of basic color. There are three types of color in chalk:
+BasicChalk, AnsiChalk, and RgbChalk.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">chalk_rs</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+
+<span class="kw">fn</span> <span class="ident">main</span>() {
+	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ansi</span> <span class="op">=</span> <span class="ident">AnsiChalk</span>::<span class="ident">new</span>();
+	<span class="ident">ansi</span>.<span class="ident">ansi</span>(<span class="number">56</span>).<span class="ident">println</span>(<span class="kw-2">&amp;</span><span class="string">&quot;Purple-ish&quot;</span>);
+	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rgb</span> <span class="op">=</span> <span class="ident">RgbChalk</span>::<span class="ident">new</span>();
+	<span class="ident">rgb</span>.<span class="ident">rgb</span>(<span class="number">25</span>, <span class="number">125</span>, <span class="number">63</span>).<span class="ident">println</span>(<span class="kw-2">&amp;</span><span class="string">&quot;This color is ugly&quot;</span>);
+}</pre></div>
+<p>RgbChalk is able to use ANSI and Basic color. AnsiChalk is able to use basic
+colors. However, AnsiChal cannot use RGB and BasicChalk can't use RGB
+or ANSI.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">chalk_rs</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+
+<span class="kw">fn</span> <span class="ident">main</span>() {
+	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rgb</span> <span class="op">=</span> <span class="ident">RgbChalk</span>::<span class="ident">new</span>();
+	<span class="ident">rgb</span>.<span class="ident">ansi</span>(<span class="number">56</span>).<span class="ident">println</span>(<span class="kw-2">&amp;</span><span class="string">&quot;Purple-ish&quot;</span>);
+	<span class="ident">rgb</span>.<span class="ident">red</span>().<span class="ident">println</span>(<span class="kw-2">&amp;</span><span class="string">&quot;red&quot;</span>);
+}</pre></div>
+</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table><tr class='module-item'><td><a class="mod" href="ansi_chalk/index.html" title='chalk_rs::ansi_chalk mod'>ansi_chalk</a></td><td class='docblock-short'><p>Chalk with 256 color support</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="basic_chalk/index.html" title='chalk_rs::basic_chalk mod'>basic_chalk</a></td><td class='docblock-short'><p>Basic 16 colors</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="prelude/index.html" title='chalk_rs::prelude mod'>prelude</a></td><td class='docblock-short'><p>Some basic imports</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="rgb_chalk/index.html" title='chalk_rs::rgb_chalk mod'>rgb_chalk</a></td><td class='docblock-short'><p>True-color 16 million colors</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="style/index.html" title='chalk_rs::style mod'>style</a></td><td class='docblock-short'><p>Styling for the text</p>
+</td></tr></table><h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
+<table><tr class='module-item'><td><a class="macro" href="macro.chalk_trait_fns.html" title='chalk_rs::chalk_trait_fns macro'>chalk_trait_fns</a></td><td class='docblock-short'><p>adds a set of functions to the trait </p>
+</td></tr><tr class='module-item'><td><a class="macro" href="macro.enum_default.html" title='chalk_rs::enum_default macro'>enum_default</a></td><td class='docblock-short'><p>Implements Default for an enum.
+Requires the enum to have a variant named &quot;Default&quot;</p>
+</td></tr><tr class='module-item'><td><a class="macro" href="macro.enum_display.html" title='chalk_rs::enum_display macro'>enum_display</a></td><td class='docblock-short'><p>Implements the Display trait for an enum.
+The output is the enum as a number</p>
+</td></tr><tr class='module-item'><td><a class="macro" href="macro.enum_fmt_impl.html" title='chalk_rs::enum_fmt_impl macro'>enum_fmt_impl</a></td><td class='docblock-short'><p>Implements a fmt trait for an enum.
+The output is the enum as a number</p>
+</td></tr><tr class='module-item'><td><a class="macro" href="macro.enum_impls.html" title='chalk_rs::enum_impls macro'>enum_impls</a></td><td class='docblock-short'><p>Implements several traits for a macro </p>
+</td></tr><tr class='module-item'><td><a class="macro" href="macro.fn_alias.html" title='chalk_rs::fn_alias macro'>fn_alias</a></td><td class='docblock-short'><p>Sets up an alias for a function </p>
+</td></tr><tr class='module-item'><td><a class="macro" href="macro.impl_chalk_style.html" title='chalk_rs::impl_chalk_style macro'>impl_chalk_style</a></td><td class='docblock-short'></td></tr><tr class='module-item'><td><a class="macro" href="macro.impl_chalk_traits.html" title='chalk_rs::impl_chalk_traits macro'>impl_chalk_traits</a></td><td class='docblock-short'></td></tr><tr class='module-item'><td><a class="macro" href="macro.impl_enums.html" title='chalk_rs::impl_enums macro'>impl_enums</a></td><td class='docblock-short'><p>Implements several enums </p>
+</td></tr><tr class='module-item'><td><a class="macro" href="macro.set_style.html" title='chalk_rs::set_style macro'>set_style</a></td><td class='docblock-short'><p>Sets the style to a specific vector </p>
+</td></tr><tr class='module-item'><td><a class="macro" href="macro.set_styles.html" title='chalk_rs::set_styles macro'>set_styles</a></td><td class='docblock-short'></td></tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+<table><tr class='module-item'><td><a class="trait" href="trait.Chalk.html" title='chalk_rs::Chalk trait'>Chalk</a></td><td class='docblock-short'><p>For all Chalks with different color types </p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../";window.currentCrate = "chalk_rs";</script><script src="../aliases.js"></script><script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>

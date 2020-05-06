@@ -1,9 +1,7 @@
-
 #[derive(Copy, Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct AnsiColor(u8);
 
 impl AnsiColor {
-
 	#[inline(always)]
 	pub const fn from_num(color: u8) -> Self {
 		AnsiColor(color)

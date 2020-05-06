@@ -91,7 +91,6 @@ pub struct RgbColor {
 }
 
 impl RgbColor {
-
 	pub const fn new(red: u8, green: u8, blue: u8) -> Self {
 		RgbColor { red, green, blue }
 	}

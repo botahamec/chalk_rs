@@ -1,6 +1,5 @@
 use crate::{
-	enum_default, enum_display, enum_fmt_impl, enum_impls,
-	impl_enums,
+	enum_default, enum_display, enum_fmt_impl, enum_impls, impl_enums,
 };
 
 use std::fmt::Binary;
@@ -70,10 +69,6 @@ impl Display for StyleMap {
 }
 
 impl StyleMap {
-	pub fn new() -> Self {
-		Self::default()
-	}
-
 	pub fn reset_style(&mut self) -> &mut Self {
 		self.reset_weight();
 		self.stop_blink();

@@ -2,40 +2,32 @@
 A crate for terminal colors and styles
 
 ```rust
-use chalk_rs::prelude::*;
-fn main() {
-	let mut chalk = BasicChalk::new();
-	chalk.red().println(&"This text is red");
-	chalk.bold().println(&"Now it's red AND bold");
-}
+use chalk_rs::Chalk;
+
+let mut chalk = Chalk::new();
+chalk.red().println(&"This text is red");
+chalk.bold().println(&"Now it's red AND bold");
 ```
 
 That's an example of basic color. There are three types of color in chalk:
 BasicChalk, AnsiChalk, and RgbChalk.
 
 ```rust
-use chalk_rs::prelude::*;
+use chalk_rs::Chalk;
 
-fn main() {
-	let mut ansi = AnsiChalk::new();
-	ansi.ansi(56).println(&"Purple-ish");
-	let mut rgb = RgbChalk::new();
-	rgb.rgb(25, 125, 63).println(&"This color is ugly");
-}
+
+let mut chalk = Chalk::new();
+chalk.ansi(56).println(&"Purple-ish");
+chalk.rgb(25, 125, 63).println(&"This color is ugly");
 ```
 
-RgbChalk is able to use ANSI and Basic color. AnsiChalk is able to use basic
-colors. However, AnsiChal cannot use RGB and BasicChalk can't use RGB
-or ANSI.
+Chalk can aldo do *styling*! Here's an example:
 
 ```rust
-use chalk_rs::prelude::*;
+use chalk_rs::Chalk;
 
-fn main() {
-	let mut rgb = RgbChalk::new();
-	rgb.ansi(56).println(&"Purple-ish");
-	rgb.red().println(&"red");
-}
+let mut chalk = Chalk::new();
+chalk.bold().println(&"Bold!");
 ```
 */
 
@@ -47,13 +39,13 @@ mod rgb_chalk;
 mod style;
 mod utils;
 
-use basic_chalk::BasicColor;
 use ansi_chalk::AnsiColor;
+use basic_chalk::BasicColor;
 use rgb_chalk::RgbColor;
 use style::StyleMap;
 
-use std::string::ToString;
 use std::fmt::Display;
+use std::string::ToString;
 
 #[cfg(windows)]
 use winapi::{
@@ -65,17 +57,17 @@ use winapi::{
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 enum ChalkType {
-	DefaultColor,
-	BasicColor(BasicColor),
-	AnsiColor(AnsiColor),
-	RgbColor(RgbColor)
+	Default,
+	Basic(BasicColor),
+	Ansi(AnsiColor),
+	Rgb(RgbColor),
 }
 
 macro_rules! basic_color {
 	($fn_name: ident, $color: ident) => {
 		#[inline(always)]
 		pub const fn $fn_name() -> Self {
-			Self::BasicColor(BasicColor::$color)
+			Self::Basic(BasicColor::$color)
 		}
 	};
 }
@@ -92,7 +84,7 @@ macro_rules! basic_alias {
 impl ChalkType {
 	#[inline(always)]
 	pub const fn default() -> Self {
-		Self::DefaultColor
+		Self::Default
 	}
 
 	basic_color!(black, Black);
@@ -118,46 +110,62 @@ impl ChalkType {
 
 	#[inline(always)]
 	pub const fn ansi(color: u8) -> Self {
-		Self::AnsiColor(AnsiColor::from_num(color))
+		Self::Ansi(AnsiColor::from_num(color))
 	}
 
 	#[inline(always)]
 	pub const fn rgb(r: u8, g: u8, b: u8) -> Self {
-		Self::RgbColor(RgbColor::new(r, g, b))
+		Self::Rgb(RgbColor::new(r, g, b))
 	}
 }
 
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+impl Default for ChalkType {
+	#[inline(always)]
+	fn default() -> Self {
+		Self::default()
+	}
+}
+
+#[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Chalk {
 	foreground: ChalkType,
 	background: ChalkType,
-	style: StyleMap
+	style: StyleMap,
 }
 
 impl Chalk {
 	#[inline(always)]
 	fn foreground_to_string(&self) -> String {
 		match &self.foreground {
-			ChalkType::DefaultColor => String::new(),
-			ChalkType::BasicColor(c) => format!("\x1b[{}m", c.as_foreground_color()),
-			ChalkType::AnsiColor(c) => format!("\x1b[38;5;{}m", c.as_num()),
-			ChalkType::RgbColor(c) => format!("\x1b[38;2;{};{};{}m", c.get_red(), c.get_green(), c.get_blue())
+			ChalkType::Default => String::new(),
+			ChalkType::Basic(c) => format!("\x1b[{}m", c.as_foreground_color()),
+			ChalkType::Ansi(c) => format!("\x1b[38;5;{}m", c.as_num()),
+			ChalkType::Rgb(c) => format!(
+				"\x1b[38;2;{};{};{}m",
+				c.get_red(),
+				c.get_green(),
+				c.get_blue()
+			),
 		}
 	}
 
 	#[inline(always)]
 	fn background_to_string(&self) -> String {
 		match &self.background {
-			ChalkType::DefaultColor => String::new(),
-			ChalkType::BasicColor(c) => format!("\x1b[{}m", c.as_background_color()),
-			ChalkType::AnsiColor(c) => format!("\x1b[48;5;{}m", c.as_num()),
-			ChalkType::RgbColor(c) => format!("\x1b[48;2;{};{};{}m", c.get_red(), c.get_green(), c.get_blue())
+			ChalkType::Default => String::new(),
+			ChalkType::Basic(c) => format!("\x1b[{}m", c.as_background_color()),
+			ChalkType::Ansi(c) => format!("\x1b[48;5;{}m", c.as_num()),
+			ChalkType::Rgb(c) => format!(
+				"\x1b[48;2;{};{};{}m",
+				c.get_red(),
+				c.get_green(),
+				c.get_blue()
+			),
 		}
 	}
 }
 
 impl Display for Chalk {
-
 	fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		let mut string = String::with_capacity(9);
 		string += self.foreground_to_string().as_str();
@@ -169,20 +177,17 @@ impl Display for Chalk {
 
 /** For all Chalks with different color types */
 impl Chalk {
-
 	/// Creates a [`Chalk`] with a black background and a white foreground
 	///
 	/// # Example
 	///
 	/// ```rust
-	/// use chalk_rs::prelude::*;
+	/// use chalk_rs::Chalk;
 	///
-	/// fn main() {
-	///     let mut chalk = BasicChalk::new();
-	///     // the chalk can be used here
-	/// }
+	/// let mut chalk = Chalk::new();
+	/// // the chalk can be used here
 	/// ```
-	pub fn new<'a>() -> Self {
+	pub fn new() -> Self {
 		// makes it work on windows
 		#[cfg(windows)]
 		unsafe {
@@ -201,11 +206,7 @@ impl Chalk {
 			}
 		}
 
-		Self {
-			foreground: ChalkType::default(),
-			background: ChalkType::default(),
-			style: StyleMap::new()
-		}
+		Self::default()
 	}
 
 	/// Formats a string using the style of the given [`Chalk`].
@@ -216,12 +217,9 @@ impl Chalk {
 	/// For example:
 	///
 	/// ```rust
-	/// # use chalk_rs::prelude::*;
-	/// #
-	/// # fn main() {
-	/// #   let mut chalk = BasicChalk::new();
+	/// # use chalk_rs::Chalk;
+	/// # let mut chalk = Chalk::new();
 	/// chalk.yellow().string(&"this is yellow");
-	/// # }
 	/// ```
 	/// # Arguments
 	///
@@ -231,14 +229,12 @@ impl Chalk {
 	/// # Example
 	///
 	/// ```rust
-	/// use chalk_rs::prelude::*;
+	/// use chalk_rs::Chalk;
 	///
-	/// fn main() {
-	///     let mut chalk = BasicChalk::new();
-	///     chalk.yellow().string(&"this is yellow");
-	/// }
+	/// let mut chalk = Chalk::new();
+	/// let text = chalk.yellow().string(&"this is yellow");
 	/// ```
-	fn string(&self, string: &dyn ToString) -> String {
+	pub fn string(&self, string: &dyn ToString) -> String {
 		format!("{}{}\x1b[m", self.to_string(), string.to_string())
 	}
 
@@ -250,11 +246,9 @@ impl Chalk {
 	/// For example:
 	///
 	/// ```rust
-	/// # use chalk_rs::prelude::*;
-	/// # fn main() {
-	/// # let mut chalk = BasicChalk::new();
+	/// # use chalk_rs::Chalk;
+	/// # let mut chalk = Chalk::new();
 	/// chalk.yellow().print(&"this is yellow");
-	/// # }
 	/// ```
 	///
 	/// # Arguments
@@ -265,11 +259,10 @@ impl Chalk {
 	/// # Example
 	///
 	/// ```rust
-	/// use chalk_rs::prelude::*;
-	/// fn main() {
-	///     let mut chalk = BasicChalk::new();
-	///    chalk.yellow().print(&"this is yellow");
-	/// }
+	/// use chalk_rs::Chalk;
+	///
+	/// let mut chalk = Chalk::new();
+	/// chalk.yellow().print(&"this is yellow");
 	/// ```
 	pub fn print(&self, string: &dyn ToString) -> String {
 		let output = self.string(string);
@@ -285,11 +278,9 @@ impl Chalk {
 	/// For example:
 	///
 	/// ```rust
-	/// # use chalk_rs::prelude::*;
-	/// # fn main() {
-	/// # let mut chalk = BasicChalk::new();
+	/// # use chalk_rs::Chalk;
+	/// # let mut chalk = Chalk::new();
 	/// chalk.yellow().println(&"this is yellow");
-	/// # }
 	/// ```
 	///
 	/// # Arguments
@@ -300,11 +291,10 @@ impl Chalk {
 	/// # Example
 	///
 	/// ```rust
-	/// use chalk_rs::prelude::*;
-	/// fn main() {
-	///     let mut chalk = BasicChalk::new();
-	///    chalk.yellow().println(&"this is yellow");
-	/// }
+	/// use chalk_rs::Chalk;
+	///
+	/// let mut chalk = Chalk::new();
+	/// chalk.yellow().println(&"this is yellow");
 	/// ```
 	pub fn println(&self, string: &dyn ToString) -> String {
 		let output = self.string(string);
@@ -324,7 +314,6 @@ macro_rules! color_fg {
 }
 
 impl Chalk {
-
 	#[inline(always)]
 	pub fn default_color(&mut self) -> &mut Self {
 		self.foreground = ChalkType::default();
@@ -375,7 +364,6 @@ macro_rules! color_bg {
 }
 
 impl Chalk {
-
 	color_bg!(default_background, default);
 	color_bg!(bg_black, black);
 	color_bg!(bg_red, red);

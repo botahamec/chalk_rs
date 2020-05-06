@@ -1,4 +1,3 @@
-
 /** Foreground color using basic color */
 #[derive(Copy, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum BasicColor {
@@ -21,7 +20,6 @@ pub enum BasicColor {
 }
 
 impl BasicColor {
-
 	#[inline(always)]
 	pub const fn as_foreground_color(self) -> u8 {
 		self as u8

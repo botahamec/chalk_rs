@@ -53,6 +53,7 @@ use rgb_chalk::RgbColor;
 use style::StyleMap;
 
 use std::string::ToString;
+use std::fmt::Display;
 
 #[cfg(windows)]
 use winapi::{
@@ -190,8 +191,42 @@ pub struct Chalk {
 	style: StyleMap
 }
 
+impl Chalk {
+	#[inline(always)]
+	fn foreground_to_string(&self) -> String {
+		match &self.foreground {
+			ChalkType::DefaultColor => String::new(),
+			ChalkType::BasicColor(c) => format!("\x1b[{}m", c.as_foreground_color()),
+			ChalkType::AnsiColor(c) => format!("\x1b[38;5;{}m", c.as_num()),
+			ChalkType::RgbColor(c) => format!("\x1b[38;2;{};{};{}m", c.get_red(), c.get_green(), c.get_blue())
+		}
+	}
+
+	#[inline(always)]
+	fn background_to_string(&self) -> String {
+		match &self.background {
+			ChalkType::DefaultColor => String::new(),
+			ChalkType::BasicColor(c) => format!("\x1b[{}m", c.as_background_color()),
+			ChalkType::AnsiColor(c) => format!("\x1b[48;5;{}m", c.as_num()),
+			ChalkType::RgbColor(c) => format!("\x1b[48;2;{};{};{}m", c.get_red(), c.get_green(), c.get_blue())
+		}
+	}
+}
+
+impl Display for Chalk {
+
+	fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		let mut string = String::with_capacity(9);
+		string += self.foreground_to_string().as_str();
+		string += self.background_to_string().as_str();
+		string += self.style.to_string().as_str();
+		write!(fmt, "{}", string)
+	}
+}
+
 /** For all Chalks with different color types */
 impl Chalk {
+
 	/// Creates a [`Chalk`] with a black background and a white foreground
 	///
 	/// # Example
@@ -204,7 +239,8 @@ impl Chalk {
 	///     // the chalk can be used here
 	/// }
 	/// ```
-	fn new() -> Self {
+	#[inline(always)]
+	pub fn new() -> Self {
 		// makes it work on windows
 		#[cfg(windows)]
 		unsafe {

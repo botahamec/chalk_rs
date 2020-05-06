@@ -1,5 +1,5 @@
 use crate::{
-	enum_default, enum_display, enum_fmt_impl, enum_impls,
+	chalk_trait_fns, enum_default, enum_display, enum_fmt_impl, enum_impls,
 	impl_enums,
 };
 
@@ -74,65 +74,74 @@ impl Display for StyleMap {
 }
 
 impl StyleMap {
-	pub const fn new() -> Self {
+	pub fn new() -> Self {
 		Self::default()
 	}
 
-	pub const fn reset_style(&mut self) {
+	pub fn reset_style(&mut self) -> &mut Self {
 		self.reset_weight();
 		self.stop_blink();
-		self.stop_underline();
+		self.no_underline();
 		self.unitalicize();
 		self.uninvert();
 		self.unhide();
+		self
 	}
 
-	pub const fn reset_weight(&mut self) {
+	pub fn reset_weight(&mut self) -> &mut Self {
 		self.weight = Weight::Default;
+		self
 	}
 
-	pub const fn bold(&mut self) {
+	pub fn bold(&mut self) -> &mut Self {
 		self.weight = Weight::Bold;
+		self
 	}
 
-	pub const fn dim(&mut self) {
+	pub fn dim(&mut self) -> &mut Self {
 		self.weight = Weight::Dim;
+		self
 	}
 
-	pub const fn is_normal_weight(&self) -> bool {
+	pub fn is_normal_weight(&self) -> bool {
 		self.weight == Weight::Default
 	}
 
-	pub const fn is_bold(&self) -> bool {
+	pub fn is_bold(&self) -> bool {
 		self.weight == Weight::Bold
 	}
 
-	pub const fn is_dim(&self) -> bool {
+	pub fn is_dim(&self) -> bool {
 		self.weight == Weight::Dim
 	}
 
-	pub const fn italic(&mut self) {
+	pub fn italic(&mut self) -> &mut Self {
 		self.italic = true;
+		self
 	}
 
-	pub const fn unitalicize(&mut self) {
+	pub fn unitalicize(&mut self) -> &mut Self {
 		self.italic = false;
+		self
 	}
 
 	pub const fn is_italicized(&self) -> bool {
 		self.italic
 	}
 
-	pub const fn stop_underline(&mut self) {
+	pub fn no_underline(&mut self) -> &mut Self {
 		self.underline = Underline::Default;
+		self
 	}
 
-	pub const fn underline(&mut self) {
+	pub fn underline(&mut self) -> &mut Self {
 		self.underline = Underline::Single;
+		self
 	}
 
-	pub const fn double_underline(&mut self) {
+	pub fn double_underline(&mut self) -> &mut Self {
 		self.underline = Underline::Double;
+		self
 	}
 
 	pub fn num_underlines(&self) -> u8 {
@@ -143,60 +152,67 @@ impl StyleMap {
 		}
 	}
 
-	pub const fn has_underlines(&self) -> bool {
+	pub fn has_underlines(&self) -> bool {
 		self.underline != Underline::Default
 	}
 
-	pub const fn is_single_underlined(&self) -> bool {
+	pub fn is_single_underlined(&self) -> bool {
 		self.underline == Underline::Single
 	}
 
-	pub const fn is_double_underlined(&self) -> bool {
+	pub fn is_double_underlined(&self) -> bool {
 		self.underline == Underline::Double
 	}
 
-	pub const fn stop_blink(&mut self) {
+	pub fn stop_blink(&mut self) -> &mut Self {
 		self.blink = Blink::Default;
+		self
 	}
 
-	pub const fn blink(&mut self) {
+	pub fn blink(&mut self) -> &mut Self {
 		self.blink = Blink::Slow;
+		self
 	}
 
-	pub const fn fast_blink(&mut self) {
+	pub fn fast_blink(&mut self) -> &mut Self {
 		self.blink = Blink::Fast;
+		self
 	}
 
-	pub const fn is_blinking(&self) -> bool {
+	pub fn is_blinking(&self) -> bool {
 		self.blink != Blink::Default
 	}
 
-	pub const fn is_slowly_blinking(&self) -> bool {
+	pub fn is_slowly_blinking(&self) -> bool {
 		self.blink == Blink::Slow
 	}
 
-	pub const fn is_quickly_blinking(&self) -> bool {
+	pub fn is_quickly_blinking(&self) -> bool {
 		self.blink == Blink::Fast
 	}
 
-	pub const fn invert(&mut self) {
+	pub fn invert(&mut self) -> &mut Self {
 		self.invert = true;
+		self
 	}
 
-	pub const fn uninvert(&mut self) {
+	pub fn uninvert(&mut self) -> &mut Self {
 		self.invert = false;
+		self
 	}
 
 	pub const fn is_inverted(&self) -> bool {
 		self.invert
 	}
 
-	pub const fn hide(&mut self) {
+	pub fn hide(&mut self) -> &mut Self {
 		self.hidden = true;
+		self
 	}
 
-	pub const fn unhide(&mut self) {
+	pub fn unhide(&mut self) -> &mut Self {
 		self.hidden = false;
+		self
 	}
 
 	pub const fn is_hidden(&self) -> bool {

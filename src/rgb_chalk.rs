@@ -98,17 +98,17 @@ impl RgbColor {
 	}
 
 	#[inline(always)]
-	pub const fn get_red(self) -> u8 {
+	pub const fn get_red(&self) -> u8 {
 		self.red
 	}
 
 	#[inline(always)]
-	pub const fn get_green(self) -> u8 {
+	pub const fn get_green(&self) -> u8 {
 		self.green
 	}
 
 	#[inline(always)]
-	pub const fn get_blue(self) -> u8 {
+	pub const fn get_blue(&self) -> u8 {
 		self.blue
 	}
 }

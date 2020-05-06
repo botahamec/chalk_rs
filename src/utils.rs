@@ -79,11 +79,3 @@ macro_rules! fn_alias {
 		fn $alias(&mut self) -> &mut Self {self.$fn()}
 	};
 }
-
-#[macro_export]
-macro_rules! impl_chalk_traits {
-	($chalk: ident) => {
-		impl_chalk_style!($chalk);
-		impl Chalk for $chalk {}
-	};
-}

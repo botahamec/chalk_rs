@@ -1,0 +1,67 @@
+[tasks.format]
+install_crate = "rustfmt"
+command = "cargo"
+args = ["fmt", "--", "--emit=files"]
+
+[tasks.make_docs]
+install_crate = "rustdoc"
+command = "cargo"
+args = ["doc"]
+
+[tasks.document]
+script_runner = "@shell"
+dependencies = ["make_docs"]
+script = [
+	'''mv target/doc doc'''
+]
+
+[tasks.basic_example]
+command = "cargo"
+args = ["run", "--example", "basic_color"]
+
+[tasks.ansi_example]
+command = "cargo"
+args = ["run", "--example", "ansi_color"]
+
+[tasks.rgb_example]
+command = "cargo"
+args = ["run", "--example", "rgb_color"]
+
+[tasks.style_example]
+command = "cargo"
+args = ["run", "--example", "style"]
+
+[tasks.run_examples]
+dependencies = [
+	"basic_example",
+	"ansi_example",
+	"rgb_example",
+	"style_example"
+]
+
+[tasks.run_tests]
+command = "cargo"
+args = ["test"]
+dependencies = ["clean"]
+
+[tasks.test]
+dependencies = [
+	"run_tests",
+	"run_examples"
+]
+
+[tasks.flow]
+dependencies = [
+	"test",
+	"format",
+	"document"
+]
+
+[tasks.clean]
+args = ["version"]
+
+[tasks.empty]
+
+[config]
+init_task = "empty"
+end_task = "empty"

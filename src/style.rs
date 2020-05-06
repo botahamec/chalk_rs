@@ -1,6 +1,5 @@
 use crate::{
-	chalk_trait_fns, enum_default, enum_display, enum_fmt_impl, enum_impls,
-	impl_enums,
+	enum_default, enum_display, enum_fmt_impl, enum_impls, impl_enums,
 };
 
 use std::fmt::Binary;
@@ -17,13 +16,6 @@ enum Weight {
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-enum Blink {
-	Default,
-	Slow = 5,
-	Fast = 6,
-}
-
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 enum Underline {
 	Default,
 	Single = 4,
@@ -33,14 +25,14 @@ enum Underline {
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct StyleMap {
 	weight: Weight,
-	blink: Blink,
 	underline: Underline,
 	italic: bool,
+	blink: bool,
 	invert: bool,
-	hidden: bool,
+	hidden: bool
 }
 
-impl_enums!(Weight, Blink, Underline);
+impl_enums!(Weight, Underline);
 
 impl Display for StyleMap {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -51,16 +43,15 @@ impl Display for StyleMap {
 			ansi_str += format!("\x1b[{}m", self.weight).as_str();
 		}
 
-		if self.blink != Blink::Default {
-			ansi_str += format!("\x1b[{}m", self.blink).as_str();
-		}
-
 		if self.underline != Underline::Default {
 			ansi_str += format!("\x1b[{}m", self.underline).as_str();
 		}
 
 		if self.italic {
 			ansi_str += "\x1b[3m";
+		}
+		if self.blink {
+			ansi_str += "\x1b[6m"
 		}
 		if self.invert {
 			ansi_str += "\x1b[7m";
@@ -74,15 +65,11 @@ impl Display for StyleMap {
 }
 
 impl StyleMap {
-	pub fn new() -> Self {
-		Self::default()
-	}
-
 	pub fn reset_style(&mut self) -> &mut Self {
 		self.reset_weight();
 		self.stop_blink();
 		self.no_underline();
-		self.unitalicize();
+		self.unitalic();
 		self.uninvert();
 		self.unhide();
 		self
@@ -120,12 +107,12 @@ impl StyleMap {
 		self
 	}
 
-	pub fn unitalicize(&mut self) -> &mut Self {
+	pub fn unitalic(&mut self) -> &mut Self {
 		self.italic = false;
 		self
 	}
 
-	pub fn is_italicized(&self) -> bool {
+	pub const fn is_italicized(&self) -> bool {
 		self.italic
 	}
 
@@ -165,30 +152,17 @@ impl StyleMap {
 	}
 
 	pub fn stop_blink(&mut self) -> &mut Self {
-		self.blink = Blink::Default;
+		self.blink = false;
 		self
 	}
 
 	pub fn blink(&mut self) -> &mut Self {
-		self.blink = Blink::Slow;
+		self.blink = true;
 		self
 	}
 
-	pub fn fast_blink(&mut self) -> &mut Self {
-		self.blink = Blink::Fast;
-		self
-	}
-
-	pub fn is_blinking(&self) -> bool {
-		self.blink != Blink::Default
-	}
-
-	pub fn is_slowly_blinking(&self) -> bool {
-		self.blink == Blink::Slow
-	}
-
-	pub fn is_quickly_blinking(&self) -> bool {
-		self.blink == Blink::Fast
+	pub const fn is_blinking(&self) -> bool {
+		self.blink
 	}
 
 	pub fn invert(&mut self) -> &mut Self {
@@ -201,7 +175,7 @@ impl StyleMap {
 		self
 	}
 
-	pub fn is_inverted(&self) -> bool {
+	pub const fn is_inverted(&self) -> bool {
 		self.invert
 	}
 
@@ -215,78 +189,7 @@ impl StyleMap {
 		self
 	}
 
-	pub fn is_hidden(&self) -> bool {
+	pub const fn is_hidden(&self) -> bool {
 		self.hidden
 	}
-}
-
-/** A style to be applied to the text */
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub enum Style {
-	Default = 0,
-	Bold = 1,
-	Dim = 2,
-	Italic = 3,
-	Underline = 4,
-	Blink = 5,
-	FastBlink = 6,
-	Invert = 7,
-	Hidden = 8,
-	DoubleUnderline = 21,
-}
-
-enum_impls!(Style);
-
-/** Sets the style to a specific vector */
-#[macro_export]
-macro_rules! set_style {
-	($fn_name: ident) => {
-		/** sets the style */
-		fn $fn_name(&mut self) -> &mut Self {
-			self.style.$fn_name();
-			self
-		}
-	};
-}
-
-#[macro_export]
-macro_rules! set_styles {
-	($($fn_name: ident),*) => {
-		$(set_style!($fn_name);)*
-	};
-}
-
-pub trait ChalkStyle {
-	chalk_trait_fns!(
-		reset_style,
-		hide,
-		bold,
-		dim,
-		italic,
-		underline,
-		invert,
-		blink,
-		fast_blink,
-		double_underline
-	);
-}
-
-#[macro_export]
-macro_rules! impl_chalk_style {
-	($struct : ident) => {
-		impl ChalkStyle for $struct {
-			set_styles!(
-				reset_style,
-				hide,
-				bold,
-				dim,
-				italic,
-				underline,
-				invert,
-				blink,
-				fast_blink,
-				double_underline
-			);
-		}
-	};
 }

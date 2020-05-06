@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["AnsiChalk","A chalk with 255 colors "]],"trait":[["ChalkAnsiColor",""]]});

@@ -1,5 +1,5 @@
 extern crate chalk_rs;
-use chalk_rs::prelude::*;
+use chalk_rs::Chalk;
 
 use std::convert::TryInto;
 
@@ -7,7 +7,7 @@ fn main() {
 	let line_length = 78;
 
 	// foreground colors
-	let mut chalk = RgbChalk::new();
+	let mut chalk = Chalk::new();
 	for i in 0..line_length {
 		let r: u16 = 255 - (i * 255 / line_length);
 		let mut g: u16 = i * 510 / line_length;
@@ -34,7 +34,7 @@ fn main() {
 	println!();
 
 	// background color
-	chalk.reset_color();
+	chalk.default_color();
 	for i in 0..line_length {
 		let r: u16 = 255 - (i * 255 / line_length);
 		let mut g: u16 = i * 510 / line_length;

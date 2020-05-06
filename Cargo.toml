@@ -1,6 +1,6 @@
 [package]
 name = "chalk_rs"
-version = "0.3.1"
+version = "1.0.0"
 authors = ["Botahamec <botahamec@outlook.com>"]
 edition = "2018"
 description = "A crate which adds colors and styles to your terminal program"
@@ -10,9 +10,6 @@ keywords = ["chalk", "color", "style", "terminal", "cli"]
 categories = ["command-line-interface"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[[example]]
-name = "basic_color"
 
 [target.'cfg(windows)'.dependencies]
 winapi = {version = "0.3.8", features = ["consoleapi", "processenv", "winbase"]}

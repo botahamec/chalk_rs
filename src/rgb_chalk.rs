@@ -91,18 +91,23 @@ pub struct RgbColor {
 }
 
 impl RgbColor {
+
+	#[inline(always)]
 	pub const fn new(red: u8, green: u8, blue: u8) -> Self {
 		RgbColor { red, green, blue }
 	}
 
+	#[inline(always)]
 	pub const fn get_red(self) -> u8 {
 		self.red
 	}
 
+	#[inline(always)]
 	pub const fn get_green(self) -> u8 {
 		self.green
 	}
 
+	#[inline(always)]
 	pub const fn get_blue(self) -> u8 {
 		self.blue
 	}

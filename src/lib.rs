@@ -171,6 +171,16 @@ impl ChalkType {
 	pub const fn white() -> Self {
 		Self::BasicColor(BasicColor::White)
 	}
+
+	#[inline(always)]
+	pub const fn ansi(color: u8) -> Self {
+		Self::AnsiColor(AnsiColor::from_num(color))
+	}
+
+	#[inline(always)]
+	pub const fn rgb(r: u8, g: u8, b: u8) -> Self {
+		Self::RgbColor(RgbColor::new(r, g, b))
+	}
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]

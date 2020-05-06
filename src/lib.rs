@@ -41,22 +41,16 @@ fn main() {
 
 #![allow(clippy::tabs_in_doc_comments)]
 
-/// Chalk with 256 color support
-pub mod ansi_chalk;
-
-/// Basic 16 colors
-pub mod basic_chalk;
-
-/// True-color 16 million colors
-pub mod rgb_chalk;
-
-/// Styling for the text
-pub mod style;
-
-/// Some basic imports
-pub mod prelude;
-
+mod ansi_chalk;
+mod basic_chalk;
+mod rgb_chalk;
+mod style;
 mod utils;
+
+use basic_chalk::BasicColor;
+use ansi_chalk::AnsiColor;
+use rgb_chalk::RgbColor;
+use style::StyleMap;
 
 use std::string::ToString;
 
@@ -68,8 +62,86 @@ use winapi::{
 	um::wincon::ENABLE_VIRTUAL_TERMINAL_PROCESSING,
 };
 
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+enum ChalkType {
+	DefaultColor,
+	BasicColor(BasicColor),
+	AnsiColor(AnsiColor),
+	RgbColor(RgbColor)
+}
+
+impl ChalkType {
+
+	#[inline(always)]
+	pub const fn default() -> Self {
+		Self::DefaultColor
+	}
+
+	#[inline(always)]
+	pub const fn black() -> Self {
+		Self::BasicColor(BasicColor::Black)
+	}
+
+	#[inline(always)]
+	pub const fn red() -> Self {
+		Self::BasicColor(BasicColor::Red)
+	}
+
+	#[inline(always)]
+	pub const fn green() -> Self {
+		Self::BasicColor(BasicColor::Green)
+	}
+
+	#[inline(always)]
+	pub const fn yellow() -> Self {
+		Self::BasicColor(BasicColor::Yellow)
+	}
+
+	#[inline(always)]
+	pub const fn blue() -> Self {
+		Self::BasicColor(BasicColor::Blue)
+	}
+
+	#[inline(always)]
+	pub const fn magenta() -> Self {
+		Self::BasicColor(BasicColor::Magenta)
+	}
+
+	#[inline(always)]
+	pub const fn cyan() -> Self {
+		Self::BasicColor(BasicColor::Cyan)
+	}
+
+	#[inline(always)]
+	pub const fn light_gray() -> Self {
+		Self::BasicColor(BasicColor::LightGray)
+	}
+
+	#[inline(always)]
+	pub const fn light_grey() -> Self {
+		Self::light_gray()
+	}
+
+	#[inline(always)]
+	pub const fn gray() -> Self {
+		Self::BasicColor(BasicColor::Gray)
+	}
+
+	#[inline(always)]
+	pub const fn grey() -> Self {
+		Self::gray()
+	}
+}
+
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct Chalk {
+	foreground: ChalkType,
+	background: ChalkType,
+	style: StyleMap
+}
+
 /** For all Chalks with different color types */
-pub trait Chalk: Sized + ToString + Default {
+impl Chalk {
 	/// Creates a [`Chalk`] with a black background and a white foreground
 	///
 	/// # Example
@@ -101,7 +173,11 @@ pub trait Chalk: Sized + ToString + Default {
 			}
 		}
 
-		Self::default()
+		Self {
+			foreground: ChalkType::DefaultColor,
+			background: ChalkType::DefaultColor,
+			style: StyleMap::new()
+		}
 	}
 
 	/// Formats a string using the style of the given [`Chalk`].
@@ -213,14 +289,11 @@ pub trait Chalk: Sized + ToString + Default {
 mod test {
 
 	use crate::*;
-	use ansi_chalk::*;
-	use basic_chalk::*;
 
 	#[test]
 	fn is_setup() {
-		let mut basic = basic_chalk::BasicChalk::new();
-		let mut ansi = ansi_chalk::AnsiChalk::new();
+		// TODO fix this test
+		let mut basic = Chalk::new();
 		basic.red().println(&"This is red");
-		ansi.ansi(56).println(&"56");
 	}
 }

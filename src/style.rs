@@ -1,5 +1,5 @@
 use crate::{
-	chalk_trait_fns, enum_default, enum_display, enum_fmt_impl, enum_impls,
+	enum_default, enum_display, enum_fmt_impl, enum_impls,
 	impl_enums,
 };
 
@@ -74,74 +74,65 @@ impl Display for StyleMap {
 }
 
 impl StyleMap {
-	pub fn new() -> Self {
+	pub const fn new() -> Self {
 		Self::default()
 	}
 
-	pub fn reset_style(&mut self) -> &mut Self {
+	pub const fn reset_style(&mut self) {
 		self.reset_weight();
 		self.stop_blink();
-		self.no_underline();
+		self.stop_underline();
 		self.unitalicize();
 		self.uninvert();
 		self.unhide();
-		self
 	}
 
-	pub fn reset_weight(&mut self) -> &mut Self {
+	pub const fn reset_weight(&mut self) {
 		self.weight = Weight::Default;
-		self
 	}
 
-	pub fn bold(&mut self) -> &mut Self {
+	pub const fn bold(&mut self) {
 		self.weight = Weight::Bold;
-		self
 	}
 
-	pub fn dim(&mut self) -> &mut Self {
+	pub const fn dim(&mut self) {
 		self.weight = Weight::Dim;
-		self
 	}
 
-	pub fn is_normal_weight(&self) -> bool {
+	pub const fn is_normal_weight(&self) -> bool {
 		self.weight == Weight::Default
 	}
 
-	pub fn is_bold(&self) -> bool {
+	pub const fn is_bold(&self) -> bool {
 		self.weight == Weight::Bold
 	}
 
-	pub fn is_dim(&self) -> bool {
+	pub const fn is_dim(&self) -> bool {
 		self.weight == Weight::Dim
 	}
 
-	pub fn italic(&mut self) -> &mut Self {
+	pub const fn italic(&mut self) {
 		self.italic = true;
-		self
 	}
 
-	pub fn unitalicize(&mut self) -> &mut Self {
+	pub const fn unitalicize(&mut self) {
 		self.italic = false;
-		self
 	}
 
-	pub fn is_italicized(&self) -> bool {
+	pub const fn is_italicized(&self) -> bool {
 		self.italic
 	}
 
-	pub fn no_underline(&mut self) -> &mut Self {
+	pub const fn stop_underline(&mut self) {
 		self.underline = Underline::Default;
-		self
 	}
 
-	pub fn underline(&mut self) -> &mut Self {
+	pub const fn underline(&mut self) {
 		self.underline = Underline::Single;
-		self
 	}
 
-	pub fn double_underline(&mut self) -> &mut Self {
+	pub const fn double_underline(&mut self) {
 		self.underline = Underline::Double;
-		self
 	}
 
 	pub fn num_underlines(&self) -> u8 {
@@ -152,141 +143,63 @@ impl StyleMap {
 		}
 	}
 
-	pub fn has_underlines(&self) -> bool {
+	pub const fn has_underlines(&self) -> bool {
 		self.underline != Underline::Default
 	}
 
-	pub fn is_single_underlined(&self) -> bool {
+	pub const fn is_single_underlined(&self) -> bool {
 		self.underline == Underline::Single
 	}
 
-	pub fn is_double_underlined(&self) -> bool {
+	pub const fn is_double_underlined(&self) -> bool {
 		self.underline == Underline::Double
 	}
 
-	pub fn stop_blink(&mut self) -> &mut Self {
+	pub const fn stop_blink(&mut self) {
 		self.blink = Blink::Default;
-		self
 	}
 
-	pub fn blink(&mut self) -> &mut Self {
+	pub const fn blink(&mut self) {
 		self.blink = Blink::Slow;
-		self
 	}
 
-	pub fn fast_blink(&mut self) -> &mut Self {
+	pub const fn fast_blink(&mut self) {
 		self.blink = Blink::Fast;
-		self
 	}
 
-	pub fn is_blinking(&self) -> bool {
+	pub const fn is_blinking(&self) -> bool {
 		self.blink != Blink::Default
 	}
 
-	pub fn is_slowly_blinking(&self) -> bool {
+	pub const fn is_slowly_blinking(&self) -> bool {
 		self.blink == Blink::Slow
 	}
 
-	pub fn is_quickly_blinking(&self) -> bool {
+	pub const fn is_quickly_blinking(&self) -> bool {
 		self.blink == Blink::Fast
 	}
 
-	pub fn invert(&mut self) -> &mut Self {
+	pub const fn invert(&mut self) {
 		self.invert = true;
-		self
 	}
 
-	pub fn uninvert(&mut self) -> &mut Self {
+	pub const fn uninvert(&mut self) {
 		self.invert = false;
-		self
 	}
 
-	pub fn is_inverted(&self) -> bool {
+	pub const fn is_inverted(&self) -> bool {
 		self.invert
 	}
 
-	pub fn hide(&mut self) -> &mut Self {
+	pub const fn hide(&mut self) {
 		self.hidden = true;
-		self
 	}
 
-	pub fn unhide(&mut self) -> &mut Self {
+	pub const fn unhide(&mut self) {
 		self.hidden = false;
-		self
 	}
 
-	pub fn is_hidden(&self) -> bool {
+	pub const fn is_hidden(&self) -> bool {
 		self.hidden
 	}
-}
-
-/** A style to be applied to the text */
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub enum Style {
-	Default = 0,
-	Bold = 1,
-	Dim = 2,
-	Italic = 3,
-	Underline = 4,
-	Blink = 5,
-	FastBlink = 6,
-	Invert = 7,
-	Hidden = 8,
-	DoubleUnderline = 21,
-}
-
-enum_impls!(Style);
-
-/** Sets the style to a specific vector */
-#[macro_export]
-macro_rules! set_style {
-	($fn_name: ident) => {
-		/** sets the style */
-		fn $fn_name(&mut self) -> &mut Self {
-			self.style.$fn_name();
-			self
-		}
-	};
-}
-
-#[macro_export]
-macro_rules! set_styles {
-	($($fn_name: ident),*) => {
-		$(set_style!($fn_name);)*
-	};
-}
-
-pub trait ChalkStyle {
-	chalk_trait_fns!(
-		reset_style,
-		hide,
-		bold,
-		dim,
-		italic,
-		underline,
-		invert,
-		blink,
-		fast_blink,
-		double_underline
-	);
-}
-
-#[macro_export]
-macro_rules! impl_chalk_style {
-	($struct : ident) => {
-		impl ChalkStyle for $struct {
-			set_styles!(
-				reset_style,
-				hide,
-				bold,
-				dim,
-				italic,
-				underline,
-				invert,
-				blink,
-				fast_blink,
-				double_underline
-			);
-		}
-	};
 }

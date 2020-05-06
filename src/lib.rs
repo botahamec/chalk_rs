@@ -329,7 +329,7 @@ impl Chalk {
 	///    chalk.yellow().print(&"this is yellow");
 	/// }
 	/// ```
-	fn print(&self, string: &dyn ToString) -> String {
+	pub fn print(&self, string: &dyn ToString) -> String {
 		let output = self.string(string);
 		print!("{}", output);
 		output
@@ -364,10 +364,145 @@ impl Chalk {
 	///    chalk.yellow().println(&"this is yellow");
 	/// }
 	/// ```
-	fn println(&self, string: &dyn ToString) -> String {
+	pub fn println(&self, string: &dyn ToString) -> String {
 		let output = self.string(string);
 		println!("{}", output);
 		output
+	}
+}
+
+impl Chalk {
+
+	#[inline(always)]
+	pub fn default_color(&mut self) -> &mut Self {
+		self.foreground = ChalkType::DefaultColor;
+		self
+	}
+
+	#[inline(always)]
+	pub fn black(&mut self) -> &mut Self {
+		self.foreground = ChalkType::black();
+		self
+	}
+
+	#[inline(always)]
+	pub fn red(&mut self) -> &mut Self {
+		self.foreground = ChalkType::red();
+		self
+	}
+
+	#[inline(always)]
+	pub fn green(&mut self) -> &mut Self {
+		self.foreground = ChalkType::green();
+		self
+	}
+
+	#[inline(always)]
+	pub fn yellow(&mut self) -> &mut Self {
+		self.foreground = ChalkType::yellow();
+		self
+	}
+
+	#[inline(always)]
+	pub fn blue(&mut self) -> &mut Self {
+		self.foreground = ChalkType::blue();
+		self
+	}
+
+	#[inline(always)]
+	pub fn magenta(&mut self) -> &mut Self {
+		self.foreground = ChalkType::magenta();
+		self
+	}
+
+	#[inline(always)]
+	pub fn cyan(&mut self) -> &mut Self {
+		self.foreground = ChalkType::cyan();
+		self
+	}
+
+	#[inline(always)]
+	pub fn light_gray(&mut self) -> &mut Self {
+		self.foreground = ChalkType::light_gray();
+		self
+	}
+
+	#[inline(always)]
+	pub fn light_grey(&mut self) -> &mut Self {
+		self.foreground = ChalkType::light_grey();
+		self
+	}
+
+	#[inline(always)]
+	pub fn gray(&mut self) -> &mut Self {
+		self.foreground = ChalkType::gray();
+		self
+	}
+
+	#[inline(always)]
+	pub fn grey(&mut self) -> &mut Self {
+		self.foreground = ChalkType::grey();
+		self
+	}
+
+	#[inline(always)]
+	pub fn light_black(&mut self) -> &mut Self {
+		self.foreground = ChalkType::light_black();
+		self
+	}
+
+	#[inline(always)]
+	pub fn light_red(&mut self) -> &mut Self {
+		self.foreground = ChalkType::light_red();
+		self
+	}
+
+	#[inline(always)]
+	pub fn light_green(&mut self) -> &mut Self {
+		self.foreground = ChalkType::light_green();
+		self
+	}
+
+	#[inline(always)]
+	pub fn light_yellow(&mut self) -> &mut Self {
+		self.foreground = ChalkType::light_yellow();
+		self
+	}
+
+	#[inline(always)]
+	pub fn light_blue(&mut self) -> &mut Self {
+		self.foreground = ChalkType::light_blue();
+		self
+	}
+
+	#[inline(always)]
+	pub fn light_magenta(&mut self) -> &mut Self {
+		self.foreground = ChalkType::light_magenta();
+		self
+	}
+
+	#[inline(always)]
+	pub fn light_cyan(&mut self) -> &mut Self {
+		self.foreground = ChalkType::light_cyan();
+		self
+	}
+
+	#[inline(always)]
+	pub fn white(&mut self) -> &mut Self {
+		self.foreground = ChalkType::white();
+		self
+	}
+
+	#[inline(always)]
+	pub fn ansi(&mut self, color: u8) -> &mut Self {
+		self.foreground = ChalkType::ansi(color);
+		self
+	}
+
+	#[inline(always)]
+	pub fn rgb(&mut self, r: u8, g: u8, b: u8) -> &mut Self {
+		self.foreground = ChalkType::rgb(r, g, b);
+		self
 	}
 }
 
@@ -378,8 +513,9 @@ mod test {
 
 	#[test]
 	fn is_setup() {
-		// TODO fix this test
-		let mut basic = Chalk::new();
-		basic.red().println(&"This is red");
+		let mut chalk1 = Chalk::new();
+		chalk1.red().println(&"This is red");
+		let mut chalk2 = Chalk::new();
+		chalk2.blue().println(&"This is blue");
 	}
 }

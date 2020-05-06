@@ -1,5 +1,5 @@
 use crate::{
-	chalk_trait_fns, enum_default, enum_display, enum_fmt_impl, enum_impls,
+	enum_default, enum_display, enum_fmt_impl, enum_impls,
 	impl_enums,
 };
 

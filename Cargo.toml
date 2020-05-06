@@ -5,6 +5,7 @@ authors = ["Botahamec <botahamec@outlook.com>"]
 edition = "2018"
 description = "A crate which adds colors and styles to your terminal program"
 readme = "README.md"
+license-file = "LICENSE.md"
 repository = "https://github.com/mrw1593/chalk_rs"
 keywords = ["chalk", "color", "style", "terminal", "cli"]
 categories = ["command-line-interface"]

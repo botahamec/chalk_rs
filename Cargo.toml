@@ -10,7 +10,10 @@ repository = "https://github.com/mrw1593/chalk_rs"
 keywords = ["chalk", "color", "style", "terminal", "cli"]
 categories = ["command-line-interface"]
 exclude = [
-	".github/*", "doc/*"
+	".github/*",
+	"doc/*",
+	"Makefile.toml",
+	"rustfmt.toml"
 ]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

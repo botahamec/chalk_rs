@@ -433,8 +433,6 @@ impl Chalk {
 	set_style!(uninvert);
 	set_style!(hide);
 	set_style!(unhide);
-	set_style!(strikethrough);
-	set_style!(unstrike);
 
 	check_style!(is_normal_weight);
 	check_style!(is_bold);
@@ -446,7 +444,6 @@ impl Chalk {
 	check_style!(is_blinking);
 	check_style!(is_inverted);
 	check_style!(is_hidden);
-	check_style!(has_strikethrough);
 
 	pub fn num_underlines(&self) -> u8 {
 		self.style.num_underlines()

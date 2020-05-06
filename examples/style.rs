@@ -15,8 +15,4 @@ fn main() {
 		.reset_style()
 		.double_underline()
 		.println(&"Double Underline");
-	chalk
-		.reset_style()
-		.strikethrough()
-		.println(&"Strikethrough");
 }

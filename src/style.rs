@@ -29,8 +29,7 @@ pub struct StyleMap {
 	italic: bool,
 	blink: bool,
 	invert: bool,
-	hidden: bool,
-	strikethrough: bool,
+	hidden: bool
 }
 
 impl_enums!(Weight, Underline);
@@ -60,9 +59,6 @@ impl Display for StyleMap {
 		if self.hidden {
 			ansi_str += "\x1b[8m";
 		}
-		if self.strikethrough {
-			ansi_str += "\x1b[9m";
-		}
 
 		write!(f, "{}", ansi_str)
 	}
@@ -76,7 +72,6 @@ impl StyleMap {
 		self.unitalic();
 		self.uninvert();
 		self.unhide();
-		self.unstrike();
 		self
 	}
 
@@ -196,19 +191,5 @@ impl StyleMap {
 
 	pub const fn is_hidden(&self) -> bool {
 		self.hidden
-	}
-
-	pub fn strikethrough(&mut self) -> &mut Self {
-		self.strikethrough = true;
-		self
-	}
-
-	pub fn unstrike(&mut self) -> &mut Self {
-		self.strikethrough = false;
-		self
-	}
-
-	pub const fn has_strikethrough(&self) -> bool {
-		self.strikethrough
 	}
 }

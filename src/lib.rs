@@ -533,7 +533,7 @@ impl Chalk {
 
 	#[inline(always)]
 	pub fn bg_yellow(&mut self) -> &mut Self {
-		self.foreground = ChalkType::yellow();
+		self.background = ChalkType::yellow();
 		self
 	}
 
@@ -642,12 +642,7 @@ impl Chalk {
 
 impl Chalk {
 	pub fn reset_style(&mut self) -> &mut Self {
-		self.reset_weight();
-		self.stop_blink();
-		self.no_underline();
-		self.unitalicize();
-		self.uninvert();
-		self.unhide();
+		self.style.reset_style();
 		self
 	}
 

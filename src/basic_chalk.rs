@@ -10,7 +10,6 @@ pub enum BasicColor {
 	Magenta = 35,
 	Cyan = 36,
 	LightGray = 37,
-	Default = 39,
 	Gray = 90,
 	LightRed = 91,
 	LightGreen = 92,

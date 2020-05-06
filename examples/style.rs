@@ -1,8 +1,8 @@
 extern crate chalk_rs;
-use chalk_rs::prelude::*;
+use chalk_rs::Chalk;
 
 fn main() {
-	let mut chalk = BasicChalk::new();
+	let mut chalk = Chalk::new();
 	chalk.println(&"Default");
 	chalk.bold().println(&"Bold");
 	chalk.reset_style().dim().println(&"Dim");

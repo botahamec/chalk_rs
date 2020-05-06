@@ -375,7 +375,7 @@ impl Chalk {
 
 	#[inline(always)]
 	pub fn default_color(&mut self) -> &mut Self {
-		self.foreground = ChalkType::DefaultColor;
+		self.foreground = ChalkType::default();
 		self
 	}
 
@@ -502,6 +502,141 @@ impl Chalk {
 	#[inline(always)]
 	pub fn rgb(&mut self, r: u8, g: u8, b: u8) -> &mut Self {
 		self.foreground = ChalkType::rgb(r, g, b);
+		self
+	}
+}
+
+impl Chalk {
+
+	#[inline(always)]
+	pub fn default_background(&mut self) -> &mut Self {
+		self.background = ChalkType::default();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_black(&mut self) -> &mut Self {
+		self.background = ChalkType::black();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_red(&mut self) -> &mut Self {
+		self.background = ChalkType::red();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_green(&mut self) -> &mut Self {
+		self.background = ChalkType::green();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_yellow(&mut self) -> &mut Self {
+		self.foreground = ChalkType::yellow();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_blue(&mut self) -> &mut Self {
+		self.background = ChalkType::blue();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_magenta(&mut self) -> &mut Self {
+		self.background = ChalkType::magenta();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_cyan(&mut self) -> &mut Self {
+		self.background = ChalkType::cyan();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_light_gray(&mut self) -> &mut Self {
+		self.background = ChalkType::light_gray();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_light_grey(&mut self) -> &mut Self {
+		self.background = ChalkType::light_grey();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_gray(&mut self) -> &mut Self {
+		self.background = ChalkType::gray();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_grey(&mut self) -> &mut Self {
+		self.background = ChalkType::grey();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_light_black(&mut self) -> &mut Self {
+		self.background = ChalkType::light_black();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_light_red(&mut self) -> &mut Self {
+		self.background = ChalkType::light_red();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_light_green(&mut self) -> &mut Self {
+		self.background = ChalkType::light_green();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_light_yellow(&mut self) -> &mut Self {
+		self.background = ChalkType::light_yellow();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_light_blue(&mut self) -> &mut Self {
+		self.background = ChalkType::light_blue();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_light_magenta(&mut self) -> &mut Self {
+		self.background = ChalkType::light_magenta();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_light_cyan(&mut self) -> &mut Self {
+		self.background = ChalkType::light_cyan();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_white(&mut self) -> &mut Self {
+		self.background = ChalkType::white();
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_ansi(&mut self, color: u8) -> &mut Self {
+		self.background = ChalkType::ansi(color);
+		self
+	}
+
+	#[inline(always)]
+	pub fn bg_rgb(&mut self, r: u8, g: u8, b: u8) -> &mut Self {
+		self.background = ChalkType::rgb(r, g, b);
 		self
 	}
 }

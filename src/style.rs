@@ -17,13 +17,6 @@ enum Weight {
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-enum Blink {
-	Default,
-	Slow = 5,
-	Fast = 6,
-}
-
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 enum Underline {
 	Default,
 	Single = 4,
@@ -33,14 +26,15 @@ enum Underline {
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct StyleMap {
 	weight: Weight,
-	blink: Blink,
 	underline: Underline,
 	italic: bool,
+	blink: bool,
 	invert: bool,
 	hidden: bool,
+	strikethrough: bool,
 }
 
-impl_enums!(Weight, Blink, Underline);
+impl_enums!(Weight, Underline);
 
 impl Display for StyleMap {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -51,10 +45,6 @@ impl Display for StyleMap {
 			ansi_str += format!("\x1b[{}m", self.weight).as_str();
 		}
 
-		if self.blink != Blink::Default {
-			ansi_str += format!("\x1b[{}m", self.blink).as_str();
-		}
-
 		if self.underline != Underline::Default {
 			ansi_str += format!("\x1b[{}m", self.underline).as_str();
 		}
@@ -62,11 +52,17 @@ impl Display for StyleMap {
 		if self.italic {
 			ansi_str += "\x1b[3m";
 		}
+		if self.blink {
+			ansi_str += "\x1b[6m"
+		}
 		if self.invert {
 			ansi_str += "\x1b[7m";
 		}
 		if self.hidden {
 			ansi_str += "\x1b[8m";
+		}
+		if self.strikethrough {
+			ansi_str += "\x1b[9";
 		}
 
 		write!(f, "{}", ansi_str)
@@ -85,6 +81,7 @@ impl StyleMap {
 		self.unitalicize();
 		self.uninvert();
 		self.unhide();
+		self.unstrike();
 		self
 	}
 
@@ -165,30 +162,17 @@ impl StyleMap {
 	}
 
 	pub fn stop_blink(&mut self) -> &mut Self {
-		self.blink = Blink::Default;
+		self.blink = false;
 		self
 	}
 
 	pub fn blink(&mut self) -> &mut Self {
-		self.blink = Blink::Slow;
+		self.blink = true;
 		self
 	}
 
-	pub fn fast_blink(&mut self) -> &mut Self {
-		self.blink = Blink::Fast;
-		self
-	}
-
-	pub fn is_blinking(&self) -> bool {
-		self.blink != Blink::Default
-	}
-
-	pub fn is_slowly_blinking(&self) -> bool {
-		self.blink == Blink::Slow
-	}
-
-	pub fn is_quickly_blinking(&self) -> bool {
-		self.blink == Blink::Fast
+	pub const fn is_blinking(&self) -> bool {
+		self.blink
 	}
 
 	pub fn invert(&mut self) -> &mut Self {
@@ -217,5 +201,19 @@ impl StyleMap {
 
 	pub const fn is_hidden(&self) -> bool {
 		self.hidden
+	}
+
+	pub fn strikethrough(&mut self) -> &mut Self {
+		self.strikethrough = true;
+		self
+	}
+
+	pub fn unstrike(&mut self) -> &mut Self {
+		self.strikethrough = false;
+		self
+	}
+
+	pub const fn has_strikethrough(&self) -> bool {
+		self.strikethrough
 	}
 }

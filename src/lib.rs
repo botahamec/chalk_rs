@@ -728,21 +728,8 @@ impl Chalk {
 		self
 	}
 
-	pub fn fast_blink(&mut self) -> &mut Self {
-		self.style.fast_blink();
-		self
-	}
-
 	pub fn is_blinking(&self) -> bool {
 		self.style.is_blinking()
-	}
-
-	pub fn is_slowly_blinking(&self) -> bool {
-		self.style.is_slowly_blinking()
-	}
-
-	pub fn is_quickly_blinking(&self) -> bool {
-		self.style.is_quickly_blinking()
 	}
 
 	pub fn invert(&mut self) -> &mut Self {
@@ -771,6 +758,20 @@ impl Chalk {
 
 	pub const fn is_hidden(&self) -> bool {
 		self.style.is_hidden()
+	}
+
+	pub fn strikethrough(&mut self) -> &mut Self {
+		self.style.strikethrough();
+		self
+	}
+
+	pub fn unstrike(&mut self) -> &mut Self {
+		self.style.unstrike();
+		self
+	}
+
+	pub const fn has_strikethrough(&self) -> bool {
+		self.style.has_strikethrough()
 	}
 }
 

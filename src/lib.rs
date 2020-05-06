@@ -71,107 +71,50 @@ enum ChalkType {
 	RgbColor(RgbColor)
 }
 
-impl ChalkType {
+macro_rules! basic_color {
+	($fn_name: ident, $color: ident) => {
+		#[inline(always)]
+		pub const fn $fn_name() -> Self {
+			Self::BasicColor(BasicColor::$color)
+		}
+	};
+}
 
+macro_rules! basic_alias {
+	($alias: ident, $func: ident) => {
+		#[inline(always)]
+		pub const fn $alias() -> Self {
+			Self::$func()
+		}
+	};
+}
+
+impl ChalkType {
 	#[inline(always)]
 	pub const fn default() -> Self {
 		Self::DefaultColor
 	}
 
-	#[inline(always)]
-	pub const fn black() -> Self {
-		Self::BasicColor(BasicColor::Black)
-	}
+	basic_color!(black, Black);
+	basic_color!(red, Red);
+	basic_color!(green, Green);
+	basic_color!(yellow, Yellow);
+	basic_color!(blue, Blue);
+	basic_color!(magenta, Magenta);
+	basic_color!(cyan, Cyan);
+	basic_color!(light_gray, LightGray);
+	basic_color!(gray, Gray);
+	basic_color!(light_red, LightRed);
+	basic_color!(light_green, LightGreen);
+	basic_color!(light_yellow, LightYellow);
+	basic_color!(light_blue, LightBlue);
+	basic_color!(light_magenta, LightMagenta);
+	basic_color!(light_cyan, LightCyan);
+	basic_color!(white, White);
 
-	#[inline(always)]
-	pub const fn red() -> Self {
-		Self::BasicColor(BasicColor::Red)
-	}
-
-	#[inline(always)]
-	pub const fn green() -> Self {
-		Self::BasicColor(BasicColor::Green)
-	}
-
-	#[inline(always)]
-	pub const fn yellow() -> Self {
-		Self::BasicColor(BasicColor::Yellow)
-	}
-
-	#[inline(always)]
-	pub const fn blue() -> Self {
-		Self::BasicColor(BasicColor::Blue)
-	}
-
-	#[inline(always)]
-	pub const fn magenta() -> Self {
-		Self::BasicColor(BasicColor::Magenta)
-	}
-
-	#[inline(always)]
-	pub const fn cyan() -> Self {
-		Self::BasicColor(BasicColor::Cyan)
-	}
-
-	#[inline(always)]
-	pub const fn light_gray() -> Self {
-		Self::BasicColor(BasicColor::LightGray)
-	}
-
-	#[inline(always)]
-	pub const fn light_grey() -> Self {
-		Self::light_gray()
-	}
-
-	#[inline(always)]
-	pub const fn gray() -> Self {
-		Self::BasicColor(BasicColor::Gray)
-	}
-
-	#[inline(always)]
-	pub const fn grey() -> Self {
-		Self::gray()
-	}
-
-	#[inline(always)]
-	pub const fn light_black() -> Self {
-		Self::gray()
-	}
-
-	#[inline(always)]
-	pub const fn light_red() -> Self {
-		Self::BasicColor(BasicColor::LightRed)
-	}
-
-	#[inline(always)]
-	pub const fn light_green() -> Self {
-		Self::BasicColor(BasicColor::LightGreen)
-	}
-
-	#[inline(always)]
-	pub const fn light_yellow() -> Self {
-		Self::BasicColor(BasicColor::LightYellow)
-	}
-
-	#[inline(always)]
-	pub const fn light_blue() -> Self {
-		Self::BasicColor(BasicColor::LightBlue)
-	}
-
-	#[inline(always)]
-	pub const fn light_magenta() -> Self {
-		Self::BasicColor(BasicColor::LightMagenta)
-	}
-
-	#[inline(always)]
-	pub const fn light_cyan() -> Self {
-		Self::BasicColor(BasicColor::LightCyan)
-	}
-
-	#[inline(always)]
-	pub const fn white() -> Self {
-		Self::BasicColor(BasicColor::White)
-	}
+	basic_alias!(light_grey, light_gray);
+	basic_alias!(grey, gray);
+	basic_alias!(light_black, gray);
 
 	#[inline(always)]
 	pub const fn ansi(color: u8) -> Self {
@@ -370,6 +313,16 @@ impl Chalk {
 	}
 }
 
+macro_rules! color_fg {
+	($fn_name: ident) => {
+		#[inline(always)]
+		pub fn $fn_name(&mut self) -> &mut Self {
+			self.foreground = ChalkType::$fn_name();
+			self
+		}
+	};
+}
+
 impl Chalk {
 
 	#[inline(always)]
@@ -378,119 +331,25 @@ impl Chalk {
 		self
 	}
 
-	#[inline(always)]
-	pub fn black(&mut self) -> &mut Self {
-		self.foreground = ChalkType::black();
-		self
-	}
-
-	#[inline(always)]
-	pub fn red(&mut self) -> &mut Self {
-		self.foreground = ChalkType::red();
-		self
-	}
-
-	#[inline(always)]
-	pub fn green(&mut self) -> &mut Self {
-		self.foreground = ChalkType::green();
-		self
-	}
-
-	#[inline(always)]
-	pub fn yellow(&mut self) -> &mut Self {
-		self.foreground = ChalkType::yellow();
-		self
-	}
-
-	#[inline(always)]
-	pub fn blue(&mut self) -> &mut Self {
-		self.foreground = ChalkType::blue();
-		self
-	}
-
-	#[inline(always)]
-	pub fn magenta(&mut self) -> &mut Self {
-		self.foreground = ChalkType::magenta();
-		self
-	}
-
-	#[inline(always)]
-	pub fn cyan(&mut self) -> &mut Self {
-		self.foreground = ChalkType::cyan();
-		self
-	}
-
-	#[inline(always)]
-	pub fn light_gray(&mut self) -> &mut Self {
-		self.foreground = ChalkType::light_gray();
-		self
-	}
-
-	#[inline(always)]
-	pub fn light_grey(&mut self) -> &mut Self {
-		self.foreground = ChalkType::light_grey();
-		self
-	}
-
-	#[inline(always)]
-	pub fn gray(&mut self) -> &mut Self {
-		self.foreground = ChalkType::gray();
-		self
-	}
-
-	#[inline(always)]
-	pub fn grey(&mut self) -> &mut Self {
-		self.foreground = ChalkType::grey();
-		self
-	}
-
-	#[inline(always)]
-	pub fn light_black(&mut self) -> &mut Self {
-		self.foreground = ChalkType::light_black();
-		self
-	}
-
-	#[inline(always)]
-	pub fn light_red(&mut self) -> &mut Self {
-		self.foreground = ChalkType::light_red();
-		self
-	}
-
-	#[inline(always)]
-	pub fn light_green(&mut self) -> &mut Self {
-		self.foreground = ChalkType::light_green();
-		self
-	}
-
-	#[inline(always)]
-	pub fn light_yellow(&mut self) -> &mut Self {
-		self.foreground = ChalkType::light_yellow();
-		self
-	}
-
-	#[inline(always)]
-	pub fn light_blue(&mut self) -> &mut Self {
-		self.foreground = ChalkType::light_blue();
-		self
-	}
-
-	#[inline(always)]
-	pub fn light_magenta(&mut self) -> &mut Self {
-		self.foreground = ChalkType::light_magenta();
-		self
-	}
-
-	#[inline(always)]
-	pub fn light_cyan(&mut self) -> &mut Self {
-		self.foreground = ChalkType::light_cyan();
-		self
-	}
-
-	#[inline(always)]
-	pub fn white(&mut self) -> &mut Self {
-		self.foreground = ChalkType::white();
-		self
-	}
+	color_fg!(black);
+	color_fg!(red);
+	color_fg!(green);
+	color_fg!(yellow);
+	color_fg!(blue);
+	color_fg!(magenta);
+	color_fg!(cyan);
+	color_fg!(light_gray);
+	color_fg!(light_grey);
+	color_fg!(gray);
+	color_fg!(grey);
+	color_fg!(light_black);
+	color_fg!(light_red);
+	color_fg!(light_green);
+	color_fg!(light_yellow);
+	color_fg!(light_blue);
+	color_fg!(light_magenta);
+	color_fg!(light_cyan);
+	color_fg!(white);
 
 	#[inline(always)]
 	pub fn ansi(&mut self, color: u8) -> &mut Self {
@@ -505,127 +364,38 @@ impl Chalk {
 	}
 }
 
+macro_rules! color_bg {
+	($fn_name: ident, $color: ident) => {
+		#[inline(always)]
+		pub fn $fn_name(&mut self) -> &mut Self {
+			self.background = ChalkType::$color();
+			self
+		}
+	};
+}
+
 impl Chalk {
 
-	#[inline(always)]
-	pub fn default_background(&mut self) -> &mut Self {
-		self.background = ChalkType::default();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_black(&mut self) -> &mut Self {
-		self.background = ChalkType::black();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_red(&mut self) -> &mut Self {
-		self.background = ChalkType::red();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_green(&mut self) -> &mut Self {
-		self.background = ChalkType::green();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_yellow(&mut self) -> &mut Self {
-		self.background = ChalkType::yellow();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_blue(&mut self) -> &mut Self {
-		self.background = ChalkType::blue();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_magenta(&mut self) -> &mut Self {
-		self.background = ChalkType::magenta();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_cyan(&mut self) -> &mut Self {
-		self.background = ChalkType::cyan();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_light_gray(&mut self) -> &mut Self {
-		self.background = ChalkType::light_gray();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_light_grey(&mut self) -> &mut Self {
-		self.background = ChalkType::light_grey();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_gray(&mut self) -> &mut Self {
-		self.background = ChalkType::gray();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_grey(&mut self) -> &mut Self {
-		self.background = ChalkType::grey();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_light_black(&mut self) -> &mut Self {
-		self.background = ChalkType::light_black();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_light_red(&mut self) -> &mut Self {
-		self.background = ChalkType::light_red();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_light_green(&mut self) -> &mut Self {
-		self.background = ChalkType::light_green();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_light_yellow(&mut self) -> &mut Self {
-		self.background = ChalkType::light_yellow();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_light_blue(&mut self) -> &mut Self {
-		self.background = ChalkType::light_blue();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_light_magenta(&mut self) -> &mut Self {
-		self.background = ChalkType::light_magenta();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_light_cyan(&mut self) -> &mut Self {
-		self.background = ChalkType::light_cyan();
-		self
-	}
-
-	#[inline(always)]
-	pub fn bg_white(&mut self) -> &mut Self {
-		self.background = ChalkType::white();
-		self
-	}
+	color_bg!(default_background, default);
+	color_bg!(bg_black, black);
+	color_bg!(bg_red, red);
+	color_bg!(bg_green, green);
+	color_bg!(bg_yellow, yellow);
+	color_bg!(bg_blue, blue);
+	color_bg!(bg_magenta, magenta);
+	color_bg!(bg_cyan, cyan);
+	color_bg!(bg_light_gray, light_gray);
+	color_bg!(bg_light_grey, light_grey);
+	color_bg!(bg_gray, gray);
+	color_bg!(bg_grey, grey);
+	color_bg!(bg_light_black, light_black);
+	color_bg!(bg_light_red, light_red);
+	color_bg!(bg_light_green, light_green);
+	color_bg!(bg_light_yellow, light_yellow);
+	color_bg!(bg_light_blue, light_blue);
+	color_bg!(bg_light_magenta, light_magenta);
+	color_bg!(bg_light_cyan, light_cyan);
+	color_bg!(bg_white, white);
 
 	#[inline(always)]
 	pub fn bg_ansi(&mut self, color: u8) -> &mut Self {
@@ -640,138 +410,58 @@ impl Chalk {
 	}
 }
 
+macro_rules! set_style {
+	($fn_name: ident) => {
+		#[inline(always)]
+		pub fn $fn_name(&mut self) -> &mut Self {
+			self.style.$fn_name();
+			self
+		}
+	};
+}
+
+macro_rules! check_style {
+	($fn_name: ident) => {
+		#[inline(always)]
+		pub fn $fn_name(&self) -> bool {
+			self.style.$fn_name()
+		}
+	};
+}
+
 impl Chalk {
-	pub fn reset_style(&mut self) -> &mut Self {
-		self.style.reset_style();
-		self
-	}
+	set_style!(reset_style);
+	set_style!(reset_weight);
+	set_style!(bold);
+	set_style!(dim);
+	set_style!(italic);
+	set_style!(unitalic);
+	set_style!(no_underline);
+	set_style!(underline);
+	set_style!(double_underline);
+	set_style!(stop_blink);
+	set_style!(blink);
+	set_style!(invert);
+	set_style!(uninvert);
+	set_style!(hide);
+	set_style!(unhide);
+	set_style!(strikethrough);
+	set_style!(unstrike);
 
-	pub fn reset_weight(&mut self) -> &mut Self {
-		self.style.reset_weight();
-		self
-	}
-
-	pub fn bold(&mut self) -> &mut Self {
-		self.style.bold();
-		self
-	}
-
-	pub fn dim(&mut self) -> &mut Self {
-		self.style.dim();
-		self
-	}
-
-	pub fn is_normal_weight(&self) -> bool {
-		self.style.is_normal_weight()
-	}
-
-	pub fn is_bold(&self) -> bool {
-		self.style.is_bold()
-	}
-
-	pub fn is_dim(&self) -> bool {
-		self.style.is_dim()
-	}
-
-	pub fn italic(&mut self) -> &mut Self {
-		self.style.italic();
-		self
-	}
-
-	pub fn unitalicize(&mut self) -> &mut Self {
-		self.style.unitalicize();
-		self
-	}
-
-	pub const fn is_italicized(&self) -> bool {
-		self.style.is_italicized()
-	}
-
-	pub fn no_underline(&mut self) -> &mut Self {
-		self.style.no_underline();
-		self
-	}
-
-	pub fn underline(&mut self) -> &mut Self {
-		self.style.underline();
-		self
-	}
-
-	pub fn double_underline(&mut self) -> &mut Self {
-		self.style.double_underline();
-		self
-	}
+	check_style!(is_normal_weight);
+	check_style!(is_bold);
+	check_style!(is_dim);
+	check_style!(is_italicized);
+	check_style!(has_underlines);
+	check_style!(is_single_underlined);
+	check_style!(is_double_underlined);
+	check_style!(is_blinking);
+	check_style!(is_inverted);
+	check_style!(is_hidden);
+	check_style!(has_strikethrough);
 
 	pub fn num_underlines(&self) -> u8 {
 		self.style.num_underlines()
-	}
-
-	pub fn has_underlines(&self) -> bool {
-		self.style.has_underlines()
-	}
-
-	pub fn is_single_underlined(&self) -> bool {
-		self.style.is_single_underlined()
-	}
-
-	pub fn is_double_underlined(&self) -> bool {
-		self.style.is_double_underlined()
-	}
-
-	pub fn stop_blink(&mut self) -> &mut Self {
-		self.style.stop_blink();
-		self
-	}
-
-	pub fn blink(&mut self) -> &mut Self {
-		self.style.blink();
-		self
-	}
-
-	pub fn is_blinking(&self) -> bool {
-		self.style.is_blinking()
-	}
-
-	pub fn invert(&mut self) -> &mut Self {
-		self.style.invert();
-		self
-	}
-
-	pub fn uninvert(&mut self) -> &mut Self {
-		self.style.uninvert();
-		self
-	}
-
-	pub const fn is_inverted(&self) -> bool {
-		self.style.is_inverted()
-	}
-
-	pub fn hide(&mut self) -> &mut Self {
-		self.style.hide();
-		self
-	}
-
-	pub fn unhide(&mut self) -> &mut Self {
-		self.style.unhide();
-		self
-	}
-
-	pub const fn is_hidden(&self) -> bool {
-		self.style.is_hidden()
-	}
-
-	pub fn strikethrough(&mut self) -> &mut Self {
-		self.style.strikethrough();
-		self
-	}
-
-	pub fn unstrike(&mut self) -> &mut Self {
-		self.style.unstrike();
-		self
-	}
-
-	pub const fn has_strikethrough(&self) -> bool {
-		self.style.has_strikethrough()
 	}
 }
 

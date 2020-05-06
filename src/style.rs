@@ -62,7 +62,7 @@ impl Display for StyleMap {
 			ansi_str += "\x1b[8m";
 		}
 		if self.strikethrough {
-			ansi_str += "\x1b[9";
+			ansi_str += "\x1b[9m";
 		}
 
 		write!(f, "{}", ansi_str)
@@ -78,7 +78,7 @@ impl StyleMap {
 		self.reset_weight();
 		self.stop_blink();
 		self.no_underline();
-		self.unitalicize();
+		self.unitalic();
 		self.uninvert();
 		self.unhide();
 		self.unstrike();
@@ -117,7 +117,7 @@ impl StyleMap {
 		self
 	}
 
-	pub fn unitalicize(&mut self) -> &mut Self {
+	pub fn unitalic(&mut self) -> &mut Self {
 		self.italic = false;
 		self
 	}

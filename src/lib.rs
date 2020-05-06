@@ -131,6 +131,46 @@ impl ChalkType {
 	pub const fn grey() -> Self {
 		Self::gray()
 	}
+
+	#[inline(always)]
+	pub const fn light_black() -> Self {
+		Self::gray()
+	}
+
+	#[inline(always)]
+	pub const fn light_red() -> Self {
+		Self::BasicColor(BasicColor::LightRed)
+	}
+
+	#[inline(always)]
+	pub const fn light_green() -> Self {
+		Self::BasicColor(BasicColor::LightGreen)
+	}
+
+	#[inline(always)]
+	pub const fn light_yellow() -> Self {
+		Self::BasicColor(BasicColor::LightYellow)
+	}
+
+	#[inline(always)]
+	pub const fn light_blue() -> Self {
+		Self::BasicColor(BasicColor::LightBlue)
+	}
+
+	#[inline(always)]
+	pub const fn light_magenta() -> Self {
+		Self::BasicColor(BasicColor::LightMagenta)
+	}
+
+	#[inline(always)]
+	pub const fn light_cyan() -> Self {
+		Self::BasicColor(BasicColor::LightCyan)
+	}
+
+	#[inline(always)]
+	pub const fn white() -> Self {
+		Self::BasicColor(BasicColor::White)
+	}
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]

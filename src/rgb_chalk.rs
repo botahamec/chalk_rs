@@ -106,16 +106,4 @@ impl RgbColor {
 	pub const fn get_blue(self) -> u8 {
 		self.blue
 	}
-
-	pub const fn set_red(&mut self, red: u8) {
-		self.red = red
-	}
-
-	pub const fn set_green(&mut self, green: u8) {
-		self.green = green
-	}
-
-	pub const fn set_blue(&mut self, blue: u8) {
-		self.blue = blue
-	}
 }

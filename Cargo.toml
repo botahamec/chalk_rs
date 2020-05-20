@@ -1,6 +1,6 @@
 [package]
 name = "chalk_rs"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Botahamec <botahamec@outlook.com>"]
 edition = "2018"
 description = "A crate which adds colors and styles to your terminal program"

@@ -200,8 +200,6 @@ impl Chalk {
 				dw_mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
 				SetConsoleMode(handle, dw_mode);
 
-				println!("Hi");
-
 				IS_SETUP = true;
 			}
 		}

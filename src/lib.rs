@@ -142,9 +142,9 @@ impl Chalk {
 			ChalkType::Ansi(c) => format!("\x1b[38;5;{}m", c.as_num()),
 			ChalkType::Rgb(c) => format!(
 				"\x1b[38;2;{};{};{}m",
-				c.get_red(),
-				c.get_green(),
-				c.get_blue()
+				c.red(),
+				c.green(),
+				c.blue()
 			),
 		}
 	}
@@ -157,9 +157,9 @@ impl Chalk {
 			ChalkType::Ansi(c) => format!("\x1b[48;5;{}m", c.as_num()),
 			ChalkType::Rgb(c) => format!(
 				"\x1b[48;2;{};{};{}m",
-				c.get_red(),
-				c.get_green(),
-				c.get_blue()
+				c.red(),
+				c.green(),
+				c.blue()
 			),
 		}
 	}

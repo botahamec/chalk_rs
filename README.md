@@ -1,5 +1,7 @@
 # Chalk
 
+[Video Demo](https://www.youtube.com/watch?v=zLOluBnUr-o)
+
 A crate for terminal colors and styles
 ```rust
 use chalk_rs::Chalk;

@@ -21,5 +21,8 @@ exclude = [
 [target.'cfg(windows)'.dependencies]
 winapi = {version = "0.3.8", features = ["consoleapi", "processenv", "winbase"]}
 
+[dependencies]
+serde = {version = "1", features=["derive"], optional=true}
+
 [profile.release]
 lto = true

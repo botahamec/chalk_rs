@@ -1,7 +1,11 @@
 //use std::convert::TryFrom;
 
+#[cfg(serde)]
+use serde::{Serialize, Deserialize};
+
 /** Foreground color using basic color */
 #[derive(Copy, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub enum BasicColor {
 	Black = 30,
 	Red = 31,

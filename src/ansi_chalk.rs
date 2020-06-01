@@ -1,6 +1,10 @@
 use std::convert::From;
 
+#[cfg(serde)]
+use serde::{Serialize, Deserialize};
+
 #[derive(Copy, Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct AnsiColor(u8);
 
 impl AnsiColor {

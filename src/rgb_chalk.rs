@@ -83,7 +83,11 @@ const BASIC_COLORS: [RgbColor; 16] = [
 ];
 */
 
+#[cfg(serde)]
+use serde::{Serialize, Deserialize};
+
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct RgbColor {
 	red: u8,
 	green: u8,

@@ -47,7 +47,14 @@ use style::StyleMap;
 use std::fmt::Display;
 use std::string::ToString;
 
+#[cfg(serde)]
+use serde::{Serialize, Deserialize};
+
 #[cfg(windows)]
+/**
+ * @var		use	winap
+ * @global
+ */
 use winapi::{
 	shared::minwindef::DWORD, um::consoleapi::GetConsoleMode,
 	um::consoleapi::SetConsoleMode, um::processenv::GetStdHandle,
@@ -56,6 +63,7 @@ use winapi::{
 };
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 enum ChalkType {
 	Default,
 	Basic(BasicColor),
@@ -127,6 +135,7 @@ impl Default for ChalkType {
 }
 
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Chalk {
 	foreground: ChalkType,
 	background: ChalkType,

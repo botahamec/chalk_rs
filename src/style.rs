@@ -8,7 +8,11 @@ use std::fmt::LowerHex;
 use std::fmt::Octal;
 use std::fmt::UpperHex;
 
+#[cfg(serde)]
+use serde::{Serialize, Deserialize};
+
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 enum Weight {
 	Default,
 	Bold = 1,
@@ -16,6 +20,7 @@ enum Weight {
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 enum Underline {
 	Default,
 	Single = 4,
@@ -23,6 +28,7 @@ enum Underline {
 }
 
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct StyleMap {
 	weight: Weight,
 	underline: Underline,

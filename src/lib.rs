@@ -47,8 +47,8 @@ use style::StyleMap;
 use std::fmt::Display;
 use std::string::ToString;
 
-#[cfg(serde)]
-use serde::{Serialize, Deserialize};
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
 
 #[cfg(windows)]
 /**
@@ -149,12 +149,9 @@ impl Chalk {
 			ChalkType::Default => String::new(),
 			ChalkType::Basic(c) => format!("\x1b[{}m", c.as_foreground_color()),
 			ChalkType::Ansi(c) => format!("\x1b[38;5;{}m", c.as_num()),
-			ChalkType::Rgb(c) => format!(
-				"\x1b[38;2;{};{};{}m",
-				c.red(),
-				c.green(),
-				c.blue()
-			),
+			ChalkType::Rgb(c) => {
+				format!("\x1b[38;2;{};{};{}m", c.red(), c.green(), c.blue())
+			}
 		}
 	}
 
@@ -164,12 +161,9 @@ impl Chalk {
 			ChalkType::Default => String::new(),
 			ChalkType::Basic(c) => format!("\x1b[{}m", c.as_background_color()),
 			ChalkType::Ansi(c) => format!("\x1b[48;5;{}m", c.as_num()),
-			ChalkType::Rgb(c) => format!(
-				"\x1b[48;2;{};{};{}m",
-				c.red(),
-				c.green(),
-				c.blue()
-			),
+			ChalkType::Rgb(c) => {
+				format!("\x1b[48;2;{};{};{}m", c.red(), c.green(), c.blue())
+			}
 		}
 	}
 }
@@ -466,5 +460,17 @@ mod test {
 	fn is_setup() {
 		Chalk::new().red().println(&"This is red");
 		Chalk::new().blue().println(&"This is blue");
+	}
+
+	#[test]
+	fn chalk_is_send() {
+		fn assert_send<T: Send>() {}
+		assert_send::<Chalk>();
+	}
+
+	#[test]
+	fn chalk_is_sync() {
+		fn assert_sync<T: Sync>() {}
+		assert_sync::<Chalk>();
 	}
 }

@@ -8,8 +8,8 @@ use std::fmt::LowerHex;
 use std::fmt::Octal;
 use std::fmt::UpperHex;
 
-#[cfg(serde)]
-use serde::{Serialize, Deserialize};
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
@@ -35,7 +35,7 @@ pub struct StyleMap {
 	italic: bool,
 	blink: bool,
 	invert: bool,
-	hidden: bool
+	hidden: bool,
 }
 
 impl_enums!(Weight, Underline);

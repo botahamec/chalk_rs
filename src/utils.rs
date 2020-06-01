@@ -64,14 +64,6 @@ macro_rules! impl_enums {
 	};
 }
 
-/** adds a set of functions to the trait */
-#[macro_export]
-macro_rules! chalk_trait_fns {
-	($($name: ident),*) => {
-		$(fn $name(&mut self) -> &mut Self;)*
-	};
-}
-
 /** Sets up an alias for a function */
 #[macro_export]
 macro_rules! fn_alias {

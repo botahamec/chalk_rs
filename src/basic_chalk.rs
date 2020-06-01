@@ -1,7 +1,7 @@
 //use std::convert::TryFrom;
 
-#[cfg(serde)]
-use serde::{Serialize, Deserialize};
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
 
 /** Foreground color using basic color */
 #[derive(Copy, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]

@@ -83,8 +83,8 @@ const BASIC_COLORS: [RgbColor; 16] = [
 ];
 */
 
-#[cfg(serde)]
-use serde::{Serialize, Deserialize};
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]

@@ -1,4 +1,4 @@
-use std::convert::TryFrom;
+//use std::convert::TryFrom;
 
 /** Foreground color using basic color */
 #[derive(Copy, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -33,6 +33,7 @@ impl BasicColor {
 	}
 }
 
+/*
 impl TryFrom<u8> for BasicColor {
 	type Error = ();
 
@@ -57,4 +58,4 @@ impl TryFrom<u8> for BasicColor {
 			_ => Err(())
 		}
 	}
-}
+}*/

@@ -4,9 +4,12 @@ use chalk_rs::Chalk;
 const LINE_LENGTH: usize = 32;
 
 fn main() {
-
 	let mut chalk = Chalk::new();
-	let mut line = |color: u8| chalk.bg_ansi(color).println(&[' '; LINE_LENGTH].iter().collect::<String>());
+	let mut line = |color: u8| {
+		chalk
+			.bg_ansi(color)
+			.println(&[' '; LINE_LENGTH].iter().collect::<String>())
+	};
 	let mut print_lines = |colors: &[u8]| {
 		for i in 0..colors.len() {
 			line(colors[i]);

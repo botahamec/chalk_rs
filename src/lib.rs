@@ -47,7 +47,14 @@ use style::StyleMap;
 use std::fmt::Display;
 use std::string::ToString;
 
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
+
 #[cfg(windows)]
+/**
+ * @var		use	winap
+ * @global
+ */
 use winapi::{
 	shared::minwindef::DWORD, um::consoleapi::GetConsoleMode,
 	um::consoleapi::SetConsoleMode, um::processenv::GetStdHandle,
@@ -56,6 +63,7 @@ use winapi::{
 };
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 enum ChalkType {
 	Default,
 	Basic(BasicColor),
@@ -127,6 +135,7 @@ impl Default for ChalkType {
 }
 
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Chalk {
 	foreground: ChalkType,
 	background: ChalkType,
@@ -140,12 +149,9 @@ impl Chalk {
 			ChalkType::Default => String::new(),
 			ChalkType::Basic(c) => format!("\x1b[{}m", c.as_foreground_color()),
 			ChalkType::Ansi(c) => format!("\x1b[38;5;{}m", c.as_num()),
-			ChalkType::Rgb(c) => format!(
-				"\x1b[38;2;{};{};{}m",
-				c.get_red(),
-				c.get_green(),
-				c.get_blue()
-			),
+			ChalkType::Rgb(c) => {
+				format!("\x1b[38;2;{};{};{}m", c.red(), c.green(), c.blue())
+			}
 		}
 	}
 
@@ -155,12 +161,9 @@ impl Chalk {
 			ChalkType::Default => String::new(),
 			ChalkType::Basic(c) => format!("\x1b[{}m", c.as_background_color()),
 			ChalkType::Ansi(c) => format!("\x1b[48;5;{}m", c.as_num()),
-			ChalkType::Rgb(c) => format!(
-				"\x1b[48;2;{};{};{}m",
-				c.get_red(),
-				c.get_green(),
-				c.get_blue()
-			),
+			ChalkType::Rgb(c) => {
+				format!("\x1b[48;2;{};{};{}m", c.red(), c.green(), c.blue())
+			}
 		}
 	}
 }
@@ -457,5 +460,17 @@ mod test {
 	fn is_setup() {
 		Chalk::new().red().println(&"This is red");
 		Chalk::new().blue().println(&"This is blue");
+	}
+
+	#[test]
+	fn chalk_is_send() {
+		fn assert_send<T: Send>() {}
+		assert_send::<Chalk>();
+	}
+
+	#[test]
+	fn chalk_is_sync() {
+		fn assert_sync<T: Sync>() {}
+		assert_sync::<Chalk>();
 	}
 }
